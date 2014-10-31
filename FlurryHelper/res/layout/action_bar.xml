@@ -7,11 +7,20 @@
 
     <ImageView
         android:id="@+id/menu"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/ic_action_overflow"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
         android:background="@drawable/action_bar_item_background"
-        android:padding="@dimen/action_bar_menu_padding" />
+        android:padding="@dimen/action_bar_menu_padding"
+        android:src="@drawable/ic_action_overflow" />
+
+    <TextView
+        android:id="@+id/menu_title"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/menu"
+        android:textColor="@color/white" />
 
 </RelativeLayout>

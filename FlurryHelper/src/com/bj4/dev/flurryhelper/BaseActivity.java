@@ -13,12 +13,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public abstract class BaseActivity extends Activity implements SetApiDialog.SetApiSuccess,
         MenuDialog.MenuDialogCallback {
     private View mActionBar;
 
     private ImageView mMenu;
+
+    private TextView mTitle;
 
     private void setMainLayout() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -47,6 +50,12 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
         mActionBar.setVisibility(View.VISIBLE);
     }
 
+    public void setActionBarTitle(String title) {
+        if (mActionBar == null)
+            return;
+        mTitle.setText(title);
+    }
+
     private void initActionBar() {
         mActionBar = findViewById(R.id.action_bar);
         if (mActionBar == null) {
@@ -62,6 +71,7 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
                 dialog.show(getFragmentManager(), MenuDialog.TAG);
             }
         });
+        mTitle = (TextView)findViewById(R.id.menu_title);
     }
 
     public void onResume() {

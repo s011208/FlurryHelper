@@ -6,4 +6,9 @@
 	<!-- action bar -->
 	<dimen name="action_bar_height">48dp</dimen>
 	<dimen name="action_bar_menu_padding">8dp</dimen>
+	<!-- loading view -->
+	<dimen name="circle_radius">100dp</dimen>
+	<dimen name="inner_paint_stroke_width">5dp</dimen>
+	<dimen name="outer_paint_stroke_width">10dp</dimen>
+	<integer name="outer_paint_swipe_angle">50</integer>
 </resources>
