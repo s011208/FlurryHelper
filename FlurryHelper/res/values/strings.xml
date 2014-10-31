@@ -3,5 +3,7 @@
 
     <string name="app_name">Flurry Helper</string>
     <string name="action_access_api_key">Set API key</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

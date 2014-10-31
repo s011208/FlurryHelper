@@ -1,0 +1,17 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/action_bar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/action_bar_height"
+    android:background="@color/action_bar_background" >
+
+    <ImageView
+        android:id="@+id/menu"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_action_overflow"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/action_bar_item_background"
+        android:padding="@dimen/action_bar_menu_padding" />
+
+</RelativeLayout>

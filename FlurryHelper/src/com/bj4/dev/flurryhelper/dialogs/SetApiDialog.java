@@ -1,6 +1,8 @@
 
 package com.bj4.dev.flurryhelper.dialogs;
 
+import java.lang.ref.WeakReference;
+
 import com.bj4.dev.flurryhelper.R;
 import com.bj4.dev.flurryhelper.SharedPreferencesHelper;
 
@@ -17,6 +19,10 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 public class SetApiDialog extends DialogFragment {
+    /*
+     * SetApiDialog dialog = new SetApiDialog(); dialog.setCallback(this);
+     * dialog.show(getFragmentManager(), SetApiDialog.TAG);
+     */
     public static final String TAG = "SetApiDialog";
 
     public interface SetApiSuccess {
@@ -29,10 +35,10 @@ public class SetApiDialog extends DialogFragment {
 
     private EditText mTxt;
 
-    private SetApiSuccess mCallback;
+    private WeakReference<SetApiSuccess> mCallback;
 
     public void setCallback(SetApiSuccess callback) {
-        mCallback = callback;
+        mCallback = new WeakReference<SetApiSuccess>(callback);
     }
 
     @Override
@@ -47,14 +53,17 @@ public class SetApiDialog extends DialogFragment {
         initContent();
         AlertDialog dialog = new AlertDialog.Builder(mContext).setView(mContentView)
                 .setCancelable(false).setTitle(mContext.getString(R.string.action_access_api_key))
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         SharedPreferencesHelper.getInstance(mContext).setAPIKey(
                                 mTxt.getText().toString());
+                        if (mCallback.get() != null) {
+                            mCallback.get().setApiSuccess();
+                        }
                     }
-                }).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

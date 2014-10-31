@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.os.Build;
 
 /**
@@ -34,57 +35,22 @@ import android.os.Build;
  * 
  * @author Yen-Hsun_Huang
  */
-public class MainActivity extends Activity implements SetApiDialog.SetApiSuccess {
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initComponent();
     }
 
-    public void onResume() {
-        super.onResume();
-        checkDialogStatus();
+    public void initComponent() {
+        super.initComponent();
     }
 
-    private void checkDialogStatus() {
-        Fragment previousDiaog = getFragmentManager().findFragmentByTag(SetApiDialog.TAG);
-        if (previousDiaog == null) {
-            // ignore
-        } else {
-            if (previousDiaog.getActivity() != this) {
-                // ignore
-            } else {
-                // dialog on screen
-                SetApiDialog dialog = (SetApiDialog)previousDiaog;
-                dialog.setCallback(this);
-                return;
-            }
-        }
-    }
 
     public void onPause() {
         super.onPause();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_access_api_key:
-                SetApiDialog dialog = new SetApiDialog();
-                dialog.setCallback(this);
-                dialog.show(getFragmentManager(), SetApiDialog.TAG);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
     }
 
     @Override
