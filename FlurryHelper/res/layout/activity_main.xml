@@ -7,8 +7,15 @@
     tools:ignore="MergeRootFrame" >
 
     <include
-        android:layout_alignParentTop="true"
         android:id="@+id/action_bar"
+        android:layout_alignParentTop="true"
         layout="@layout/action_bar" />
+
+    <FrameLayout
+        android:id="@+id/fragment_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/action_bar" >
+    </FrameLayout>
 
 </RelativeLayout>

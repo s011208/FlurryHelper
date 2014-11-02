@@ -9,6 +9,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.bj4.dev.flurryhelper.dialogs.SetApiDialog;
+import com.bj4.dev.flurryhelper.fragments.ProjectFragment;
 import com.bj4.dev.flurryhelper.introduction.IntroductionView;
 import com.bj4.dev.flurryhelper.introduction.IntroductionView.IntroductionViewCallback;
 import com.bj4.dev.flurryhelper.utils.LoadingView;
@@ -16,6 +17,8 @@ import com.bj4.dev.flurryhelper.utils.LoadingView;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,17 +32,8 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.os.Build;
 
-/**
- * Document doc; String title = null; try { doc =
- * Jsoup.connect("https://play.google.com/store/apps/details?id=" + mPkg).get();
- * Elements eles = doc.select("div[class=document-title]").select("div"); for
- * (Element ele : eles) { title = ele.text(); } Context context =
- * mContext.get(); if (context != null) { getInstance(context).addTitle(mPkg,
- * title); } } catch (IOException e) { Log.w(TAG, "failed", e); }
- * 
- * @author Yen-Hsun_Huang
- */
 public class MainActivity extends BaseActivity implements IntroductionViewCallback {
+
     private IntroductionView mIntroductionView;
 
     private RelativeLayout mMainActivity;
@@ -48,6 +42,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedData.getInstance();// init singleton
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initComponent();
@@ -66,8 +61,9 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
             hideActionBar();
             mIntroductionView.setCallback(this);
             mMainActivity.addView(mIntroductionView, rl);
+        } else {
+            setApiSuccess();
         }
-        showLoadingView();
     }
 
     public void onPause() {
@@ -82,9 +78,15 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
             mIntroductionView = null;
             showActionBar();
         }
+        showLoadingView();
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        ProjectFragment fragment = new ProjectFragment();
+        fragmentTransaction.add(R.id.fragment_main, fragment, ProjectFragment.TAG);
+        fragmentTransaction.commit();
     }
 
-    private synchronized void showLoadingView() {
+    public synchronized void showLoadingView() {
         if (mLoadingView == null) {
             mLoadingView = new LoadingView(this);
         }
@@ -95,7 +97,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         mMainActivity.bringChildToFront(mLoadingView);
     }
 
-    private void hideLoadingView() {
+    public void hideLoadingView() {
         if (mLoadingView == null) {
             return;
         }

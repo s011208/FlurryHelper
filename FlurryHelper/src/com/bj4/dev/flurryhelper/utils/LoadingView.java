@@ -5,6 +5,8 @@ import java.lang.ref.WeakReference;
 
 import com.bj4.dev.flurryhelper.R;
 
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -30,8 +32,14 @@ public class LoadingView extends View {
     private RectF mRectF;
 
     private int mRadius;
-    
-    private int mSwipeAngle;
+
+    private static final int SWIPE_DURATION = 10000;
+
+    private static final int SWIPE_ANGLE = 40;
+
+    private final ValueAnimator mVa = ValueAnimator.ofInt(0, 100);
+
+    private int mCurrentAngle = 0;
 
     public LoadingView(Context context) {
         this(context, null);
@@ -54,8 +62,7 @@ public class LoadingView extends View {
         mInnerPaint.setColor(Color.GRAY);
         mInnerPaint.setStrokeWidth((int)context.getResources().getDimension(
                 R.dimen.inner_paint_stroke_width));
-        setBackgroundColor(0x20000000);
-        mSwipeAngle = context.getResources().getInteger(R.integer.outer_paint_swipe_angle);
+        setBackgroundColor(0x40000000);
         ViewTreeObserver observer = this.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
@@ -69,9 +76,37 @@ public class LoadingView extends View {
                 mRadius = (int)mContext.get().getResources().getDimension(R.dimen.circle_radius);
                 mRectF = new RectF(centerX - mRadius, centerY - mRadius, centerX + mRadius, centerY
                         + mRadius);
+                mVa.start();
                 invalidate();
             }
         });
+        mVa.setDuration(SWIPE_DURATION);
+        mVa.setRepeatCount(ValueAnimator.INFINITE);
+        mVa.setRepeatMode(ValueAnimator.RESTART);
+        mVa.addUpdateListener(new AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator arg0) {
+                if (mRectF != null) {
+                    mCurrentAngle += 2;
+                    mCurrentAngle %= 360;
+                    mCirclePath.reset();
+                    mCirclePath.arcTo(mRectF, mCurrentAngle, SWIPE_ANGLE);
+                    invalidate();
+                }
+            }
+        });
+    }
+
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (mVa.isStarted() == false)
+            mVa.start();
+    }
+
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mVa.cancel();
     }
 
     public void setPaintColor(int color) {
@@ -88,7 +123,6 @@ public class LoadingView extends View {
         if (mRectF != null) {
             canvas.drawCircle((mRectF.left + mRectF.right) / 2, (mRectF.top + mRectF.bottom) / 2,
                     mRadius, mInnerPaint);
-            mCirclePath.arcTo(mRectF, 100, 100 + mSwipeAngle);
             canvas.drawPath(mCirclePath, mPaint);
         }
     }
