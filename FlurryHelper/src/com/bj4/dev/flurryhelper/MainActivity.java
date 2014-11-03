@@ -9,7 +9,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.bj4.dev.flurryhelper.dialogs.SetApiDialog;
-import com.bj4.dev.flurryhelper.fragments.ProjectFragment;
+import com.bj4.dev.flurryhelper.fragments.projectfragment.ProjectFragment;
 import com.bj4.dev.flurryhelper.introduction.IntroductionView;
 import com.bj4.dev.flurryhelper.introduction.IntroductionView.IntroductionViewCallback;
 import com.bj4.dev.flurryhelper.utils.LoadingView;
@@ -65,7 +65,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
             mIntroductionView.setCallback(this);
             mMainActivity.addView(mIntroductionView, rl);
         } else {
-            setApiSuccess();
+            setApiSuccess(false);
         }
     }
 
@@ -75,13 +75,19 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
 
     @Override
     public synchronized void setApiSuccess() {
+        setApiSuccess(true);
+    }
+
+    public synchronized void setApiSuccess(boolean clearOldData) {
         // start to load
         if (mIntroductionView != null) {
             mMainActivity.removeView(mIntroductionView);
             mIntroductionView = null;
             showActionBar();
         }
-        SharedData.getInstance().clearAllData();
+        if (clearOldData) {
+            SharedData.getInstance().clearAllData();
+        }
         showLoadingView(true);
         setActionBarTitle("");
         FragmentManager fragmentManager = getFragmentManager();
@@ -102,7 +108,8 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         }
         mLoadingView.setAlpha(0);
         if (animate) {
-            ObjectAnimator oa = ObjectAnimator.ofFloat(mLoadingView, View.ALPHA, 0, 1);
+            ObjectAnimator oa = ObjectAnimator.ofFloat(mLoadingView, View.ALPHA,
+                    mLoadingView.getAlpha(), 1);
             oa.setDuration(200);
             oa.addListener(new AnimatorListener() {
 
@@ -142,7 +149,8 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
             return;
         }
         if (animate) {
-            ObjectAnimator oa = ObjectAnimator.ofFloat(mLoadingView, View.ALPHA, 1, 0);
+            ObjectAnimator oa = ObjectAnimator.ofFloat(mLoadingView, View.ALPHA,
+                    mLoadingView.getAlpha(), 0);
             oa.setDuration(200);
             oa.addListener(new AnimatorListener() {
 

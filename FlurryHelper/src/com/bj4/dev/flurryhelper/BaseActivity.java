@@ -3,6 +3,7 @@ package com.bj4.dev.flurryhelper;
 
 import com.bj4.dev.flurryhelper.dialogs.MenuDialog;
 import com.bj4.dev.flurryhelper.dialogs.SetApiDialog;
+import com.bj4.dev.flurryhelper.fragments.projectfragment.ProjectFragment;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -99,6 +100,15 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
                 SetApiDialog dialog = (SetApiDialog)previousDiaog;
                 dialog.setCallback(this);
                 return;
+            }
+        }
+        previousDiaog = getFragmentManager().findFragmentByTag(ProjectFragment.TAG);
+        if (previousDiaog == null) {
+            // ignore
+        } else {
+            if (previousDiaog.getActivity() != this) {
+                // ignore
+            } else {
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.bj4.dev.flurryhelper.fragments;
+package com.bj4.dev.flurryhelper.fragments.projectfragment;
 
 import java.lang.ref.WeakReference;
 

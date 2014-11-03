@@ -1,5 +1,5 @@
 
-package com.bj4.dev.flurryhelper.fragments;
+package com.bj4.dev.flurryhelper.fragments.projectfragment;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
