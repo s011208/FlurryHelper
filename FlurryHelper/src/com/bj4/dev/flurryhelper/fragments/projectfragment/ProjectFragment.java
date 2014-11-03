@@ -24,6 +24,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +73,14 @@ public class ProjectFragment extends Fragment {
         mProjectInfos = (ListView)mContent.findViewById(R.id.project_infos);
         mProjectInfoAdapter = new ProjectInfoAdapter(getActivity());
         mProjectInfos.setAdapter(mProjectInfoAdapter);
+        mProjectInfos.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                final MainActivity activity = (MainActivity)getActivity();
+                activity.enterAppMetricsFragment(mProjectInfoAdapter.getItem(position).getApiKey());
+            }
+        });
         final SharedData sd = SharedData.getInstance();
         final CompanyName currentCompany = sd.getCompanyName();
         if (currentCompany == null) {

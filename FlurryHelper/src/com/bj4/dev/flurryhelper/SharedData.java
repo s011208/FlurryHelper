@@ -2,6 +2,8 @@
 package com.bj4.dev.flurryhelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import com.bj4.dev.flurryhelper.utils.CompanyName;
 import com.bj4.dev.flurryhelper.utils.ProjectInfo;
@@ -48,13 +50,26 @@ public class SharedData {
     public void addProjectInfo(final ProjectInfo info) {
         synchronized (sLock) {
             sProjectInfos.add(info);
+            sortProjectInfos();
         }
     }
 
     public void addProjectInfos(final ArrayList<ProjectInfo> infos) {
         synchronized (sLock) {
             sProjectInfos.addAll(infos);
+            sortProjectInfos();
         }
+    }
+
+    private void sortProjectInfos() {
+        Collections.sort(sProjectInfos, new Comparator<ProjectInfo>() {
+
+            @Override
+            public int compare(ProjectInfo lhs, ProjectInfo rhs) {
+                // TODO Auto-generated method stub
+                return lhs.getName().compareToIgnoreCase(rhs.getName());
+            }
+        });
     }
 
     public ArrayList<ProjectInfo> getProjectInfos() {

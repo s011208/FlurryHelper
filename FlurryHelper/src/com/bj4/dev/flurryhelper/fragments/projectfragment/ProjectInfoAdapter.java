@@ -107,7 +107,7 @@ public class ProjectInfoAdapter extends BaseAdapter {
             }
         });
         new BarChartTask(holder.mChartContainer, holder.mLoadingView, mContext, position,
-                info.getApiKey()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                info.getApiKey()).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         return convertView;
     }
 

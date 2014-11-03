@@ -19,4 +19,8 @@
 	<dimen name="project_info_item_v_margin">4dp</dimen>
 	<dimen name="project_info_active_user_chart_height">100dp</dimen>
 	<dimen name="project_info_chart_loading_view_radius">25dp</dimen>
+	<dimen name="project_info_chart_margin">3dp</dimen>
+	<dimen name="project_info_chart_line_width">2dp</dimen>
+	<dimen name="project_info_chart_textsize">14sp</dimen>
+	<dimen name="project_info_chart_value_distance">5dp</dimen>
 </resources>

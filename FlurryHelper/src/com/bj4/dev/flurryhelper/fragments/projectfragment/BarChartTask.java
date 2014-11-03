@@ -17,12 +17,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.bj4.dev.flurryhelper.R;
 import com.bj4.dev.flurryhelper.SharedPreferencesHelper;
 import com.bj4.dev.flurryhelper.utils.ActiveUser;
 import com.bj4.dev.flurryhelper.utils.LoadingView;
 import com.bj4.dev.flurryhelper.utils.Utils;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -89,20 +91,24 @@ public class BarChartTask extends AsyncTask<Void, Void, Void> {
         for (int i = 0; i < activeUsers.size(); i++) {
             activeUsersSeries.add(i, activeUsers.get(i).getValue());
         }
+        final Resources res = context.getResources();
         XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
         dataset.addSeries(activeUsersSeries);
         XYSeriesRenderer activeUsersRenderer = new XYSeriesRenderer();
         activeUsersRenderer.setColor(Color.BLUE);
         activeUsersRenderer.setFillPoints(true);
-        activeUsersRenderer.setLineWidth(3);
+        float lineWidth = res.getDimension(R.dimen.project_info_chart_line_width);
+        activeUsersRenderer.setLineWidth(lineWidth);
         activeUsersRenderer.setPointStyle(PointStyle.CIRCLE);
         activeUsersRenderer.setDisplayChartValues(true);
-        activeUsersRenderer.setChartValuesTextSize(18);
-        activeUsersRenderer.setDisplayChartValuesDistance(3);
+        activeUsersRenderer.setChartValuesTextSize(res
+                .getDimension(R.dimen.project_info_chart_textsize));
+        activeUsersRenderer.setDisplayChartValuesDistance((int)res
+                .getDimension(R.dimen.project_info_chart_value_distance));
         XYMultipleSeriesRenderer multiRenderer = new XYMultipleSeriesRenderer();
-        multiRenderer.setXLabels(0);
+        int margin = (int)res.getDimension(R.dimen.project_info_chart_margin);
         multiRenderer.setMargins(new int[] {
-                10, 10, 10, 10
+                margin, margin, margin, margin
         });
         multiRenderer.clearXTextLabels();
         multiRenderer.clearYTextLabels();

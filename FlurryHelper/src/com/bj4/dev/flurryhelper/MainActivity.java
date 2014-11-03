@@ -9,6 +9,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.bj4.dev.flurryhelper.dialogs.SetApiDialog;
+import com.bj4.dev.flurryhelper.fragments.appmetricsfragment.AppMetricsFragment;
 import com.bj4.dev.flurryhelper.fragments.projectfragment.ProjectFragment;
 import com.bj4.dev.flurryhelper.introduction.IntroductionView;
 import com.bj4.dev.flurryhelper.introduction.IntroductionView.IntroductionViewCallback;
@@ -42,6 +43,12 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
     private RelativeLayout mMainActivity;
 
     private LoadingView mLoadingView;
+
+    private static final int FRAGMENT_TYPE_PROJECT = 0;
+
+    private static final int FRAGMENT_TYPE_APPMETRICS = 1;
+
+    private int mNavigationFragment = FRAGMENT_TYPE_PROJECT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +97,19 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         }
         showLoadingView(true);
         setActionBarTitle("");
+        enterCompanyFragment();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mNavigationFragment == FRAGMENT_TYPE_PROJECT) {
+            super.onBackPressed();
+        } else if (mNavigationFragment == FRAGMENT_TYPE_APPMETRICS) {
+            enterCompanyFragment();
+        }
+    }
+
+    public void enterCompanyFragment() {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction
@@ -97,6 +117,21 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         ProjectFragment fragment = new ProjectFragment();
         fragmentTransaction.replace(R.id.fragment_main, fragment, ProjectFragment.TAG);
         fragmentTransaction.commit();
+        mNavigationFragment = FRAGMENT_TYPE_PROJECT;
+    }
+
+    public void enterAppMetricsFragment(final String projectKey) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction
+                .setCustomAnimations(R.anim.fragment_alpha_in, R.anim.fragment_alpha_out);
+        AppMetricsFragment fragment = new AppMetricsFragment();
+        Bundle args = new Bundle();
+        args.putString(AppMetricsFragment.PROJECT_KEY, projectKey);
+        fragment.setArguments(args);
+        fragmentTransaction.replace(R.id.fragment_main, fragment, AppMetricsFragment.TAG);
+        fragmentTransaction.commit();
+        mNavigationFragment = FRAGMENT_TYPE_APPMETRICS;
     }
 
     public synchronized void showLoadingView(boolean animate) {
