@@ -48,7 +48,7 @@ public class RetrieveApplicationInfoTask extends AsyncTask<Void, Void, Void> {
         if (pf != null) {
             Activity activity = pf.getActivity();
             if (activity instanceof MainActivity) {
-                ((MainActivity)activity).hideLoadingView();
+                ((MainActivity)activity).hideLoadingView(true);
                 pf.notifyDataChanged();
             }
         }

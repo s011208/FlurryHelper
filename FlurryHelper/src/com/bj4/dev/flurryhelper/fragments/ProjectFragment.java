@@ -48,7 +48,7 @@ public class ProjectFragment extends Fragment {
 
     public void notifyDataChanged() {
         final MainActivity activity = (MainActivity)getActivity();
-        activity.hideLoadingView();
+        activity.hideLoadingView(true);
         final SharedData sd = SharedData.getInstance();
         final CompanyName currentCompany = sd.getCompanyName();
         if (currentCompany != null) {

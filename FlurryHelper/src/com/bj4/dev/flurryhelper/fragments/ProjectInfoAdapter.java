@@ -9,9 +9,12 @@ import com.bj4.dev.flurryhelper.SharedData;
 import com.bj4.dev.flurryhelper.utils.LoadingView;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -80,6 +83,20 @@ public class ProjectInfoAdapter extends BaseAdapter {
         holder.mName.setText(info.getName());
         holder.mPlatform.setText(info.getPlatform());
         holder.mLoadingView.setRadius(mLoadingViewRadius);
+
+        final LoadingView loadingView = holder.mLoadingView;
+        loadingView.setBackgroundColor(Color.argb(15, 0, 0, 0));
+        ViewTreeObserver observer = loadingView.getViewTreeObserver();
+        observer.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+            @Override
+            public void onGlobalLayout() {
+                ViewTreeObserver observer = loadingView.getViewTreeObserver();
+                if (observer.isAlive())
+                    observer.removeOnGlobalLayoutListener(this);
+                loadingView.setRadius(mLoadingViewRadius);
+            }
+        });
         return convertView;
     }
 
