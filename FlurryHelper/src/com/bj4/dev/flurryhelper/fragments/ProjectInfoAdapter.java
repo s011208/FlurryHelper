@@ -1,0 +1,94 @@
+
+package com.bj4.dev.flurryhelper.fragments;
+
+import java.util.ArrayList;
+
+import com.bj4.dev.flurryhelper.ProjectInfo;
+import com.bj4.dev.flurryhelper.R;
+import com.bj4.dev.flurryhelper.SharedData;
+import com.bj4.dev.flurryhelper.utils.LoadingView;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+public class ProjectInfoAdapter extends BaseAdapter {
+    private final ArrayList<ProjectInfo> mInfos = new ArrayList<ProjectInfo>();
+
+    private Context mContext;
+
+    private int mLoadingViewRadius;
+
+    private LayoutInflater mInflater;
+
+    public ProjectInfoAdapter(Context c) {
+        mContext = c;
+        mLoadingViewRadius = (int)c.getResources().getDimension(
+                R.dimen.project_info_chart_loading_view_radius);
+        mInflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        initInfos();
+    }
+
+    private void initInfos() {
+        mInfos.clear();
+        mInfos.addAll(SharedData.getInstance().getProjectInfos());
+    }
+
+    public void notifyDataSetChanged() {
+        initInfos();
+        super.notifyDataSetChanged();
+    }
+
+    @Override
+    public int getCount() {
+        return mInfos.size();
+    }
+
+    @Override
+    public ProjectInfo getItem(int position) {
+        return mInfos.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder = null;
+        if (convertView == null) {
+            holder = new ViewHolder();
+            convertView = mInflater.inflate(R.layout.project_fragment_project_infos, null);
+            holder.mName = (TextView)convertView.findViewById(R.id.project_info_name);
+            holder.mCreatedDate = (TextView)convertView
+                    .findViewById(R.id.project_info_created_date);
+            holder.mPlatform = (TextView)convertView.findViewById(R.id.project_info_platform);
+            holder.mChartContainer = (FrameLayout)convertView.findViewById(R.id.project_info_3);
+            holder.mLoadingView = (LoadingView)convertView.findViewById(R.id.loading_view);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder)convertView.getTag();
+        }
+        final ProjectInfo info = getItem(position);
+        holder.mCreatedDate.setText(info.getCreatedDate());
+        holder.mName.setText(info.getName());
+        holder.mPlatform.setText(info.getPlatform());
+        holder.mLoadingView.setRadius(mLoadingViewRadius);
+        return convertView;
+    }
+
+    private static class ViewHolder {
+        TextView mName, mCreatedDate, mPlatform;
+
+        FrameLayout mChartContainer;
+
+        LoadingView mLoadingView;
+    }
+
+}

@@ -78,11 +78,13 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
             mIntroductionView = null;
             showActionBar();
         }
+        SharedData.getInstance().clearAllData();
         showLoadingView();
+        setActionBarTitle("");
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         ProjectFragment fragment = new ProjectFragment();
-        fragmentTransaction.add(R.id.fragment_main, fragment, ProjectFragment.TAG);
+        fragmentTransaction.replace(R.id.fragment_main, fragment, ProjectFragment.TAG);
         fragmentTransaction.commit();
     }
 

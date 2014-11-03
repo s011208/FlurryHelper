@@ -45,6 +45,8 @@ public class IntroductionSetApiKeyView extends RelativeLayout {
     public void onFinishInflate() {
         super.onFinishInflate();
         mSetApiText = (EditText)findViewById(R.id.set_api_txt);
+        // XXX remove later
+        mSetApiText.setText("H27G8H743385X8CFS3VQ");
         mConfirm = (Button)findViewById(R.id.set_api_txt_confirm);
         mConfirm.setOnClickListener(new OnClickListener() {
 

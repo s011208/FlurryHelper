@@ -22,8 +22,17 @@ public class SharedData {
     private SharedData() {
     }
 
+    public void clearAllData() {
+        synchronized (sLock) {
+            sCompanyName = null;
+            sProjectInfos.clear();
+        }
+    }
+
     public CompanyName getCompanyName() {
-        return sCompanyName;
+        synchronized (sLock) {
+            return sCompanyName;
+        }
     }
 
     public void setCompanyName(final CompanyName cn) {
@@ -42,6 +51,12 @@ public class SharedData {
     public void addProjectInfos(final ArrayList<ProjectInfo> infos) {
         synchronized (sLock) {
             sProjectInfos.addAll(infos);
+        }
+    }
+
+    public ArrayList<ProjectInfo> getProjectInfos() {
+        synchronized (sLock) {
+            return sProjectInfos;
         }
     }
 }

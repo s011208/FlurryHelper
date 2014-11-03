@@ -57,10 +57,16 @@ public class SetApiDialog extends DialogFragment {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferencesHelper.getInstance(mContext).setAPIKey(
-                                mTxt.getText().toString());
-                        if (mCallback.get() != null) {
-                            mCallback.get().setApiSuccess();
+                        final String newApiKey = mTxt.getText().toString();
+                        final String currentApiKey = SharedPreferencesHelper.getInstance(mContext)
+                                .getAPIKey();
+                        if (newApiKey != null && newApiKey.isEmpty() == false
+                                && newApiKey.equals(currentApiKey) == false) {
+                            SharedPreferencesHelper.getInstance(mContext).setAPIKey(
+                                    mTxt.getText().toString());
+                            if (mCallback.get() != null) {
+                                mCallback.get().setApiSuccess();
+                            }
                         }
                     }
                 }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

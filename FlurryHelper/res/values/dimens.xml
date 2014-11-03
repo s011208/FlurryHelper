@@ -6,8 +6,17 @@
 	<!-- action bar -->
 	<dimen name="action_bar_height">48dp</dimen>
 	<dimen name="action_bar_menu_padding">8dp</dimen>
+	<dimen name="action_bar_title_text_size">30sp</dimen>
+	<dimen name="action_bar_title_padding_left">8dp</dimen>
 	<!-- loading view -->
 	<dimen name="circle_radius">60dp</dimen>
 	<dimen name="inner_paint_stroke_width">5dp</dimen>
 	<dimen name="outer_paint_stroke_width">10dp</dimen>
+	<!-- project fragment -->
+	<dimen name="project_info_padding_h">4dp</dimen>
+	<dimen name="project_info_name_text_size">18sp</dimen>
+	<dimen name="project_info_platform_text_size">16sp</dimen>
+	<dimen name="project_info_item_v_margin">4dp</dimen>
+	<dimen name="project_info_active_user_chart_height">100dp</dimen>
+	<dimen name="project_info_chart_loading_view_radius">25dp</dimen>
 </resources>

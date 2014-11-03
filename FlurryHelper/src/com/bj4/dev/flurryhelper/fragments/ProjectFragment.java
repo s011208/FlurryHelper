@@ -9,11 +9,14 @@ import org.jsoup.nodes.Document;
 
 import com.bj4.dev.flurryhelper.CompanyName;
 import com.bj4.dev.flurryhelper.MainActivity;
+import com.bj4.dev.flurryhelper.R;
 import com.bj4.dev.flurryhelper.SharedData;
+import com.bj4.dev.flurryhelper.SharedPreferencesHelper;
 import com.bj4.dev.flurryhelper.utils.Utils;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,66 +24,61 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * http://api.flurry.com/appInfo/getAllApplications?apiAccessCode=7
- * XGFNKM2BQX8YPN55BM2
+ * H27G8H743385X8CFS3VQ
+ * http://api.flurry.com/appMetrics/ActiveUsersByWeek?apiAccessCode
+ * =H27G8H743385X8CFS3VQ
+ * &apiKey=KKVRQV7Y3FFF5GD6KVRG&startDate=2014-01-01&endDate=2014-12-31
  * 
  * @author yenhsunhuang
  */
 public class ProjectFragment extends Fragment {
     public static final String TAG = "ProjectFragment";
 
-    public static class RetrieveApplicationInfoTask extends AsyncTask<Void, Void, Void> {
-        private WeakReference<ProjectFragment> mProjectFragment;
+    private View mContent;
 
-        public RetrieveApplicationInfoTask(ProjectFragment pf) {
-            mProjectFragment = new WeakReference<ProjectFragment>(pf);
-        }
+    private ListView mProjectInfos;
 
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            final String rawData = Utils
-                    .parseOnInternet("http://api.flurry.com/appInfo/getAllApplications?apiAccessCode=7XGFNKM2BQX8YPN55BM2");
-            if (rawData != null) {
-                final CompanyName cn = Utils.retrieveCompanyName(rawData);
-                final SharedData sd = SharedData.getInstance();
-                if (cn != null) {
-                    sd.setCompanyName(cn);
-                    sd.addProjectInfos(Utils.retrieveProjectInfos(rawData));
-                }
-            }
-            return null;
-        }
-
-        @Override
-        public void onPostExecute(Void arg0) {
-            ProjectFragment pf = mProjectFragment.get();
-            if (pf != null) {
-                Activity activity = pf.getActivity();
-                if (activity instanceof MainActivity) {
-                    ((MainActivity)activity).hideLoadingView();
-                    pf.notifyDataChanged();
-                }
-            }
-        }
-    }
+    private ProjectInfoAdapter mProjectInfoAdapter;
 
     public void notifyDataChanged() {
+        final MainActivity activity = (MainActivity)getActivity();
+        activity.hideLoadingView();
+        final SharedData sd = SharedData.getInstance();
+        final CompanyName currentCompany = sd.getCompanyName();
+        if (currentCompany != null) {
+            activity.setActionBarTitle(currentCompany.getCompanyName());
+            mProjectInfoAdapter.notifyDataSetChanged();
+        } else {
+            Toast.makeText(getActivity(), "retrieve company data failed", Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final SharedData sd = SharedData.getInstance();
-        final CompanyName currentCompany = sd.getCompanyName();
-        if (currentCompany == null) {
-            new RetrieveApplicationInfoTask(this).execute();
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        mContent = inflater.inflate(R.layout.project_fragment, null);
+        mProjectInfos = (ListView)mContent.findViewById(R.id.project_infos);
+        mProjectInfoAdapter = new ProjectInfoAdapter(getActivity());
+        mProjectInfos.setAdapter(mProjectInfoAdapter);
+        final SharedData sd = SharedData.getInstance();
+        final CompanyName currentCompany = sd.getCompanyName();
+        if (currentCompany == null) {
+            new RetrieveApplicationInfoTask(this, getActivity()).execute();
+        } else {
+            notifyDataChanged();
+        }
+        return mContent;
     }
+
 }

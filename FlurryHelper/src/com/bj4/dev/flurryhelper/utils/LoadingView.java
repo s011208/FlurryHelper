@@ -31,13 +31,13 @@ public class LoadingView extends View {
 
     private RectF mRectF;
 
-    private int mRadius;
+    private int mRadius = -1;
 
-    private static final int SWIPE_DURATION = 10000;
+    private static final int SWIPE_DURATION = 2500;
 
-    private static final int SWIPE_ANGLE = 40;
+    private static final int SWIPE_ANGLE = 45;
 
-    private final ValueAnimator mVa = ValueAnimator.ofInt(0, 100);
+    private final ValueAnimator mVa = ValueAnimator.ofInt(0, 360);
 
     private int mCurrentAngle = 0;
 
@@ -71,11 +71,11 @@ public class LoadingView extends View {
                 ViewTreeObserver observer = LoadingView.this.getViewTreeObserver();
                 if (observer.isAlive())
                     observer.removeOnGlobalLayoutListener(this);
-                final int centerX = getMeasuredWidth() / 2;
-                final int centerY = getMeasuredHeight() / 2;
-                mRadius = (int)mContext.get().getResources().getDimension(R.dimen.circle_radius);
-                mRectF = new RectF(centerX - mRadius, centerY - mRadius, centerX + mRadius, centerY
-                        + mRadius);
+                if (mRadius == -1) {
+                    mRadius = (int)mContext.get().getResources()
+                            .getDimension(R.dimen.circle_radius);
+                    setRectF();
+                }
                 mVa.start();
                 invalidate();
             }
@@ -88,14 +88,27 @@ public class LoadingView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator arg0) {
                 if (mRectF != null) {
-                    mCurrentAngle += 2;
-                    mCurrentAngle %= 360;
+                    final int angle = (Integer)arg0.getAnimatedValue();
+                    mCurrentAngle = angle;
                     mCirclePath.reset();
                     mCirclePath.arcTo(mRectF, mCurrentAngle, SWIPE_ANGLE);
                     invalidate();
                 }
             }
         });
+        mVa.start();
+    }
+
+    private void setRectF() {
+        final int centerX = getWidth() / 2;
+        final int centerY = getHeight() / 2;
+        mRectF = new RectF(centerX - mRadius, centerY - mRadius, centerX + mRadius, centerY
+                + mRadius);
+    }
+
+    public void setRadius(int r) {
+        mRadius = r;
+        setRectF();
     }
 
     public void onAttachedToWindow() {

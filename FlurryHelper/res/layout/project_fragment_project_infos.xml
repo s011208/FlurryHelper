@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/project_info_padding_h"
+    android:paddingRight="@dimen/project_info_padding_h" >
+
+    <LinearLayout
+        android:id="@+id/project_info_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/project_info_item_v_margin"
+        android:layout_marginTop="@dimen/project_info_item_v_margin"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/project_info_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:ellipsize="end"
+            android:textSize="@dimen/project_info_name_text_size" />
+
+        <TextView
+            android:id="@+id/project_info_platform"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center_vertical|right"
+            android:textSize="@dimen/project_info_platform_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/project_info_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/project_info_1"
+        android:layout_marginBottom="@dimen/project_info_item_v_margin"
+        android:layout_marginTop="@dimen/project_info_item_v_margin"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/project_info_created_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|right"
+            android:textSize="@dimen/project_info_platform_text_size" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/project_info_3"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/project_info_active_user_chart_height"
+        android:layout_below="@+id/project_info_2"
+        android:layout_marginBottom="@dimen/project_info_item_v_margin"
+        android:layout_marginTop="@dimen/project_info_item_v_margin" >
+
+        <com.bj4.dev.flurryhelper.utils.LoadingView
+            android:id="@+id/loading_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+</RelativeLayout>
