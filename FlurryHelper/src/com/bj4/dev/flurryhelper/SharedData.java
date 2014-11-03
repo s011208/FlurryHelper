@@ -3,6 +3,9 @@ package com.bj4.dev.flurryhelper;
 
 import java.util.ArrayList;
 
+import com.bj4.dev.flurryhelper.utils.CompanyName;
+import com.bj4.dev.flurryhelper.utils.ProjectInfo;
+
 public class SharedData {
     private static final Object sLock = new Object();
 

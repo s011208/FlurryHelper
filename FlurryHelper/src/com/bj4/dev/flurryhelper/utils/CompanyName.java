@@ -1,5 +1,5 @@
 
-package com.bj4.dev.flurryhelper;
+package com.bj4.dev.flurryhelper.utils;
 
 public class CompanyName {
     private String mCompanyName;

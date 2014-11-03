@@ -6,10 +6,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.bj4.dev.flurryhelper.CompanyName;
 import com.bj4.dev.flurryhelper.MainActivity;
 import com.bj4.dev.flurryhelper.SharedData;
 import com.bj4.dev.flurryhelper.SharedPreferencesHelper;
+import com.bj4.dev.flurryhelper.utils.CompanyName;
 import com.bj4.dev.flurryhelper.utils.Utils;
 
 public class RetrieveApplicationInfoTask extends AsyncTask<Void, Void, Void> {
@@ -43,7 +43,7 @@ public class RetrieveApplicationInfoTask extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    public void onPostExecute(Void arg0) {
+    public void onPostExecute(Void param) {
         ProjectFragment pf = mProjectFragment.get();
         if (pf != null) {
             Activity activity = pf.getActivity();

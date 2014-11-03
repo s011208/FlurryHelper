@@ -14,8 +14,6 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
-import com.bj4.dev.flurryhelper.CompanyName;
-import com.bj4.dev.flurryhelper.ProjectInfo;
 
 public class Utils {
     private static final String TAG = "QQQQ";

@@ -7,11 +7,11 @@ import java.lang.ref.WeakReference;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import com.bj4.dev.flurryhelper.CompanyName;
 import com.bj4.dev.flurryhelper.MainActivity;
 import com.bj4.dev.flurryhelper.R;
 import com.bj4.dev.flurryhelper.SharedData;
 import com.bj4.dev.flurryhelper.SharedPreferencesHelper;
+import com.bj4.dev.flurryhelper.utils.CompanyName;
 import com.bj4.dev.flurryhelper.utils.Utils;
 
 import android.app.Activity;
