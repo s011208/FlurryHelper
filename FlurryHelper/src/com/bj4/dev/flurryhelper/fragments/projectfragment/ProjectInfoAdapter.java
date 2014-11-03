@@ -87,12 +87,12 @@ public class ProjectInfoAdapter extends BaseAdapter {
         holder.mLoadingView.setVisibility(View.VISIBLE);
         holder.mChartContainer.setTag(position);
         if (holder.mChartContainer.getChildCount() > 1) {
-            for (int i = 1; i < holder.mChartContainer.getChildCount(); i++) {
-                holder.mChartContainer.removeViewAt(i);
+            for (int i = 0; i < holder.mChartContainer.getChildCount(); i++) {
+                if (holder.mChartContainer.getChildAt(i) instanceof LoadingView == false) {
+                    holder.mChartContainer.removeViewAt(i);
+                }
             }
         }
-        new BarChartTask(holder.mChartContainer, holder.mLoadingView, mContext, position,
-                info.getApiKey()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         final LoadingView loadingView = holder.mLoadingView;
         loadingView.setBackgroundColor(Color.argb(15, 0, 0, 0));
         ViewTreeObserver observer = loadingView.getViewTreeObserver();
@@ -106,6 +106,8 @@ public class ProjectInfoAdapter extends BaseAdapter {
                 loadingView.setRadius(mLoadingViewRadius);
             }
         });
+        new BarChartTask(holder.mChartContainer, holder.mLoadingView, mContext, position,
+                info.getApiKey()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         return convertView;
     }
 

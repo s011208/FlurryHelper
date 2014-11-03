@@ -7,6 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * http://support.flurry.com/index.php?title=API/GettingStarted
+ * 
+ * @author Yen-Hsun_Huang
+ */
 public class AppMetricsFragment extends Fragment {
     public static final String TAG = "AppMetricsFragment";
 
