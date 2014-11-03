@@ -43,8 +43,6 @@ public class BarChartTask extends AsyncTask<Void, Void, Void> {
 
     private View mBarChart;
 
-    private ArrayList<ActiveUser> mActiveUsers;
-
     private static final HashMap<String, ArrayList<ActiveUser>> sActiveUsersMap = new HashMap<String, ArrayList<ActiveUser>>();
 
     public BarChartTask(FrameLayout chartContainer, LoadingView loadingView, Context context,
@@ -61,28 +59,34 @@ public class BarChartTask extends AsyncTask<Void, Void, Void> {
         final Context context = mContext.get();
         if (context == null)
             return null;
+        ArrayList<ActiveUser> activeUsers = null;
         synchronized (sActiveUsersMap) {
-            mActiveUsers = sActiveUsersMap.get(mProjectKey);
+            activeUsers = sActiveUsersMap.get(mProjectKey);
+            if (activeUsers != null && activeUsers.isEmpty() == false)
+                return null;
         }
-        if (mActiveUsers != null && mActiveUsers.isEmpty() == false)
-            return null;
         final String rawData = getRawData(context);
         if (rawData == null || rawData.isEmpty())
             return null;
-        mActiveUsers = retrieveActiveUserDataFromRaw(rawData);
+        activeUsers = retrieveActiveUserDataFromRaw(rawData);
         synchronized (sActiveUsersMap) {
-            if (mActiveUsers.isEmpty() == false)
-                sActiveUsersMap.put(mProjectKey, mActiveUsers);
+            if (activeUsers.isEmpty() == false) {
+                sActiveUsersMap.put(mProjectKey, activeUsers);
+            }
         }
         return null;
     }
 
     private void drawBarChart(Context context) {
-        if (mActiveUsers == null)
+        ArrayList<ActiveUser> activeUsers = null;
+        synchronized (sActiveUsersMap) {
+            activeUsers = sActiveUsersMap.get(mProjectKey);
+        }
+        if (activeUsers == null)
             return;
         XYSeries activeUsersSeries = new XYSeries("ActiveUsers");
-        for (int i = 0; i < mActiveUsers.size(); i++) {
-            activeUsersSeries.add(i, mActiveUsers.get(i).getValue());
+        for (int i = 0; i < activeUsers.size(); i++) {
+            activeUsersSeries.add(i, activeUsers.get(i).getValue());
         }
         XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
         dataset.addSeries(activeUsersSeries);
