@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.BarChart.Type;
+import org.achartengine.chart.PointStyle;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
@@ -93,8 +94,10 @@ public class BarChartTask extends AsyncTask<Void, Void, Void> {
         XYSeriesRenderer activeUsersRenderer = new XYSeriesRenderer();
         activeUsersRenderer.setColor(Color.BLUE);
         activeUsersRenderer.setFillPoints(true);
-        activeUsersRenderer.setLineWidth(1);
-        activeUsersRenderer.setDisplayChartValues(false);
+        activeUsersRenderer.setLineWidth(3);
+        activeUsersRenderer.setPointStyle(PointStyle.CIRCLE);
+        activeUsersRenderer.setDisplayChartValues(true);
+        activeUsersRenderer.setChartValuesTextSize(18);
         activeUsersRenderer.setDisplayChartValuesDistance(3);
         XYMultipleSeriesRenderer multiRenderer = new XYMultipleSeriesRenderer();
         multiRenderer.setXLabels(0);
@@ -117,7 +120,7 @@ public class BarChartTask extends AsyncTask<Void, Void, Void> {
         multiRenderer.setApplyBackgroundColor(true);
 
         multiRenderer.addSeriesRenderer(activeUsersRenderer);
-        mBarChart = ChartFactory.getBarChartView(context, dataset, multiRenderer, Type.DEFAULT);
+        mBarChart = ChartFactory.getLineChartView(context, dataset, multiRenderer);
     }
 
     private String getRawData(Context context) {
