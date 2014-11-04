@@ -1,0 +1,4 @@
+<resources>
+	<!-- menu dialog -->
+	<dimen name="menu_dialog_width">230dp</dimen>
+</resources>

@@ -66,11 +66,18 @@ public class MenuDialog extends DialogFragment {
                         }
                     }
                 }).setCancelable(true).setTitle(null).create();
-        final Window window = dialog.getWindow();
-        if (window != null) {
-            window.setGravity(Gravity.TOP);
-            window.setWindowAnimations(android.R.style.Animation_Toast);
-        }
         return dialog;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        final Window window = getDialog().getWindow();
+        window.setWindowAnimations(android.R.style.Animation_Toast);
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.gravity = Gravity.RIGHT | Gravity.TOP;
+        params.y = (int)getActivity().getResources().getDimension(R.dimen.action_bar_height);
+        params.width = (int)getActivity().getResources().getDimension(R.dimen.menu_dialog_width);
+        window.setAttributes(params);
     }
 }

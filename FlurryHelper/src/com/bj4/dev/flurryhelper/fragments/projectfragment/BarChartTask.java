@@ -48,6 +48,12 @@ public class BarChartTask extends AsyncTask<Void, Void, Void> {
 
     private static final HashMap<String, ArrayList<ActiveUser>> sActiveUsersMap = new HashMap<String, ArrayList<ActiveUser>>();
 
+    public static final boolean hasData(final String projectKey) {
+        synchronized (sActiveUsersMap) {
+            return sActiveUsersMap.get(projectKey) != null;
+        }
+    }
+
     public BarChartTask(FrameLayout chartContainer, LoadingView loadingView, Context context,
             int targetIndex, String projectKey) {
         mChartContainer = new WeakReference<FrameLayout>(chartContainer);
@@ -67,6 +73,10 @@ public class BarChartTask extends AsyncTask<Void, Void, Void> {
             activeUsers = sActiveUsersMap.get(mProjectKey);
             if (activeUsers != null && activeUsers.isEmpty() == false)
                 return null;
+        }
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
         }
         final String rawData = getRawData(context);
         if (rawData == null || rawData.isEmpty())

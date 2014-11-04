@@ -11,6 +11,8 @@ import com.bj4.dev.flurryhelper.MainActivity;
 import com.bj4.dev.flurryhelper.R;
 import com.bj4.dev.flurryhelper.SharedData;
 import com.bj4.dev.flurryhelper.SharedPreferencesHelper;
+import com.bj4.dev.flurryhelper.dialogs.MenuDialog;
+import com.bj4.dev.flurryhelper.dialogs.ProjectDataChooserDialog;
 import com.bj4.dev.flurryhelper.utils.CompanyName;
 import com.bj4.dev.flurryhelper.utils.Utils;
 
@@ -77,8 +79,14 @@ public class ProjectFragment extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                final MainActivity activity = (MainActivity)getActivity();
-                activity.enterAppMetricsFragment(mProjectInfoAdapter.getItem(position).getApiKey());
+                ProjectDataChooserDialog dialog = new ProjectDataChooserDialog();
+                Bundle args = new Bundle();
+                args.putString(ProjectDataChooserDialog.PROJECT_KEY,
+                        mProjectInfoAdapter.getItem(position).getApiKey());
+                args.putInt(ProjectDataChooserDialog.BUNDLE_KEY_Y,
+                        (int)arg1.getY() + arg1.getHeight() / 2);
+                dialog.setArguments(args);
+                dialog.show(getFragmentManager(), ProjectDataChooserDialog.TAG);
             }
         });
         final SharedData sd = SharedData.getInstance();

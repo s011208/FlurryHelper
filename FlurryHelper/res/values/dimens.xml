@@ -23,4 +23,6 @@
 	<dimen name="project_info_chart_line_width">2dp</dimen>
 	<dimen name="project_info_chart_textsize">14sp</dimen>
 	<dimen name="project_info_chart_value_distance">5dp</dimen>
+	<!-- menu dialog -->
+	<dimen name="menu_dialog_width">150dp</dimen>
 </resources>

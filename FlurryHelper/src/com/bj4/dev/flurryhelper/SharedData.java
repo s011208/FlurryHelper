@@ -4,11 +4,29 @@ package com.bj4.dev.flurryhelper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import com.bj4.dev.flurryhelper.utils.CompanyName;
 import com.bj4.dev.flurryhelper.utils.ProjectInfo;
 
 public class SharedData {
+    // APPMETRICS
+    public static final String APPMETRICS_TYPE_ACTIVE_USERS = "ActiveUsers";
+
+    public static final String APPMETRICS_TYPE_ACTIVE_USERS_BY_WEEK = "ActiveUsersByWeek";
+
+    public static final String APPMETRICS_TYPE_ACTIVE_USERS_BY_MONTH = "ActiveUsersByMonth";
+
+    public static final String APPMETRICS_TYPE_NEW_USERS = "NewUsers";
+
+    public static final String APPMETRICS_TYPE_MEDIAN_SESSION_LENGTH = "MedianSessionLength";
+
+    public static final String APPMETRICS_TYPE_AVG_SESSION_LENGTH = "AvgSessionLength";
+
+    public static final String APPMETRICS_TYPE_SESSIONS = "Sessions";
+
+    public static final String APPMETRICS_TYPE_RETAIEND_USERS = "RetainedUsers";
+
     private static final Object sLock = new Object();
 
     private static SharedData sInstance;
@@ -16,6 +34,8 @@ public class SharedData {
     private static CompanyName sCompanyName;
 
     private static final ArrayList<ProjectInfo> sProjectInfos = new ArrayList<ProjectInfo>();
+
+    private static final HashMap<String, HashMap<String, ArrayList<Object>>> sAllData = new HashMap<String, HashMap<String, ArrayList<Object>>>();
 
     public static synchronized SharedData getInstance() {
         if (sInstance == null) {

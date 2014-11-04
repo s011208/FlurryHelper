@@ -7,4 +7,6 @@
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
 	<string name="api_key_hint">Enter API access key</string>
+	<string name="project_data_chooser_appmetrics">App metrics</string>
+	<string name="project_data_chooser_eventmetrics">Event metrics</string>
 </resources>

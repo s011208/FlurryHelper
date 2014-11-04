@@ -10,6 +10,7 @@ import org.jsoup.select.Elements;
 
 import com.bj4.dev.flurryhelper.dialogs.SetApiDialog;
 import com.bj4.dev.flurryhelper.fragments.appmetricsfragment.AppMetricsFragment;
+import com.bj4.dev.flurryhelper.fragments.eventmetricsfragment.EventMetricsFragment;
 import com.bj4.dev.flurryhelper.fragments.projectfragment.ProjectFragment;
 import com.bj4.dev.flurryhelper.introduction.IntroductionView;
 import com.bj4.dev.flurryhelper.introduction.IntroductionView.IntroductionViewCallback;
@@ -47,6 +48,8 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
     private static final int FRAGMENT_TYPE_PROJECT = 0;
 
     private static final int FRAGMENT_TYPE_APPMETRICS = 1;
+
+    private static final int FRAGMENT_TYPE_EVENTMETRICS = 2;
 
     private int mNavigationFragment = FRAGMENT_TYPE_PROJECT;
 
@@ -104,7 +107,8 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
     public void onBackPressed() {
         if (mNavigationFragment == FRAGMENT_TYPE_PROJECT) {
             super.onBackPressed();
-        } else if (mNavigationFragment == FRAGMENT_TYPE_APPMETRICS) {
+        } else if (mNavigationFragment == FRAGMENT_TYPE_APPMETRICS
+                || mNavigationFragment == FRAGMENT_TYPE_EVENTMETRICS) {
             enterCompanyFragment();
         }
     }
@@ -132,6 +136,20 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         fragmentTransaction.replace(R.id.fragment_main, fragment, AppMetricsFragment.TAG);
         fragmentTransaction.commit();
         mNavigationFragment = FRAGMENT_TYPE_APPMETRICS;
+    }
+
+    public void enterEventMetricsFragment(final String projectKey) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction
+                .setCustomAnimations(R.anim.fragment_alpha_in, R.anim.fragment_alpha_out);
+        EventMetricsFragment fragment = new EventMetricsFragment();
+        Bundle args = new Bundle();
+        args.putString(EventMetricsFragment.PROJECT_KEY, projectKey);
+        fragment.setArguments(args);
+        fragmentTransaction.replace(R.id.fragment_main, fragment, EventMetricsFragment.TAG);
+        fragmentTransaction.commit();
+        mNavigationFragment = FRAGMENT_TYPE_EVENTMETRICS;
     }
 
     public synchronized void showLoadingView(boolean animate) {
