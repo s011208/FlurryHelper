@@ -1,8 +1,11 @@
 
 package com.bj4.dev.flurryhelper.fragments.appmetricsfragment;
 
+import com.bj4.dev.flurryhelper.MainActivity;
 import com.bj4.dev.flurryhelper.R;
+import com.bj4.dev.flurryhelper.SharedData;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -46,6 +49,25 @@ public class AppMetricsFragment extends Fragment implements AppMetricsLoadingHel
         return mContent;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        checkLoadingView(true);
+    }
+    
+    private void checkLoadingView(boolean animated){
+        Activity activity = getActivity();
+        if(activity == null)
+            return;
+        if(activity instanceof MainActivity == false)
+            return;
+        if (SharedData.getInstance().getAppMetricsData().isEmpty()) {
+            ((MainActivity)activity).showLoadingView(true);
+        } else {
+            ((MainActivity)activity).hideLoadingView(true);
+        }
+    }
+
     private void loadData() {
         new AppMetricsLoadingHelper(getActivity(), mProjectKey, this)
                 .executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
@@ -57,6 +79,7 @@ public class AppMetricsFragment extends Fragment implements AppMetricsLoadingHel
             @Override
             public void run() {
                 mAppMetricsInfoAdapter.notifyDataSetChanged();
+                checkLoadingView(true);
             }
         });
     }

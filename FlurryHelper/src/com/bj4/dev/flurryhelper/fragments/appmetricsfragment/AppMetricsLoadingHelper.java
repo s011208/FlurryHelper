@@ -57,12 +57,13 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
         loadAvgSessionLength(apiKey, startDate, endDate);
         if (mCallback != null && mCallback.get() != null)
             mCallback.get().notifyDataChanged();
-        loadSessions(apiKey, startDate, endDate);
-        if (mCallback != null && mCallback.get() != null)
-            mCallback.get().notifyDataChanged();
         loadRetainedUsers(apiKey, startDate, endDate);
         if (mCallback != null && mCallback.get() != null)
             mCallback.get().notifyDataChanged();
+        loadSessions(apiKey, startDate, endDate);
+        if (mCallback != null && mCallback.get() != null)
+            mCallback.get().notifyDataChanged();
+
         return null;
     }
 

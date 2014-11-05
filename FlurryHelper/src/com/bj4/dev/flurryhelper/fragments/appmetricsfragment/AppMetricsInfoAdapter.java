@@ -11,6 +11,7 @@ import java.util.TreeMap;
 import com.bj4.dev.flurryhelper.R;
 import com.bj4.dev.flurryhelper.SharedData;
 import com.bj4.dev.flurryhelper.utils.AppMetricsData;
+import com.bj4.dev.flurryhelper.utils.ChartUtils;
 import com.bj4.dev.flurryhelper.utils.LoadingView;
 import com.bj4.dev.flurryhelper.utils.ProjectInfo;
 
@@ -45,13 +46,15 @@ public class AppMetricsInfoAdapter extends BaseAdapter {
     private void initInfos() {
         mInfos.clear();
         mInfoTitles.clear();
+        final HashMap<String, ArrayList<AppMetricsData>> map = SharedData.getInstance()
+                .getAppMetricsData();
         final Map<String, ArrayList<AppMetricsData>> tMap = new TreeMap<String, ArrayList<AppMetricsData>>(
-                SharedData.getInstance().getAppMetricsData());
+                map);
         Iterator<String> iter = tMap.keySet().iterator();
         while (iter.hasNext()) {
             final String title = iter.next();
             mInfoTitles.add(title);
-            mInfos.add(tMap.get(mInfoTitles));
+            mInfos.add(map.get(title));
         }
     }
 
@@ -89,12 +92,10 @@ public class AppMetricsInfoAdapter extends BaseAdapter {
         }
         final ArrayList<AppMetricsData> info = getItem(position);
         holder.mTypeTitle.setText(mInfoTitles.get(position));
-        if (holder.mChartContainer.getChildCount() > 1) {
-            for (int i = 0; i < holder.mChartContainer.getChildCount(); i++) {
-                if (holder.mChartContainer.getChildAt(i) instanceof LoadingView == false) {
-                    holder.mChartContainer.removeViewAt(i);
-                }
-            }
+        holder.mChartContainer.removeAllViews();
+        View chart = ChartUtils.getLineChart(mContext, info);
+        if (chart != null) {
+            holder.mChartContainer.addView(chart);
         }
         return convertView;
     }
