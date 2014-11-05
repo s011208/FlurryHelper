@@ -1,0 +1,34 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/project_info_padding_h"
+    android:paddingRight="@dimen/project_info_padding_h" >
+
+    <LinearLayout
+        android:id="@+id/app_metrics_info_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/app_metrics_info_item_v_margin"
+        android:layout_marginTop="@dimen/app_metrics_info_item_v_margin"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/app_metrics_info_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:textSize="@dimen/app_metrics_info_name_text_size" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/app_metrics_info_2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_metrics_info_chart_height"
+        android:layout_below="@+id/app_metrics_info_1"
+        android:layout_marginBottom="@dimen/app_metrics_info_item_v_margin"
+        android:layout_marginTop="@dimen/app_metrics_info_item_v_margin" >
+    </FrameLayout>
+
+</RelativeLayout>

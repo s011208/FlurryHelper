@@ -74,4 +74,21 @@ public class Utils {
         }
         return rtn;
     }
+    
+    public static ArrayList<AppMetricsData> retrieveAppMetricsDataFromRaw(final String rawData) {
+        ArrayList<AppMetricsData> rtn = new ArrayList<AppMetricsData>();
+        try {
+            JSONObject parent = new JSONObject(rawData);
+            JSONArray data = parent.getJSONArray("day");
+            for (int i = 0; i < data.length(); i++) {
+                JSONObject rawJsonData = data.getJSONObject(i);
+                AppMetricsData au = new AppMetricsData(rawJsonData.getString("@date"),
+                        Long.valueOf(rawJsonData.getString("@value")));
+                rtn.add(au);
+            }
+        } catch (JSONException e) {
+            Log.w(TAG, "failed", e);
+        }
+        return rtn;
+    }
 }

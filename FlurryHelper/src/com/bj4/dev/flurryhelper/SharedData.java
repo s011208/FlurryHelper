@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import com.bj4.dev.flurryhelper.utils.AppMetricsData;
 import com.bj4.dev.flurryhelper.utils.CompanyName;
 import com.bj4.dev.flurryhelper.utils.ProjectInfo;
 
@@ -25,7 +26,7 @@ public class SharedData {
 
     public static final String APPMETRICS_TYPE_SESSIONS = "Sessions";
 
-    public static final String APPMETRICS_TYPE_RETAIEND_USERS = "RetainedUsers";
+    public static final String APPMETRICS_TYPE_RETAINED_USERS = "RetainedUsers";
 
     private static final Object sLock = new Object();
 
@@ -35,7 +36,7 @@ public class SharedData {
 
     private static final ArrayList<ProjectInfo> sProjectInfos = new ArrayList<ProjectInfo>();
 
-    private static final HashMap<String, HashMap<String, ArrayList<Object>>> sAllData = new HashMap<String, HashMap<String, ArrayList<Object>>>();
+    private static final HashMap<String, ArrayList<AppMetricsData>> sAppMetricsData = new HashMap<String, ArrayList<AppMetricsData>>();
 
     public static synchronized SharedData getInstance() {
         if (sInstance == null) {
@@ -47,10 +48,25 @@ public class SharedData {
     private SharedData() {
     }
 
+    public void addMetricsData(final String key, final ArrayList<AppMetricsData> values) {
+        if (values == null || key == null)
+            return;
+        synchronized (sLock) {
+            sAppMetricsData.put(key, values);
+        }
+    }
+
+    public HashMap<String, ArrayList<AppMetricsData>> getAppMetricsData() {
+        synchronized (sLock) {
+            return sAppMetricsData;
+        }
+    }
+
     public void clearAllData() {
         synchronized (sLock) {
             sCompanyName = null;
             sProjectInfos.clear();
+            sAppMetricsData.clear();
         }
     }
 
@@ -64,6 +80,7 @@ public class SharedData {
         synchronized (sLock) {
             sCompanyName = cn;
             sProjectInfos.clear();
+            sAppMetricsData.clear();
         }
     }
 
@@ -97,4 +114,5 @@ public class SharedData {
             return sProjectInfos;
         }
     }
+
 }

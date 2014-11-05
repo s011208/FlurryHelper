@@ -1,12 +1,11 @@
-
 package com.bj4.dev.flurryhelper.utils;
 
-public class ActiveUser {
+public class AppMetricsData {
     private String mDate;
 
     private long mValue;
 
-    public ActiveUser(String date, long value) {
+    public AppMetricsData(String date, long value) {
         mDate = date;
         mValue = value;
     }

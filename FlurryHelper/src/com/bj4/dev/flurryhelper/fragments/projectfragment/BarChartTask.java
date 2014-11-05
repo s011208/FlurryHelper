@@ -19,7 +19,7 @@ import org.json.JSONObject;
 
 import com.bj4.dev.flurryhelper.R;
 import com.bj4.dev.flurryhelper.SharedPreferencesHelper;
-import com.bj4.dev.flurryhelper.utils.ActiveUser;
+import com.bj4.dev.flurryhelper.utils.AppMetricsData;
 import com.bj4.dev.flurryhelper.utils.LoadingView;
 import com.bj4.dev.flurryhelper.utils.Utils;
 
@@ -46,7 +46,7 @@ public class BarChartTask extends AsyncTask<Void, Void, Void> {
 
     private View mBarChart;
 
-    private static final HashMap<String, ArrayList<ActiveUser>> sActiveUsersMap = new HashMap<String, ArrayList<ActiveUser>>();
+    private static final HashMap<String, ArrayList<AppMetricsData>> sActiveUsersMap = new HashMap<String, ArrayList<AppMetricsData>>();
 
     public static final boolean hasData(final String projectKey) {
         synchronized (sActiveUsersMap) {
@@ -68,20 +68,20 @@ public class BarChartTask extends AsyncTask<Void, Void, Void> {
         final Context context = mContext.get();
         if (context == null)
             return null;
-        ArrayList<ActiveUser> activeUsers = null;
+        ArrayList<AppMetricsData> activeUsers = null;
         synchronized (sActiveUsersMap) {
             activeUsers = sActiveUsersMap.get(mProjectKey);
             if (activeUsers != null && activeUsers.isEmpty() == false)
                 return null;
         }
         try {
-            Thread.sleep(1500);
+            Thread.sleep(1100);
         } catch (InterruptedException e) {
         }
         final String rawData = getRawData(context);
         if (rawData == null || rawData.isEmpty())
             return null;
-        activeUsers = retrieveActiveUserDataFromRaw(rawData);
+        activeUsers = Utils.retrieveAppMetricsDataFromRaw(rawData);
         synchronized (sActiveUsersMap) {
             if (activeUsers.isEmpty() == false) {
                 sActiveUsersMap.put(mProjectKey, activeUsers);
@@ -91,7 +91,7 @@ public class BarChartTask extends AsyncTask<Void, Void, Void> {
     }
 
     private void drawBarChart(Context context) {
-        ArrayList<ActiveUser> activeUsers = null;
+        ArrayList<AppMetricsData> activeUsers = null;
         synchronized (sActiveUsersMap) {
             activeUsers = sActiveUsersMap.get(mProjectKey);
         }
@@ -157,23 +157,6 @@ public class BarChartTask extends AsyncTask<Void, Void, Void> {
                         + "&endDate=" + endDate);
         Log.d(TAG, "rawData: " + rawData);
         return rawData;
-    }
-
-    private ArrayList<ActiveUser> retrieveActiveUserDataFromRaw(final String rawData) {
-        ArrayList<ActiveUser> rtn = new ArrayList<ActiveUser>();
-        try {
-            JSONObject parent = new JSONObject(rawData);
-            JSONArray data = parent.getJSONArray("day");
-            for (int i = 0; i < data.length(); i++) {
-                JSONObject rawJsonData = data.getJSONObject(i);
-                ActiveUser au = new ActiveUser(rawJsonData.getString("@date"),
-                        Long.valueOf(rawJsonData.getString("@value")));
-                rtn.add(au);
-            }
-        } catch (JSONException e) {
-            Log.w(TAG, "failed", e);
-        }
-        return rtn;
     }
 
     @Override

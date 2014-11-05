@@ -48,7 +48,7 @@ public class MenuDialog extends DialogFragment {
                 android.R.style.Theme_DeviceDefault_Light_Dialog);
 
         ArrayList<String> data = new ArrayList<String>();
-        data.add(mContext.getString(R.string.action_access_api_key));
+        data.add(mContext.getString(R.string.menu_set_api_key));
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
                 android.R.layout.simple_list_item_1, data);
         AlertDialog dialog = new AlertDialog.Builder(mContext)
