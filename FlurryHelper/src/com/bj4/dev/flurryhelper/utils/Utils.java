@@ -16,7 +16,7 @@ import android.util.Log;
 
 
 public class Utils {
-    private static final String TAG = "QQQQ";
+    private static final String TAG = "Utils";
 
     @SuppressWarnings("deprecation")
     public static String parseOnInternet(String url) {

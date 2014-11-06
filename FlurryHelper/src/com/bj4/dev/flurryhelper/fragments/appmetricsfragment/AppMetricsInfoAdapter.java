@@ -11,6 +11,7 @@ import java.util.TreeMap;
 import com.bj4.dev.flurryhelper.R;
 import com.bj4.dev.flurryhelper.SharedData;
 import com.bj4.dev.flurryhelper.utils.AppMetricsData;
+import com.bj4.dev.flurryhelper.utils.AsyncChartGenerator;
 import com.bj4.dev.flurryhelper.utils.ChartUtils;
 import com.bj4.dev.flurryhelper.utils.LoadingView;
 import com.bj4.dev.flurryhelper.utils.ProjectInfo;
@@ -18,6 +19,7 @@ import com.bj4.dev.flurryhelper.utils.ProjectInfo;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class AppMetricsInfoAdapter extends BaseAdapter {
+    private static final String TAG = "AppMetricsInfoAdapter";
+
+    private final String mProjectKey;
+
     private final ArrayList<String> mInfoTitles = new ArrayList<String>();
 
     private final ArrayList<ArrayList<AppMetricsData>> mInfos = new ArrayList<ArrayList<AppMetricsData>>();
@@ -37,8 +43,9 @@ public class AppMetricsInfoAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;
 
-    public AppMetricsInfoAdapter(Context c) {
+    public AppMetricsInfoAdapter(Context c, final String projectKey) {
         mContext = c;
+        mProjectKey = projectKey;
         mInflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         initInfos();
     }
@@ -47,7 +54,11 @@ public class AppMetricsInfoAdapter extends BaseAdapter {
         mInfos.clear();
         mInfoTitles.clear();
         final HashMap<String, ArrayList<AppMetricsData>> map = SharedData.getInstance()
-                .getAppMetricsData();
+                .getAppMetricsData(mProjectKey);
+        if (map == null) {
+            Log.w(TAG, "failed to init Infos, mProjectKey: " + mProjectKey);
+            return;
+        }
         final Map<String, ArrayList<AppMetricsData>> tMap = new TreeMap<String, ArrayList<AppMetricsData>>(
                 map);
         Iterator<String> iter = tMap.keySet().iterator();
@@ -92,11 +103,9 @@ public class AppMetricsInfoAdapter extends BaseAdapter {
         }
         final ArrayList<AppMetricsData> info = getItem(position);
         holder.mTypeTitle.setText(mInfoTitles.get(position));
-        holder.mChartContainer.removeAllViews();
-        View chart = ChartUtils.getLineChart(mContext, info);
-        if (chart != null) {
-            holder.mChartContainer.addView(chart);
-        }
+        holder.mChartContainer.setTag(position);
+        new AsyncChartGenerator(mContext, holder.mChartContainer, position, info)
+                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         return convertView;
     }
 

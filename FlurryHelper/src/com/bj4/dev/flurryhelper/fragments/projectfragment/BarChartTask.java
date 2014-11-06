@@ -33,7 +33,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 public class BarChartTask extends AsyncTask<Void, Void, Void> {
-    private static final String TAG = "QQQQ";
+    private static final String TAG = "BarChartTask";
 
     private WeakReference<FrameLayout> mChartContainer;
 
@@ -117,7 +117,6 @@ public class BarChartTask extends AsyncTask<Void, Void, Void> {
                         + "&startDate="
                         + startDate
                         + "&endDate=" + endDate);
-        Log.d(TAG, "rawData: " + rawData);
         return rawData;
     }
 

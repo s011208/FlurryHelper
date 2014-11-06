@@ -75,7 +75,8 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
         final String rawData = Utils.parseOnInternet("http://api.flurry.com/appMetrics/"
                 + SharedData.APPMETRICS_TYPE_ACTIVE_USERS + "?apiAccessCode=" + apiKey + "&apiKey="
                 + mProjectKey + "&startDate=" + startDate + "&endDate=" + endDate);
-        SharedData.getInstance().addMetricsData(SharedData.APPMETRICS_TYPE_ACTIVE_USERS,
+        SharedData.getInstance().addMetricsData(mProjectKey,
+                SharedData.APPMETRICS_TYPE_ACTIVE_USERS,
                 Utils.retrieveAppMetricsDataFromRaw(rawData));
     }
 
@@ -88,7 +89,8 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
         final String rawData = Utils.parseOnInternet("http://api.flurry.com/appMetrics/"
                 + SharedData.APPMETRICS_TYPE_ACTIVE_USERS_BY_MONTH + "?apiAccessCode=" + apiKey
                 + "&apiKey=" + mProjectKey + "&startDate=" + startDate + "&endDate=" + endDate);
-        SharedData.getInstance().addMetricsData(SharedData.APPMETRICS_TYPE_ACTIVE_USERS_BY_MONTH,
+        SharedData.getInstance().addMetricsData(mProjectKey,
+                SharedData.APPMETRICS_TYPE_ACTIVE_USERS_BY_MONTH,
                 Utils.retrieveAppMetricsDataFromRaw(rawData));
     }
 
@@ -101,7 +103,8 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
         final String rawData = Utils.parseOnInternet("http://api.flurry.com/appMetrics/"
                 + SharedData.APPMETRICS_TYPE_ACTIVE_USERS_BY_WEEK + "?apiAccessCode=" + apiKey
                 + "&apiKey=" + mProjectKey + "&startDate=" + startDate + "&endDate=" + endDate);
-        SharedData.getInstance().addMetricsData(SharedData.APPMETRICS_TYPE_ACTIVE_USERS_BY_WEEK,
+        SharedData.getInstance().addMetricsData(mProjectKey,
+                SharedData.APPMETRICS_TYPE_ACTIVE_USERS_BY_WEEK,
                 Utils.retrieveAppMetricsDataFromRaw(rawData));
     }
 
@@ -113,7 +116,7 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
         final String rawData = Utils.parseOnInternet("http://api.flurry.com/appMetrics/"
                 + SharedData.APPMETRICS_TYPE_NEW_USERS + "?apiAccessCode=" + apiKey + "&apiKey="
                 + mProjectKey + "&startDate=" + startDate + "&endDate=" + endDate);
-        SharedData.getInstance().addMetricsData(SharedData.APPMETRICS_TYPE_NEW_USERS,
+        SharedData.getInstance().addMetricsData(mProjectKey, SharedData.APPMETRICS_TYPE_NEW_USERS,
                 Utils.retrieveAppMetricsDataFromRaw(rawData));
     }
 
@@ -126,7 +129,8 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
         final String rawData = Utils.parseOnInternet("http://api.flurry.com/appMetrics/"
                 + SharedData.APPMETRICS_TYPE_MEDIAN_SESSION_LENGTH + "?apiAccessCode=" + apiKey
                 + "&apiKey=" + mProjectKey + "&startDate=" + startDate + "&endDate=" + endDate);
-        SharedData.getInstance().addMetricsData(SharedData.APPMETRICS_TYPE_MEDIAN_SESSION_LENGTH,
+        SharedData.getInstance().addMetricsData(mProjectKey,
+                SharedData.APPMETRICS_TYPE_MEDIAN_SESSION_LENGTH,
                 Utils.retrieveAppMetricsDataFromRaw(rawData));
     }
 
@@ -139,7 +143,8 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
         final String rawData = Utils.parseOnInternet("http://api.flurry.com/appMetrics/"
                 + SharedData.APPMETRICS_TYPE_AVG_SESSION_LENGTH + "?apiAccessCode=" + apiKey
                 + "&apiKey=" + mProjectKey + "&startDate=" + startDate + "&endDate=" + endDate);
-        SharedData.getInstance().addMetricsData(SharedData.APPMETRICS_TYPE_AVG_SESSION_LENGTH,
+        SharedData.getInstance().addMetricsData(mProjectKey,
+                SharedData.APPMETRICS_TYPE_AVG_SESSION_LENGTH,
                 Utils.retrieveAppMetricsDataFromRaw(rawData));
     }
 
@@ -151,7 +156,7 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
         final String rawData = Utils.parseOnInternet("http://api.flurry.com/appMetrics/"
                 + SharedData.APPMETRICS_TYPE_SESSIONS + "?apiAccessCode=" + apiKey + "&apiKey="
                 + mProjectKey + "&startDate=" + startDate + "&endDate=" + endDate);
-        SharedData.getInstance().addMetricsData(SharedData.APPMETRICS_TYPE_SESSIONS,
+        SharedData.getInstance().addMetricsData(mProjectKey, SharedData.APPMETRICS_TYPE_SESSIONS,
                 Utils.retrieveAppMetricsDataFromRaw(rawData));
     }
 
@@ -163,7 +168,8 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
         final String rawData = Utils.parseOnInternet("http://api.flurry.com/appMetrics/"
                 + SharedData.APPMETRICS_TYPE_RETAINED_USERS + "?apiAccessCode=" + apiKey
                 + "&apiKey=" + mProjectKey + "&startDate=" + startDate + "&endDate=" + endDate);
-        SharedData.getInstance().addMetricsData(SharedData.APPMETRICS_TYPE_RETAINED_USERS,
+        SharedData.getInstance().addMetricsData(mProjectKey,
+                SharedData.APPMETRICS_TYPE_RETAINED_USERS,
                 Utils.retrieveAppMetricsDataFromRaw(rawData));
     }
 }

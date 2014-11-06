@@ -43,7 +43,7 @@ public class AppMetricsFragment extends Fragment implements AppMetricsLoadingHel
         mProjectKey = getArguments().getString(PROJECT_KEY);
         mContent = inflater.inflate(R.layout.appmetrics_fragment, null);
         mAppMetricsList = (ListView)mContent.findViewById(R.id.app_metrics_info);
-        mAppMetricsInfoAdapter = new AppMetricsInfoAdapter(getActivity());
+        mAppMetricsInfoAdapter = new AppMetricsInfoAdapter(getActivity(), mProjectKey);
         mAppMetricsList.setAdapter(mAppMetricsInfoAdapter);
         loadData();
         return mContent;
@@ -54,14 +54,15 @@ public class AppMetricsFragment extends Fragment implements AppMetricsLoadingHel
         super.onStart();
         checkLoadingView(true);
     }
-    
-    private void checkLoadingView(boolean animated){
+
+    private void checkLoadingView(boolean animated) {
         Activity activity = getActivity();
-        if(activity == null)
+        if (activity == null)
             return;
-        if(activity instanceof MainActivity == false)
+        if (activity instanceof MainActivity == false)
             return;
-        if (SharedData.getInstance().getAppMetricsData().isEmpty()) {
+        if (SharedData.getInstance().getAppMetricsData(mProjectKey) == null
+                || SharedData.getInstance().getAppMetricsData(mProjectKey).isEmpty()) {
             ((MainActivity)activity).showLoadingView(true);
         } else {
             ((MainActivity)activity).hideLoadingView(true);
@@ -75,7 +76,11 @@ public class AppMetricsFragment extends Fragment implements AppMetricsLoadingHel
 
     @Override
     public void notifyDataChanged() {
-        getActivity().runOnUiThread(new Runnable() {
+        final Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 mAppMetricsInfoAdapter.notifyDataSetChanged();

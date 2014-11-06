@@ -36,7 +36,7 @@ public class SharedData {
 
     private static final ArrayList<ProjectInfo> sProjectInfos = new ArrayList<ProjectInfo>();
 
-    private static final HashMap<String, ArrayList<AppMetricsData>> sAppMetricsData = new HashMap<String, ArrayList<AppMetricsData>>();
+    private static final HashMap<String, HashMap<String, ArrayList<AppMetricsData>>> sAppMetricsData = new HashMap<String, HashMap<String, ArrayList<AppMetricsData>>>();
 
     public static synchronized SharedData getInstance() {
         if (sInstance == null) {
@@ -48,17 +48,25 @@ public class SharedData {
     private SharedData() {
     }
 
-    public void addMetricsData(final String key, final ArrayList<AppMetricsData> values) {
-        if (values == null || key == null)
+    public void addMetricsData(final String projectKey, final String key,
+            final ArrayList<AppMetricsData> values) {
+        if (values == null || key == null || projectKey == null)
             return;
         synchronized (sLock) {
-            sAppMetricsData.put(key, values);
+            HashMap<String, ArrayList<AppMetricsData>> data = sAppMetricsData.get(projectKey);
+            if (data == null) {
+                data = new HashMap<String, ArrayList<AppMetricsData>>();
+            }
+            data.put(key, values);
+            sAppMetricsData.put(projectKey, data);
         }
     }
 
-    public HashMap<String, ArrayList<AppMetricsData>> getAppMetricsData() {
+    public HashMap<String, ArrayList<AppMetricsData>> getAppMetricsData(final String projectKey) {
+        if (projectKey == null)
+            return null;
         synchronized (sLock) {
-            return sAppMetricsData;
+            return sAppMetricsData.get(projectKey);
         }
     }
 
@@ -100,10 +108,8 @@ public class SharedData {
 
     private void sortProjectInfos() {
         Collections.sort(sProjectInfos, new Comparator<ProjectInfo>() {
-
             @Override
             public int compare(ProjectInfo lhs, ProjectInfo rhs) {
-                // TODO Auto-generated method stub
                 return lhs.getName().compareToIgnoreCase(rhs.getName());
             }
         });
