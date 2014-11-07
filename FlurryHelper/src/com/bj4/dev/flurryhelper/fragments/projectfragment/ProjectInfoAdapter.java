@@ -106,11 +106,11 @@ public class ProjectInfoAdapter extends BaseAdapter {
                 loadingView.setRadius(mLoadingViewRadius);
             }
         });
-        final String projectKey = info.getApiKey();
-        new BarChartTask(holder.mChartContainer, holder.mLoadingView, mContext, position,
-                projectKey)
-                .executeOnExecutor(BarChartTask.hasData(projectKey) ? AsyncTask.THREAD_POOL_EXECUTOR
-                        : AsyncTask.SERIAL_EXECUTOR);
+//        final String projectKey = info.getApiKey();
+//        new BarChartTask(holder.mChartContainer, holder.mLoadingView, mContext, position,
+//                projectKey)
+//                .executeOnExecutor(BarChartTask.hasData(projectKey) ? AsyncTask.THREAD_POOL_EXECUTOR
+//                        : AsyncTask.SERIAL_EXECUTOR);
         return convertView;
     }
 

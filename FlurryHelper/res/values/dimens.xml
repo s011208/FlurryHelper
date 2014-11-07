@@ -19,14 +19,21 @@
 	<dimen name="project_info_item_v_margin">4dp</dimen>
 	<dimen name="project_info_active_user_chart_height">100dp</dimen>
 	<dimen name="project_info_chart_loading_view_radius">25dp</dimen>
-	<dimen name="project_info_chart_margin">3dp</dimen>
+	<dimen name="project_info_chart_margin">8dp</dimen>
 	<dimen name="project_info_chart_line_width">2dp</dimen>
 	<dimen name="project_info_chart_textsize">14sp</dimen>
-	<dimen name="project_info_chart_value_distance">5dp</dimen>
+	<dimen name="project_info_chart_value_distance">60dp</dimen>
 	<!-- menu dialog -->
 	<dimen name="menu_dialog_width">150dp</dimen>
 	<!-- app metrics info -->
-	<dimen name="app_metrics_info_item_v_margin">4dp</dimen>
-	<dimen name="app_metrics_info_name_text_size">18sp</dimen>
-	<dimen name="app_metrics_info_chart_height">100dp</dimen>
+	<dimen name="app_metrics_spinner_textsize">20sp</dimen>
+	<dimen name="app_metrics_spinner_padding_v">4dp</dimen>
+	<dimen name="app_metrics_chart_container_margin">8dp</dimen>
+	<dimen name="app_metrics_chart_y_label_v_padding">5dp</dimen>
+	<dimen name="app_metrics_chart_y_label_h_padding">-5dp</dimen>
+	<dimen name="app_metrics_chart_margin">15dp</dimen>
+	<dimen name="app_metrics_chart_value_spacing">10dp</dimen>
+	<dimen name="app_metrics_chart_value_distance">50dp</dimen>
+	<dimen name="app_metrics_chart_value_line_width">2dp</dimen>
+	<dimen name="app_metrics_chart_value_textsize">14sp</dimen>
 </resources>

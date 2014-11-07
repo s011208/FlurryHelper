@@ -28,6 +28,24 @@ public class SharedData {
 
     public static final String APPMETRICS_TYPE_RETAINED_USERS = "RetainedUsers";
 
+    public static final String APPMETRICS_TYPE_PAGEVIEWS = "PageViews";
+
+    public static final String APPMETRICS_TYPE_AVG_PAGEVIEWS_PER_SESSION = "AvgPageViewsPerSession";
+
+    public static final ArrayList<String> APPMETRICS_LIST = new ArrayList<String>();
+    static {
+        APPMETRICS_LIST.add(APPMETRICS_TYPE_ACTIVE_USERS);
+        APPMETRICS_LIST.add(APPMETRICS_TYPE_ACTIVE_USERS_BY_WEEK);
+        APPMETRICS_LIST.add(APPMETRICS_TYPE_ACTIVE_USERS_BY_MONTH);
+        APPMETRICS_LIST.add(APPMETRICS_TYPE_NEW_USERS);
+        APPMETRICS_LIST.add(APPMETRICS_TYPE_MEDIAN_SESSION_LENGTH);
+        APPMETRICS_LIST.add(APPMETRICS_TYPE_AVG_SESSION_LENGTH);
+        APPMETRICS_LIST.add(APPMETRICS_TYPE_SESSIONS);
+        APPMETRICS_LIST.add(APPMETRICS_TYPE_RETAINED_USERS);
+        APPMETRICS_LIST.add(APPMETRICS_TYPE_PAGEVIEWS);
+        APPMETRICS_LIST.add(APPMETRICS_TYPE_AVG_PAGEVIEWS_PER_SESSION);
+    }
+
     private static final Object sLock = new Object();
 
     private static SharedData sInstance;

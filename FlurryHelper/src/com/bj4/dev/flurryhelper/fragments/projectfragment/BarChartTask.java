@@ -20,7 +20,6 @@ import org.json.JSONObject;
 import com.bj4.dev.flurryhelper.R;
 import com.bj4.dev.flurryhelper.SharedPreferencesHelper;
 import com.bj4.dev.flurryhelper.utils.AppMetricsData;
-import com.bj4.dev.flurryhelper.utils.ChartUtils;
 import com.bj4.dev.flurryhelper.utils.LoadingView;
 import com.bj4.dev.flurryhelper.utils.Utils;
 
@@ -98,7 +97,7 @@ public class BarChartTask extends AsyncTask<Void, Void, Void> {
         }
         if (activeUsers == null)
             return;
-        mBarChart = ChartUtils.getLineChart(context, activeUsers);
+        mBarChart = getLineChart(context, activeUsers);
     }
 
     private String getRawData(Context context) {
@@ -139,5 +138,48 @@ public class BarChartTask extends AsyncTask<Void, Void, Void> {
                 loadingView.setVisibility(View.GONE);
             }
         }
+    }
+    
+    public static View getLineChart(Context context, ArrayList<AppMetricsData> activeUsers) {
+        if (activeUsers == null)
+            return null;
+        XYSeries activeUsersSeries = new XYSeries("ActiveUsers");
+        for (int i = 0; i < activeUsers.size(); i++) {
+            activeUsersSeries.add(i, activeUsers.get(i).getValue());
+        }
+        final Resources res = context.getResources();
+        XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
+        dataset.addSeries(activeUsersSeries);
+        XYSeriesRenderer activeUsersRenderer = new XYSeriesRenderer();
+        activeUsersRenderer.setColor(Color.rgb(124, 181, 236));
+        activeUsersRenderer.setFillPoints(true);
+        activeUsersRenderer.setDisplayChartValues(false);
+        float lineWidth = res.getDimension(R.dimen.project_info_chart_line_width);
+        activeUsersRenderer.setLineWidth(lineWidth);
+        activeUsersRenderer.setPointStyle(PointStyle.CIRCLE);
+        activeUsersRenderer.setChartValuesTextSize(res
+                .getDimension(R.dimen.project_info_chart_textsize));
+        activeUsersRenderer.setDisplayChartValuesDistance((int)res
+                .getDimension(R.dimen.project_info_chart_value_distance));
+        XYMultipleSeriesRenderer multiRenderer = new XYMultipleSeriesRenderer();
+        int margin = (int)res.getDimension(R.dimen.project_info_chart_margin);
+        multiRenderer.setMargins(new int[] {
+                margin, margin, margin, margin
+        });
+        multiRenderer.setShowAxes(false);
+        multiRenderer.setShowGrid(false);
+        multiRenderer.setShowLabels(false);
+        multiRenderer.setShowLegend(false);
+        multiRenderer.setZoomButtonsVisible(false);
+        multiRenderer.setPanEnabled(false, false);
+        multiRenderer.setClickEnabled(false);
+        multiRenderer.setZoomEnabled(false, false);
+        multiRenderer.setAntialiasing(true);
+        multiRenderer.setMarginsColor(Color.WHITE);
+        multiRenderer.setBackgroundColor(Color.WHITE);
+        multiRenderer.setApplyBackgroundColor(true);
+
+        multiRenderer.addSeriesRenderer(activeUsersRenderer);
+        return ChartFactory.getLineChartView(context, dataset, multiRenderer);
     }
 }

@@ -152,14 +152,21 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         mNavigationFragment = FRAGMENT_TYPE_EVENTMETRICS;
     }
 
+    public boolean isLoadingViewShowing() {
+        return mLoadingView != null && mLoadingView.getVisibility() == View.VISIBLE;
+    }
+
     public synchronized void showLoadingView(boolean animate) {
         if (mLoadingView == null) {
             mLoadingView = new LoadingView(this);
+            mLoadingView.setVisibility(View.GONE);
         }
+
+        if (isLoadingViewShowing())
+            return;
         if (mLoadingView.getParent() != null) {
             ((ViewGroup)mLoadingView.getParent()).removeView(mLoadingView);
         }
-        mLoadingView.setAlpha(0);
         if (animate) {
             ObjectAnimator oa = ObjectAnimator.ofFloat(mLoadingView, View.ALPHA,
                     mLoadingView.getAlpha(), 1);
@@ -168,6 +175,8 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
 
                 @Override
                 public void onAnimationStart(Animator animation) {
+                    mLoadingView.setAlpha(0);
+                    mLoadingView.setVisibility(View.VISIBLE);
                     mMainActivity.addView(mLoadingView);
                     mMainActivity.bringChildToFront(mLoadingView);
                 }
@@ -192,6 +201,8 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
             });
             oa.start();
         } else {
+            mLoadingView.setAlpha(1);
+            mLoadingView.setVisibility(View.VISIBLE);
             mMainActivity.addView(mLoadingView);
             mMainActivity.bringChildToFront(mLoadingView);
         }
@@ -201,6 +212,8 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         if (mLoadingView == null) {
             return;
         }
+        if (isLoadingViewShowing() == false)
+            return;
         if (animate) {
             ObjectAnimator oa = ObjectAnimator.ofFloat(mLoadingView, View.ALPHA,
                     mLoadingView.getAlpha(), 0);
@@ -217,6 +230,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
                 public void onAnimationEnd(Animator animation) {
                     // TODO Auto-generated method stub
                     mMainActivity.removeView(mLoadingView);
+                    mLoadingView.setVisibility(View.GONE);
                 }
 
                 @Override
@@ -234,6 +248,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
             oa.start();
         } else {
             mMainActivity.removeView(mLoadingView);
+            mLoadingView.setVisibility(View.GONE);
         }
     }
 }
