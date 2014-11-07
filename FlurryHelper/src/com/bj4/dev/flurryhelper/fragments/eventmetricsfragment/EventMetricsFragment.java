@@ -47,7 +47,6 @@ public class EventMetricsFragment extends Fragment implements EventMetricsLoadin
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mProjectKey = getArguments().getString(PROJECT_KEY);
-        checkLoadingView(true, true);
         mContent = inflater.inflate(R.layout.event_metrics_fragment, null);
         mEventNameList = (ListView)mContent.findViewById(R.id.event_metrics_event_name_list);
         mEventNameListAdapter = new EventNameListAdapter(getActivity(), mProjectKey);
@@ -59,7 +58,14 @@ public class EventMetricsFragment extends Fragment implements EventMetricsLoadin
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
             }
         });
-        new EventMetricsLoadingHelper(getActivity(), mProjectKey, this).execute();
+        final ArrayList<EventMetrics> data = SharedData.getInstance().getEventMetricsData(
+                mProjectKey);
+        if (data != null && data.isEmpty() == false) {
+            // data exist
+        } else {
+            checkLoadingView(true, true);
+            new EventMetricsLoadingHelper(getActivity(), mProjectKey, this).execute();
+        }
         return mContent;
     }
 

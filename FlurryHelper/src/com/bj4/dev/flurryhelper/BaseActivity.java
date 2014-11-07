@@ -26,6 +26,8 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
 
     public static final int COLLAPSE = 0;
 
+    private static final String PREVIOUS_EXPAND_STATE = "previous_expand_state";
+
     private View mActionBar;
 
     private ImageView mMenu;
@@ -35,6 +37,10 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
     private LinearLayout mNavigatorArea;
 
     private ViewSwitcher mExpandCollapse;
+
+    private int mPreviousExpandState;
+
+    private static String sActionBarTitle = "";
 
     private void setMainLayout() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -49,6 +55,9 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
     protected void onCreate(Bundle savedInstanceState) {
         setMainLayout();
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            mPreviousExpandState = savedInstanceState.getInt(PREVIOUS_EXPAND_STATE, 0);
+        }
     }
 
     public void initComponent() {
@@ -71,6 +80,7 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
         if (mActionBar == null)
             return;
         mTitle.setText(title);
+        sActionBarTitle = title;
     }
 
     public void showNavigator() {
@@ -103,7 +113,13 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
             }
         });
         mTitle = (TextView)findViewById(R.id.menu_title);
+        if (SharedData.getInstance().getCompanyName() == null)
+            mTitle.setText(sActionBarTitle);
+        else {
+            mTitle.setText(SharedData.getInstance().getCompanyName().getCompanyName());
+        }
         mExpandCollapse = (ViewSwitcher)findViewById(R.id.expand_collapse);
+        mExpandCollapse.setDisplayedChild(mPreviousExpandState);
         mExpandCollapse.setInAnimation(this, R.anim.collapse_expand_switch_in);
         mExpandCollapse.setOutAnimation(this, R.anim.collapse_expand_switch_out);
         mExpandCollapse.setOnClickListener(new OnClickListener() {
@@ -114,6 +130,11 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
                 onExpandCollapseClick();
             }
         });
+    }
+
+    protected void onSaveInstanceState(Bundle icicle) {
+        super.onSaveInstanceState(icicle);
+        icicle.putInt(PREVIOUS_EXPAND_STATE, mExpandCollapse.getDisplayedChild());
     }
 
     protected abstract void onExpandCollapseClick();
@@ -153,15 +174,6 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
                 SetApiDialog dialog = (SetApiDialog)previousDiaog;
                 dialog.setCallback(this);
                 return;
-            }
-        }
-        previousDiaog = getFragmentManager().findFragmentByTag(ProjectFragment.TAG);
-        if (previousDiaog == null) {
-            // ignore
-        } else {
-            if (previousDiaog.getActivity() != this) {
-                // ignore
-            } else {
             }
         }
     }

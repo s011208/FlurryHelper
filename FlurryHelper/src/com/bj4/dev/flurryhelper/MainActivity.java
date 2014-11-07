@@ -106,9 +106,25 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         if (clearOldData) {
             SharedData.getInstance().clearAllData();
         }
+        Fragment previousDiaog = getFragmentManager().findFragmentByTag(AppMetricsFragment.TAG);
+        if (previousDiaog != null) {
+            mNavigationFragment = FRAGMENT_TYPE_APPMETRICS;
+            showNavigator();
+            showExpandCollapse(false);
+            return;
+        }
+        previousDiaog = getFragmentManager().findFragmentByTag(EventMetricsFragment.TAG);
+        if (previousDiaog != null) {
+            mNavigationFragment = FRAGMENT_TYPE_EVENTMETRICS;
+            showNavigator();
+            showExpandCollapse(true);
+            return;
+        }
         showLoadingView(true);
         setActionBarTitle("");
         enterCompanyFragment();
+        hideNavigator();
+        showExpandCollapse(false);
     }
 
     @Override

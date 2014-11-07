@@ -43,8 +43,9 @@
 
     <LinearLayout
         android:id="@+id/navigator_area"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@+id/manu_area"
         android:orientation="horizontal" >
 
