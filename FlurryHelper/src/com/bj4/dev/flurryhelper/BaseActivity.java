@@ -17,9 +17,15 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 public abstract class BaseActivity extends Activity implements SetApiDialog.SetApiSuccess,
         MenuDialog.MenuDialogCallback {
+
+    public static final int EXPAND = 1;
+
+    public static final int COLLAPSE = 0;
+
     private View mActionBar;
 
     private ImageView mMenu;
@@ -27,6 +33,8 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
     private TextView mTitle, mNavigator;
 
     private LinearLayout mNavigatorArea;
+
+    private ViewSwitcher mExpandCollapse;
 
     private void setMainLayout() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -95,6 +103,30 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
             }
         });
         mTitle = (TextView)findViewById(R.id.menu_title);
+        mExpandCollapse = (ViewSwitcher)findViewById(R.id.expand_collapse);
+        mExpandCollapse.setInAnimation(this, R.anim.collapse_expand_switch_in);
+        mExpandCollapse.setOutAnimation(this, R.anim.collapse_expand_switch_out);
+        mExpandCollapse.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mExpandCollapse.showNext();
+                onExpandCollapseClick();
+            }
+        });
+    }
+
+    protected abstract void onExpandCollapseClick();
+
+    public boolean isExpanded() {
+        return mExpandCollapse.getDisplayedChild() == EXPAND;
+    }
+
+    public void showExpandCollapse(boolean show) {
+        if (show)
+            mExpandCollapse.setVisibility(View.VISIBLE);
+        else
+            mExpandCollapse.setVisibility(View.GONE);
     }
 
     public void onResume() {

@@ -5,25 +5,51 @@
     android:layout_height="@dimen/action_bar_height"
     android:background="@color/action_bar_background" >
 
-    <ImageView
-        android:id="@+id/menu"
+    <LinearLayout
+        android:id="@+id/manu_area"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:background="@drawable/action_bar_item_background"
-        android:padding="@dimen/action_bar_menu_padding"
-        android:src="@drawable/ic_action_overflow" />
+        android:orientation="horizontal" >
+
+        <ViewSwitcher
+            android:id="@+id/expand_collapse"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/action_bar_item_background"
+                android:padding="@dimen/action_bar_menu_padding"
+                android:src="@drawable/minus" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/action_bar_item_background"
+                android:padding="@dimen/action_bar_menu_padding"
+                android:src="@drawable/format_line_spacing" />
+        </ViewSwitcher>
+
+        <ImageView
+            android:id="@+id/menu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/action_bar_item_background"
+            android:padding="@dimen/action_bar_menu_padding"
+            android:src="@drawable/ic_action_overflow" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/navigator_area"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toLeftOf="@+id/menu"
+        android:layout_toLeftOf="@+id/manu_area"
         android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/navigator"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:ellipsize="end"
@@ -38,7 +64,8 @@
             android:singleLine="true"
             android:text=" &lt; "
             android:textColor="@color/white"
-            android:textSize="@dimen/action_bar_title_text_size" />
+            android:textSize="@dimen/action_bar_title_text_size"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/menu_title"

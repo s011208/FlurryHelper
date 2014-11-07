@@ -137,6 +137,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         fragmentTransaction.commit();
         mNavigationFragment = FRAGMENT_TYPE_PROJECT;
         hideNavigator();
+        showExpandCollapse(false);
     }
 
     public void enterAppMetricsFragment(final String projectKey) {
@@ -152,6 +153,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         fragmentTransaction.commit();
         mNavigationFragment = FRAGMENT_TYPE_APPMETRICS;
         showNavigator();
+        showExpandCollapse(false);
     }
 
     public void enterEventMetricsFragment(final String projectKey) {
@@ -167,6 +169,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         fragmentTransaction.commit();
         mNavigationFragment = FRAGMENT_TYPE_EVENTMETRICS;
         showNavigator();
+        showExpandCollapse(true);
     }
 
     public boolean isLoadingViewShowing() {
@@ -266,6 +269,14 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         } else {
             mMainActivity.removeView(mLoadingView);
             mLoadingView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onExpandCollapseClick() {
+        Fragment currentFragment = getFragmentManager().findFragmentByTag(EventMetricsFragment.TAG);
+        if (currentFragment != null) {
+            ((EventMetricsFragment)currentFragment).onExpandStatusChanged();
         }
     }
 }

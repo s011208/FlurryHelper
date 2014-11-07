@@ -36,4 +36,11 @@
 	<dimen name="app_metrics_chart_value_distance">50dp</dimen>
 	<dimen name="app_metrics_chart_value_line_width">2dp</dimen>
 	<dimen name="app_metrics_chart_value_textsize">14sp</dimen>
+	<!-- event metrics info -->
+	<dimen name="event_metrics_info_event_name_textsize">24sp</dimen>
+	<dimen name="event_metrics_info_padding_h">4dp</dimen>
+	<dimen name="event_metrics_info_event_item_title_textsize">16sp</dimen>
+	<dimen name="event_metrics_info_event_item_title_padding_top">3dp</dimen>
+	<dimen name="event_metrics_info_event_item_value_textsize">19sp</dimen>
+	<dimen name="event_metrics_info_event_item_value_padding_left">8dp</dimen>
 </resources>

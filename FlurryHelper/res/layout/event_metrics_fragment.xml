@@ -6,7 +6,9 @@
     <ListView
         android:id="@+id/event_metrics_event_name_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/event_metrics_info_padding_h"
+        android:paddingRight="@dimen/event_metrics_info_padding_h" >
     </ListView>
 
 </RelativeLayout>

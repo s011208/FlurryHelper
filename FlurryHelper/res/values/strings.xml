@@ -6,10 +6,20 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
-	<string name="api_key_hint">Enter API access key</string>
-	<string name="project_data_chooser_appmetrics">App metrics</string>
-	<string name="project_data_chooser_eventmetrics">Event metrics</string>
-	<!-- menu -->
-	<string name="menu_set_api_key">Set API key</string>
-	<string name="menu_set_time_period">Set time period</string>
+    <string name="api_key_hint">Enter API access key</string>
+    <string name="project_data_chooser_appmetrics">App metrics</string>
+    <string name="project_data_chooser_eventmetrics">Event metrics</string>
+    <!-- menu -->
+    <string name="menu_set_api_key">Set API key</string>
+    <string name="menu_set_time_period">Set time period</string>
+    <!-- event metrics -->
+    <string name="event_metrics_users_last_day">Users last day</string>
+    <string name="event_metrics_users_last_month">Users last month</string>
+    <string name="event_metrics_users_last_week">Users last week</string>
+    <string name="event_metrics_avg_users_last_day">Avg users last day</string>
+    <string name="event_metrics_avg_users_last_month">Avg users last month</string>
+    <string name="event_metrics_avg_users_last_week">Avg users last week</string>
+    <string name="event_metrics_total_counts">Total counts</string>
+    <string name="event_metrics_total_sessions">Total sessions</string>
+
 </resources>

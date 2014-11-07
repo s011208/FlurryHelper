@@ -5,7 +5,187 @@
 
     <TextView
         android:id="@+id/event_metrics_event_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="@dimen/event_metrics_info_event_name_textsize" />
+
+    <LinearLayout
+        android:id="@+id/event_metrics_expandable_detailed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/event_metrics_event_name"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/users_last_day_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/event_metrics_info_event_item_title_padding_top"
+                android:text="@string/event_metrics_users_last_day"
+                android:textSize="@dimen/event_metrics_info_event_item_title_textsize" />
+
+            <TextView
+                android:id="@+id/users_last_day_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/users_last_day_title"
+                android:paddingLeft="@dimen/event_metrics_info_event_item_value_padding_left"
+                android:text="@string/event_metrics_users_last_day"
+                android:textColor="#000000"
+                android:textSize="@dimen/event_metrics_info_event_item_value_textsize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/users_last_week_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/users_last_day_value"
+                android:paddingTop="@dimen/event_metrics_info_event_item_title_padding_top"
+                android:text="@string/event_metrics_users_last_week"
+                android:textSize="@dimen/event_metrics_info_event_item_title_textsize" />
+
+            <TextView
+                android:id="@+id/users_last_week_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/users_last_week_title"
+                android:paddingLeft="@dimen/event_metrics_info_event_item_value_padding_left"
+                android:text="@string/event_metrics_users_last_day"
+                android:textColor="#000000"
+                android:textSize="@dimen/event_metrics_info_event_item_value_textsize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/users_last_month_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/users_last_week_value"
+                android:paddingTop="@dimen/event_metrics_info_event_item_title_padding_top"
+                android:text="@string/event_metrics_users_last_month"
+                android:textSize="@dimen/event_metrics_info_event_item_title_textsize" />
+
+            <TextView
+                android:id="@+id/users_last_month_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/users_last_month_title"
+                android:paddingLeft="@dimen/event_metrics_info_event_item_value_padding_left"
+                android:text="@string/event_metrics_users_last_day"
+                android:textColor="#000000"
+                android:textSize="@dimen/event_metrics_info_event_item_value_textsize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/total_count_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/users_last_month_value"
+                android:paddingTop="@dimen/event_metrics_info_event_item_title_padding_top"
+                android:text="@string/event_metrics_total_counts"
+                android:textSize="@dimen/event_metrics_info_event_item_title_textsize" />
+
+            <TextView
+                android:id="@+id/total_count_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/total_count_title"
+                android:paddingLeft="@dimen/event_metrics_info_event_item_value_padding_left"
+                android:text="@string/event_metrics_users_last_day"
+                android:textColor="#000000"
+                android:textSize="@dimen/event_metrics_info_event_item_value_textsize"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/users_avg_day_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/event_metrics_info_event_item_title_padding_top"
+                android:text="@string/event_metrics_avg_users_last_day"
+                android:textSize="@dimen/event_metrics_info_event_item_title_textsize" />
+
+            <TextView
+                android:id="@+id/users_avg_day_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/users_avg_day_title"
+                android:paddingLeft="@dimen/event_metrics_info_event_item_value_padding_left"
+                android:text="@string/event_metrics_users_last_day"
+                android:textColor="#000000"
+                android:textSize="@dimen/event_metrics_info_event_item_value_textsize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/users_avg_week_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/users_avg_day_value"
+                android:paddingTop="@dimen/event_metrics_info_event_item_title_padding_top"
+                android:text="@string/event_metrics_avg_users_last_week"
+                android:textSize="@dimen/event_metrics_info_event_item_title_textsize" />
+
+            <TextView
+                android:id="@+id/users_avg_week_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/users_avg_week_title"
+                android:paddingLeft="@dimen/event_metrics_info_event_item_value_padding_left"
+                android:text="@string/event_metrics_users_last_day"
+                android:textColor="#000000"
+                android:textSize="@dimen/event_metrics_info_event_item_value_textsize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/users_avg_month_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/users_avg_week_value"
+                android:paddingTop="@dimen/event_metrics_info_event_item_title_padding_top"
+                android:text="@string/event_metrics_avg_users_last_month"
+                android:textSize="@dimen/event_metrics_info_event_item_title_textsize" />
+
+            <TextView
+                android:id="@+id/users_avg_month_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/users_avg_month_title"
+                android:paddingLeft="@dimen/event_metrics_info_event_item_value_padding_left"
+                android:text="@string/event_metrics_users_last_day"
+                android:textColor="#000000"
+                android:textSize="@dimen/event_metrics_info_event_item_value_textsize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/total_session_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/users_avg_month_value"
+                android:paddingTop="@dimen/event_metrics_info_event_item_title_padding_top"
+                android:text="@string/event_metrics_total_sessions"
+                android:textSize="@dimen/event_metrics_info_event_item_title_textsize" />
+
+            <TextView
+                android:id="@+id/total_session_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/total_session_title"
+                android:paddingLeft="@dimen/event_metrics_info_event_item_value_padding_left"
+                android:text="@string/event_metrics_users_last_day"
+                android:textColor="#000000"
+                android:textSize="@dimen/event_metrics_info_event_item_value_textsize"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>
