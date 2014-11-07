@@ -16,7 +16,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
-    private static final String TAG = "QQQQ";
+    private static final String TAG = "AppMetricsLoadingHelper";
 
     private static final boolean DEBUG = true;
 
@@ -97,7 +97,7 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
         final String rawData = Utils.parseOnInternet("http://api.flurry.com/appMetrics/" + metric
                 + "?apiAccessCode=" + apiKey + "&apiKey=" + mProjectKey + "&startDate=" + startDate
                 + "&endDate=" + endDate);
-        SharedData.getInstance().addMetricsData(mProjectKey, metric,
+        SharedData.getInstance().addAppMetricsData(mProjectKey, metric,
                 Utils.retrieveAppMetricsDataFromRaw(rawData));
     }
 

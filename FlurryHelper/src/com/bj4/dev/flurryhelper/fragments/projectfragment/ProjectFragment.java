@@ -35,9 +35,8 @@ import android.widget.Toast;
 /**
  * http://api.flurry.com/appInfo/getAllApplications?apiAccessCode=7
  * H27G8H743385X8CFS3VQ
- * http://api.flurry.com/appMetrics/ActiveUsersByWeek?apiAccessCode
- * =H27G8H743385X8CFS3VQ
- * &apiKey=KKVRQV7Y3FFF5GD6KVRG&startDate=2014-01-01&endDate=2014-12-31
+ * http://api.flurry.com/appMetrics/ActiveUsersByWeek?
+ * apiAccessCode=H27G8H743385X8CFS3VQ&apiKey=KKVRQV7Y3FFF5GD6KVRG&startDate=2014-01-01&endDate=2014-12-31
  * 
  * @author yenhsunhuang
  */

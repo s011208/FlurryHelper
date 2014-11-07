@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import com.bj4.dev.flurryhelper.utils.AppMetricsData;
 import com.bj4.dev.flurryhelper.utils.CompanyName;
+import com.bj4.dev.flurryhelper.utils.EventMetrics;
 import com.bj4.dev.flurryhelper.utils.ProjectInfo;
 
 public class SharedData {
@@ -56,6 +57,8 @@ public class SharedData {
 
     private static final HashMap<String, HashMap<String, ArrayList<AppMetricsData>>> sAppMetricsData = new HashMap<String, HashMap<String, ArrayList<AppMetricsData>>>();
 
+    private static final HashMap<String, ArrayList<EventMetrics>> sEventMetrics = new HashMap<String, ArrayList<EventMetrics>>();
+
     public static synchronized SharedData getInstance() {
         if (sInstance == null) {
             sInstance = new SharedData();
@@ -66,7 +69,30 @@ public class SharedData {
     private SharedData() {
     }
 
-    public void addMetricsData(final String projectKey, final String key,
+    public void addEventMetricsData(final String projectKey, ArrayList<EventMetrics> eventMatrics) {
+        if (eventMatrics == null || projectKey == null)
+            return;
+        synchronized (sLock) {
+            Collections.sort(eventMatrics, new Comparator<EventMetrics>() {
+
+                @Override
+                public int compare(EventMetrics lhs, EventMetrics rhs) {
+                    if (lhs == null)
+                        return 0;
+                    return lhs.getEventName().compareToIgnoreCase(rhs.getEventName());
+                }
+            });
+            sEventMetrics.put(projectKey, eventMatrics);
+        }
+    }
+
+    public ArrayList<EventMetrics> getEventMetricsData(final String projectKey) {
+        synchronized (sLock) {
+            return sEventMetrics.get(projectKey);
+        }
+    }
+
+    public void addAppMetricsData(final String projectKey, final String key,
             final ArrayList<AppMetricsData> values) {
         if (values == null || key == null || projectKey == null)
             return;
@@ -93,6 +119,7 @@ public class SharedData {
             sCompanyName = null;
             sProjectInfos.clear();
             sAppMetricsData.clear();
+            sEventMetrics.clear();
         }
     }
 
@@ -107,6 +134,7 @@ public class SharedData {
             sCompanyName = cn;
             sProjectInfos.clear();
             sAppMetricsData.clear();
+            sEventMetrics.clear();
         }
     }
 

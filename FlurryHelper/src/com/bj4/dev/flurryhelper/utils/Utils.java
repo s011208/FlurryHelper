@@ -7,13 +7,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
-
 
 public class Utils {
     private static final String TAG = "Utils";
@@ -74,9 +75,9 @@ public class Utils {
         }
         return rtn;
     }
-    
+
     public static ArrayList<AppMetricsData> retrieveAppMetricsDataFromRaw(final String rawData) {
-        ArrayList<AppMetricsData> rtn = new ArrayList<AppMetricsData>();
+        final ArrayList<AppMetricsData> rtn = new ArrayList<AppMetricsData>();
         try {
             JSONObject parent = new JSONObject(rawData);
             JSONArray data = parent.getJSONArray("day");
@@ -88,6 +89,29 @@ public class Utils {
             }
         } catch (JSONException e) {
             Log.w(TAG, "failed", e);
+        }
+        return rtn;
+    }
+
+    public static ArrayList<EventMetrics> retrieveEventMetricsDataFromRaw(final String rawData) {
+        final ArrayList<EventMetrics> rtn = new ArrayList<EventMetrics>();
+        try {
+            JSONObject parent = new JSONObject(rawData);
+            JSONArray data = parent.getJSONArray("event");
+            for (int i = 0; i < data.length(); i++) {
+                JSONObject rawJsonData = data.getJSONObject(i);
+                EventMetrics metrics = new EventMetrics(rawJsonData.getLong("@avgUsersLastDay"),
+                        rawJsonData.getLong("@avgUsersLastMonth"),
+                        rawJsonData.getLong("@avgUsersLastWeek"),
+                        rawJsonData.getLong("@totalCount"), rawJsonData.getLong("@totalSessions"),
+                        rawJsonData.getLong("@usersLastDay"),
+                        rawJsonData.getLong("@usersLastMonth"),
+                        rawJsonData.getLong("@usersLastWeek"), rawJsonData.getString("@eventName"));
+                rtn.add(metrics);
+            }
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         return rtn;
     }
