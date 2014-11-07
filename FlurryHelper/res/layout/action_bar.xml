@@ -14,22 +14,48 @@
         android:padding="@dimen/action_bar_menu_padding"
         android:src="@drawable/ic_action_overflow" />
 
-    <TextView
-        android:id="@+id/menu_title"
+    <LinearLayout
+        android:id="@+id/navigator_area"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toLeftOf="@+id/menu"
-        android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:maxLines="1"
-        android:fontFamily="sans-serif"
-        android:paddingLeft="@dimen/action_bar_title_padding_left"
-        android:shadowColor="#BF000000"
-        android:shadowDx="0.0"
-        android:shadowDy="0.0"
-        android:shadowRadius="1.0"
-        android:singleLine="true"
-        android:textColor="@color/white"
-        android:textSize="@dimen/action_bar_title_text_size" />
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/navigator"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/action_bar_title_padding_left"
+            android:shadowColor="#BF000000"
+            android:shadowDx="0.0"
+            android:shadowDy="0.0"
+            android:shadowRadius="1.0"
+            android:singleLine="true"
+            android:text=" &lt; "
+            android:textColor="@color/white"
+            android:textSize="@dimen/action_bar_title_text_size" />
+
+        <TextView
+            android:id="@+id/menu_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/action_bar_title_padding_left"
+            android:shadowColor="#BF000000"
+            android:shadowDx="0.0"
+            android:shadowDy="0.0"
+            android:shadowRadius="1.0"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/action_bar_title_text_size" />
+    </LinearLayout>
 
 </RelativeLayout>

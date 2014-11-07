@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public abstract class BaseActivity extends Activity implements SetApiDialog.SetApiSuccess,
@@ -23,11 +24,17 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
 
     private ImageView mMenu;
 
-    private TextView mTitle;
+    private TextView mTitle, mNavigator;
+
+    private LinearLayout mNavigatorArea;
 
     private void setMainLayout() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    public LinearLayout getNavigatorArea() {
+        return mNavigatorArea;
     }
 
     @Override
@@ -58,11 +65,25 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
         mTitle.setText(title);
     }
 
+    public void showNavigator() {
+        if (mNavigator != null) {
+            mNavigator.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void hideNavigator() {
+        if (mNavigator != null) {
+            mNavigator.setVisibility(View.GONE);
+        }
+    }
+
     private void initActionBar() {
         mActionBar = findViewById(R.id.action_bar);
         if (mActionBar == null) {
             return;
         }
+        mNavigatorArea = (LinearLayout)findViewById(R.id.navigator_area);
+        mNavigator = (TextView)findViewById(R.id.navigator);
         mMenu = (ImageView)findViewById(R.id.menu);
         mMenu.setOnClickListener(new OnClickListener() {
 

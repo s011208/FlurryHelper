@@ -31,6 +31,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -77,6 +78,13 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         } else {
             setApiSuccess(false);
         }
+        getNavigatorArea().setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                navigateFragment();
+            }
+        });
     }
 
     public void onPause() {
@@ -107,7 +115,13 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
     public void onBackPressed() {
         if (mNavigationFragment == FRAGMENT_TYPE_PROJECT) {
             super.onBackPressed();
-        } else if (mNavigationFragment == FRAGMENT_TYPE_APPMETRICS
+        } else {
+            navigateFragment();
+        }
+    }
+
+    private void navigateFragment() {
+        if (mNavigationFragment == FRAGMENT_TYPE_APPMETRICS
                 || mNavigationFragment == FRAGMENT_TYPE_EVENTMETRICS) {
             enterCompanyFragment();
         }
@@ -122,6 +136,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         fragmentTransaction.replace(R.id.fragment_main, fragment, ProjectFragment.TAG);
         fragmentTransaction.commit();
         mNavigationFragment = FRAGMENT_TYPE_PROJECT;
+        hideNavigator();
     }
 
     public void enterAppMetricsFragment(final String projectKey) {
@@ -136,6 +151,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         fragmentTransaction.replace(R.id.fragment_main, fragment, AppMetricsFragment.TAG);
         fragmentTransaction.commit();
         mNavigationFragment = FRAGMENT_TYPE_APPMETRICS;
+        showNavigator();
     }
 
     public void enterEventMetricsFragment(final String projectKey) {
@@ -150,6 +166,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         fragmentTransaction.replace(R.id.fragment_main, fragment, EventMetricsFragment.TAG);
         fragmentTransaction.commit();
         mNavigationFragment = FRAGMENT_TYPE_EVENTMETRICS;
+        showNavigator();
     }
 
     public boolean isLoadingViewShowing() {
