@@ -43,4 +43,5 @@
 	<dimen name="event_metrics_info_event_item_title_padding_top">3dp</dimen>
 	<dimen name="event_metrics_info_event_item_value_textsize">19sp</dimen>
 	<dimen name="event_metrics_info_event_item_value_padding_left">8dp</dimen>
+	<dimen name="event_metrics_info_event_item_title_padding_v">3dp</dimen>
 </resources>

@@ -10,6 +10,7 @@ import org.jsoup.select.Elements;
 
 import com.bj4.dev.flurryhelper.dialogs.SetApiDialog;
 import com.bj4.dev.flurryhelper.fragments.appmetricsfragment.AppMetricsFragment;
+import com.bj4.dev.flurryhelper.fragments.eventdetailedfragment.EventDetailedFragment;
 import com.bj4.dev.flurryhelper.fragments.eventmetricsfragment.EventMetricsFragment;
 import com.bj4.dev.flurryhelper.fragments.projectfragment.ProjectFragment;
 import com.bj4.dev.flurryhelper.introduction.IntroductionView;
@@ -52,7 +53,11 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
 
     private static final int FRAGMENT_TYPE_EVENTMETRICS = 2;
 
+    private static final int FRAGMENT_TYPE_EVENT_DETAILED = 3;
+
     private int mNavigationFragment = FRAGMENT_TYPE_PROJECT;
+
+    private String mProjectKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +125,13 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
             showExpandCollapse(true);
             return;
         }
+        previousDiaog = getFragmentManager().findFragmentByTag(EventDetailedFragment.TAG);
+        if (previousDiaog != null) {
+            mNavigationFragment = FRAGMENT_TYPE_EVENT_DETAILED;
+            showNavigator();
+            showExpandCollapse(false);
+            return;
+        }
         showLoadingView(true);
         setActionBarTitle("");
         enterCompanyFragment();
@@ -136,8 +148,14 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         }
     }
 
+    public void setProjectKey(String key) {
+        mProjectKey = key;
+    }
+
     private void navigateFragment() {
-        if (mNavigationFragment == FRAGMENT_TYPE_APPMETRICS
+        if (mNavigationFragment == FRAGMENT_TYPE_EVENT_DETAILED) {
+            enterEventMetricsFragment(mProjectKey);
+        } else if (mNavigationFragment == FRAGMENT_TYPE_APPMETRICS
                 || mNavigationFragment == FRAGMENT_TYPE_EVENTMETRICS) {
             enterCompanyFragment();
         }
@@ -186,6 +204,23 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         mNavigationFragment = FRAGMENT_TYPE_EVENTMETRICS;
         showNavigator();
         showExpandCollapse(true);
+    }
+
+    public void enterEventDetailedFragment(final String projectKey, final String eventName) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction
+                .setCustomAnimations(R.anim.fragment_alpha_in, R.anim.fragment_alpha_out);
+        EventDetailedFragment fragment = new EventDetailedFragment();
+        Bundle args = new Bundle();
+        args.putString(EventDetailedFragment.PROJECT_KEY, projectKey);
+        args.putString(EventDetailedFragment.EVENT_NAME_KEY, eventName);
+        fragment.setArguments(args);
+        fragmentTransaction.replace(R.id.fragment_main, fragment, EventDetailedFragment.TAG);
+        fragmentTransaction.commit();
+        mNavigationFragment = FRAGMENT_TYPE_EVENT_DETAILED;
+        showNavigator();
+        showExpandCollapse(false);
     }
 
     public boolean isLoadingViewShowing() {

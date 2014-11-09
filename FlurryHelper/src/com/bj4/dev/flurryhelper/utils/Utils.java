@@ -5,13 +5,16 @@ import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -22,15 +25,17 @@ public class Utils {
     private static final String TAG = "Utils";
 
     @SuppressWarnings("deprecation")
-    public static String parseOnInternet(String url) {
-        URL u;
+    public static String parseOnInternet(String urlStr) {
         InputStream is = null;
         DataInputStream dis;
         String s;
         StringBuilder sb = new StringBuilder();
         try {
-            u = new URL(url);
-            is = u.openStream();
+            URL url = new URL(urlStr);
+            URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(),
+                    url.getPath(), url.getQuery(), url.getRef());
+            url = uri.toURL();
+            is = url.openStream();
             dis = new DataInputStream(new BufferedInputStream(is));
             while ((s = dis.readLine()) != null) {
                 sb.append(s);
@@ -110,6 +115,45 @@ public class Utils {
                         rawJsonData.getLong("@usersLastMonth"),
                         rawJsonData.getLong("@usersLastWeek"), rawJsonData.getString("@eventName"));
                 rtn.add(metrics);
+            }
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return rtn;
+    }
+
+    public static EventDetailed retrieveEventDetailedDataFromRaw(final String rawData) {
+        EventDetailed rtn = new EventDetailed();
+        final ArrayList<EventDetailed.Day> days = new ArrayList<EventDetailed.Day>();
+        try {
+            JSONObject parent = new JSONObject(rawData);
+            JSONArray jArrayDays = parent.getJSONArray("day");
+            for (int i = 0; i < jArrayDays.length(); i++) {
+                JSONObject jsonDay = jArrayDays.getJSONObject(i);
+                EventDetailed.Day day = new EventDetailed.Day(jsonDay.getString("@date"),
+                        jsonDay.getLong("@totalCount"), jsonDay.getLong("@totalSessions"),
+                        jsonDay.getLong("@uniqueUsers"));
+                days.add(day);
+            }
+            rtn.addDays(days);
+            JSONArray jArrayKeys = parent.getJSONObject("parameters").getJSONArray("key");
+            for (int i = 0; i < jArrayKeys.length(); i++) {
+                JSONObject jsonItems = jArrayKeys.getJSONObject(i);
+                final String action = jsonItems.getString("@name");
+                HashMap<String, Long> label = new HashMap<String, Long>();
+                try {
+                    JSONArray jArrayLabels = jsonItems.getJSONArray("value");
+                    for (int j = 0; j < jArrayLabels.length(); j++) {
+                        JSONObject jsonLabel = jArrayLabels.getJSONObject(j);
+                        label.put(jsonLabel.getString("@name"), jsonLabel.getLong("@totalCount"));
+                    }
+                } catch (Exception e) {
+                    JSONObject jObjectLabels = jsonItems.getJSONObject("value");
+                    label.put(jObjectLabels.getString("@name"),
+                            jObjectLabels.getLong("@totalCount"));
+                }
+                rtn.addParameter(action, label);
             }
         } catch (JSONException e) {
             // TODO Auto-generated catch block

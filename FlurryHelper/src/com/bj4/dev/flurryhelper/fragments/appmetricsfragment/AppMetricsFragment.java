@@ -131,6 +131,10 @@ public class AppMetricsFragment extends Fragment implements AppMetricsLoadingHel
         for (int i = 0; i < metricsData.size(); i++) {
             metricsDataSeries.add(i, metricsData.get(i).getValue());
         }
+        double maxX = metricsDataSeries.getMaxX();
+        double minX = 0;
+        double maxY = metricsDataSeries.getMinY();
+        double minY = metricsDataSeries.getMaxY();
         final Resources res = context.getResources();
         XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
         dataset.addSeries(metricsDataSeries);
@@ -168,11 +172,15 @@ public class AppMetricsFragment extends Fragment implements AppMetricsLoadingHel
         multiRenderer.setShowGridX(true);
         multiRenderer.setShowGridY(false);
         multiRenderer.setShowLegend(true);
+        multiRenderer.setLegendTextSize(res
+                .getDimension(R.dimen.app_metrics_chart_value_textsize));
         multiRenderer.setPanEnabled(true, true);
         multiRenderer.setClickEnabled(false);
         multiRenderer.setXLabelsColor(Color.BLACK);
         multiRenderer.setXLabels(0);
         multiRenderer.setXLabelsAngle(30);
+        multiRenderer.setLabelsTextSize(res
+                .getDimension(R.dimen.app_metrics_chart_value_textsize) * 0.5f);
         multiRenderer.setYLabels(15);
         multiRenderer.setYLabelsColor(0, Color.BLACK);
         multiRenderer.setYLabelsVerticalPadding(res

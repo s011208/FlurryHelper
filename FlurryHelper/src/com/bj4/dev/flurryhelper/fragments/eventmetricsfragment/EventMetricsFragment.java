@@ -56,6 +56,13 @@ public class EventMetricsFragment extends Fragment implements EventMetricsLoadin
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                final Activity activity = getActivity();
+                EventMetrics em = mEventNameListAdapter.getItem(arg2);
+                if (activity == null)
+                    return;
+                if (activity instanceof MainActivity == false)
+                    return;
+                ((MainActivity)activity).enterEventDetailedFragment(mProjectKey, em.getEventName());
             }
         });
         final ArrayList<EventMetrics> data = SharedData.getInstance().getEventMetricsData(

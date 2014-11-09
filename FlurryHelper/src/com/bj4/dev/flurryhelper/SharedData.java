@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import com.bj4.dev.flurryhelper.utils.AppMetricsData;
 import com.bj4.dev.flurryhelper.utils.CompanyName;
+import com.bj4.dev.flurryhelper.utils.EventDetailed;
 import com.bj4.dev.flurryhelper.utils.EventMetrics;
 import com.bj4.dev.flurryhelper.utils.ProjectInfo;
 
@@ -59,6 +60,8 @@ public class SharedData {
 
     private static final HashMap<String, ArrayList<EventMetrics>> sEventMetrics = new HashMap<String, ArrayList<EventMetrics>>();
 
+    private static final HashMap<String, EventDetailed> sEventDetailed = new HashMap<String, EventDetailed>();
+
     public static synchronized SharedData getInstance() {
         if (sInstance == null) {
             sInstance = new SharedData();
@@ -67,6 +70,22 @@ public class SharedData {
     }
 
     private SharedData() {
+    }
+
+    public void addEventDetailedData(final String eventName, EventDetailed detailed) {
+        if (eventName == null || detailed == null)
+            return;
+        synchronized (sLock) {
+            sEventDetailed.put(eventName, detailed);
+        }
+    }
+
+    public EventDetailed getEventDetailedData(final String eventName) {
+        if (eventName == null)
+            return null;
+        synchronized (sLock) {
+            return sEventDetailed.get(eventName);
+        }
     }
 
     public void addEventMetricsData(final String projectKey, ArrayList<EventMetrics> eventMatrics) {
@@ -120,6 +139,7 @@ public class SharedData {
             sProjectInfos.clear();
             sAppMetricsData.clear();
             sEventMetrics.clear();
+            sEventDetailed.clear();
         }
     }
 

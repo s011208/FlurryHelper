@@ -7,6 +7,8 @@
         android:id="@+id/event_metrics_event_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/event_metrics_info_event_item_title_padding_v"
+        android:paddingTop="@dimen/event_metrics_info_event_item_title_padding_v"
         android:textColor="#000000"
         android:textSize="@dimen/event_metrics_info_event_name_textsize" />
 
