@@ -3,8 +3,6 @@ package com.bj4.dev.flurryhelper.fragments.eventmetricsfragment;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Calendar;
-
 import com.bj4.dev.flurryhelper.SharedData;
 import com.bj4.dev.flurryhelper.SharedPreferencesHelper;
 import com.bj4.dev.flurryhelper.utils.EventMetrics;
@@ -41,11 +39,8 @@ public class EventMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
         if (context == null)
             return null;
         final String apiKey = SharedPreferencesHelper.getInstance(context).getAPIKey();
-        Calendar calendar = Calendar.getInstance();
-        final String endDate = calendar.get(Calendar.YEAR) + "-"
-                + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
-        final String startDate = (calendar.get(Calendar.YEAR) - 1) + "-"
-                + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
+            final String endDate = SharedPreferencesHelper.getInstance(context).getEndDate();
+        final String startDate = SharedPreferencesHelper.getInstance(context).getStartDate();
         loadAppMetric(apiKey, startDate, endDate);
         if (mCallback != null && mCallback.get() != null)
             mCallback.get().notifyDataChanged();
@@ -53,7 +48,7 @@ public class EventMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
     }
 
     private void loadAppMetric(final String apiKey, final String startDate, final String endDate) {
-        final ArrayList<EventMetrics> data = SharedData.getInstance().getEventMetricsData(
+        final ArrayList<EventMetrics> data = SharedData.getEventMetricsData(
                 mProjectKey);
         if (data != null && data.isEmpty() == false) {
             if (DEBUG)
@@ -65,7 +60,7 @@ public class EventMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
                 + "&endDate=" + endDate);
         if (DEBUG)
             Log.d(TAG, "rawData: " + rawData);
-        SharedData.getInstance().addEventMetricsData(mProjectKey,
+        SharedData.addEventMetricsData(mProjectKey,
                 Utils.retrieveEventMetricsDataFromRaw(rawData));
     }
 }

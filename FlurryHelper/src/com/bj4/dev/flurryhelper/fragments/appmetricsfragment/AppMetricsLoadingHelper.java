@@ -3,7 +3,6 @@ package com.bj4.dev.flurryhelper.fragments.appmetricsfragment;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
 import com.bj4.dev.flurryhelper.SharedData;
@@ -42,11 +41,8 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
         if (context == null)
             return null;
         final String apiKey = SharedPreferencesHelper.getInstance(context).getAPIKey();
-        Calendar calendar = Calendar.getInstance();
-        final String endDate = calendar.get(Calendar.YEAR) + "-"
-                + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
-        final String startDate = (calendar.get(Calendar.YEAR) - 1) + "-"
-                + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
+        final String endDate = SharedPreferencesHelper.getInstance(context).getEndDate();
+        final String startDate = SharedPreferencesHelper.getInstance(context).getStartDate();
         loadAppMetric(apiKey, startDate, endDate, SharedData.APPMETRICS_TYPE_ACTIVE_USERS);
         if (mCallback != null && mCallback.get() != null)
             mCallback.get().notifyDataChanged();
@@ -83,7 +79,7 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
 
     private void loadAppMetric(final String apiKey, final String startDate, final String endDate,
             final String metric) {
-        HashMap<String, ArrayList<AppMetricsData>> projectData = SharedData.getInstance()
+        HashMap<String, ArrayList<AppMetricsData>> projectData = SharedData
                 .getAppMetricsData(mProjectKey);
         if (projectData != null && projectData.get(metric) != null) {
             if (DEBUG)
@@ -97,7 +93,7 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
         final String rawData = Utils.parseOnInternet("http://api.flurry.com/appMetrics/" + metric
                 + "?apiAccessCode=" + apiKey + "&apiKey=" + mProjectKey + "&startDate=" + startDate
                 + "&endDate=" + endDate);
-        SharedData.getInstance().addAppMetricsData(mProjectKey, metric,
+        SharedData.addAppMetricsData(mProjectKey, metric,
                 Utils.retrieveAppMetricsDataFromRaw(rawData));
     }
 

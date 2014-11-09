@@ -9,6 +9,7 @@ import java.util.Map;
 import com.bj4.dev.flurryhelper.MainActivity;
 import com.bj4.dev.flurryhelper.R;
 import com.bj4.dev.flurryhelper.SharedData;
+import com.bj4.dev.flurryhelper.fragments.BaseFragment;
 import com.bj4.dev.flurryhelper.utils.EventDetailed;
 
 import android.app.Activity;
@@ -26,7 +27,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class EventDetailedFragment extends Fragment implements EventDetailedLoadingHelper.Callback {
+public class EventDetailedFragment extends BaseFragment implements
+        EventDetailedLoadingHelper.Callback {
     public static final String TAG = "EventDetailedFragment";
 
     public static final String PROJECT_KEY = "project_key";
@@ -61,7 +63,7 @@ public class EventDetailedFragment extends Fragment implements EventDetailedLoad
         mDetailContent = (ListView)mContent.findViewById(R.id.event_detailed_content_list);
         mEventDetailListAdapter = new EventDetailListAdapter(getActivity(), mEventName);
         mDetailContent.setAdapter(mEventDetailListAdapter);
-        final EventDetailed detailed = SharedData.getInstance().getEventDetailedData(mEventName);
+        final EventDetailed detailed = SharedData.getEventDetailedData(mEventName);
         if (detailed != null) {
             setSpinnerAdapter();
         } else {
@@ -73,7 +75,7 @@ public class EventDetailedFragment extends Fragment implements EventDetailedLoad
     }
 
     private void setSpinnerAdapter() {
-        final EventDetailed detailed = SharedData.getInstance().getEventDetailedData(mEventName);
+        final EventDetailed detailed = SharedData.getEventDetailedData(mEventName);
         mActionSpinnerAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.event_detail_spinner_text, detailed.getAllActions());
         mActionsSpinner.setAdapter(mActionSpinnerAdapter);
@@ -96,19 +98,6 @@ public class EventDetailedFragment extends Fragment implements EventDetailedLoad
             return;
         mEventDetailListAdapter.setListContent(action);
         mDetailContent.smoothScrollToPosition(0);
-    }
-
-    private void checkLoadingView(boolean show, boolean animated) {
-        Activity activity = getActivity();
-        if (activity == null)
-            return;
-        if (activity instanceof MainActivity == false)
-            return;
-        if (show) {
-            ((MainActivity)activity).showLoadingView(true);
-        } else {
-            ((MainActivity)activity).hideLoadingView(true);
-        }
     }
 
     @Override
@@ -140,7 +129,7 @@ public class EventDetailedFragment extends Fragment implements EventDetailedLoad
         private long mTotalCount;
 
         public void setListContent(final String action) {
-            final EventDetailed detailed = SharedData.getInstance()
+            final EventDetailed detailed = SharedData
                     .getEventDetailedData(mEventName);
             if (detailed == null)
                 return;

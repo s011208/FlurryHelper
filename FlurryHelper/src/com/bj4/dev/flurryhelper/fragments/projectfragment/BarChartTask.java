@@ -3,20 +3,14 @@ package com.bj4.dev.flurryhelper.fragments.projectfragment;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
 import org.achartengine.ChartFactory;
-import org.achartengine.chart.BarChart.Type;
 import org.achartengine.chart.PointStyle;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.bj4.dev.flurryhelper.R;
 import com.bj4.dev.flurryhelper.SharedPreferencesHelper;
 import com.bj4.dev.flurryhelper.utils.AppMetricsData;
@@ -27,7 +21,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -103,11 +96,8 @@ public class BarChartTask extends AsyncTask<Void, Void, Void> {
     private String getRawData(Context context) {
         // get data on the Internet
         final String apiKey = SharedPreferencesHelper.getInstance(context).getAPIKey();
-        Calendar calendar = Calendar.getInstance();
-        final String endDate = calendar.get(Calendar.YEAR) + "-"
-                + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
-        final String startDate = (calendar.get(Calendar.YEAR) - 1) + "-"
-                + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
+        final String endDate = SharedPreferencesHelper.getInstance(context).getEndDate();
+        final String startDate = SharedPreferencesHelper.getInstance(context).getStartDate();
         final String rawData = Utils
                 .parseOnInternet("http://api.flurry.com/appMetrics/ActiveUsersByWeek?apiAccessCode="
                         + apiKey
@@ -139,7 +129,7 @@ public class BarChartTask extends AsyncTask<Void, Void, Void> {
             }
         }
     }
-    
+
     public static View getLineChart(Context context, ArrayList<AppMetricsData> activeUsers) {
         if (activeUsers == null)
             return null;

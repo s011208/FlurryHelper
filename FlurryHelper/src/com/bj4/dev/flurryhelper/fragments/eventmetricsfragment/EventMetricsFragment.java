@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.bj4.dev.flurryhelper.MainActivity;
 import com.bj4.dev.flurryhelper.R;
 import com.bj4.dev.flurryhelper.SharedData;
+import com.bj4.dev.flurryhelper.fragments.BaseFragment;
 import com.bj4.dev.flurryhelper.fragments.eventmetricsfragment.EventNameListAdapter.ViewHolder;
 import com.bj4.dev.flurryhelper.utils.EventMetrics;
 import com.bj4.dev.flurryhelper.utils.Utils;
@@ -26,7 +27,8 @@ import android.widget.ListView;
  * 
  * @author Yen-Hsun_Huang
  */
-public class EventMetricsFragment extends Fragment implements EventMetricsLoadingHelper.Callback {
+public class EventMetricsFragment extends BaseFragment implements
+        EventMetricsLoadingHelper.Callback {
     public static final String TAG = "EventMetricsFragment";
 
     public static final String PROJECT_KEY = "project_key";
@@ -65,7 +67,7 @@ public class EventMetricsFragment extends Fragment implements EventMetricsLoadin
                 ((MainActivity)activity).enterEventDetailedFragment(mProjectKey, em.getEventName());
             }
         });
-        final ArrayList<EventMetrics> data = SharedData.getInstance().getEventMetricsData(
+        final ArrayList<EventMetrics> data = SharedData.getEventMetricsData(
                 mProjectKey);
         if (data != null && data.isEmpty() == false) {
             // data exist
@@ -91,19 +93,6 @@ public class EventMetricsFragment extends Fragment implements EventMetricsLoadin
             EventNameListAdapter.ViewHolder holder = (ViewHolder)mEventNameList.getChildAt(i)
                     .getTag();
             Utils.expand(holder.mExpandableDetail);
-        }
-    }
-
-    private void checkLoadingView(boolean show, boolean animated) {
-        Activity activity = getActivity();
-        if (activity == null)
-            return;
-        if (activity instanceof MainActivity == false)
-            return;
-        if (show) {
-            ((MainActivity)activity).showLoadingView(true);
-        } else {
-            ((MainActivity)activity).hideLoadingView(true);
         }
     }
 

@@ -2,13 +2,9 @@
 package com.bj4.dev.flurryhelper.fragments.eventdetailedfragment;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Calendar;
-
 import com.bj4.dev.flurryhelper.SharedData;
 import com.bj4.dev.flurryhelper.SharedPreferencesHelper;
 import com.bj4.dev.flurryhelper.utils.EventDetailed;
-import com.bj4.dev.flurryhelper.utils.EventMetrics;
 import com.bj4.dev.flurryhelper.utils.Utils;
 
 import android.content.Context;
@@ -46,11 +42,8 @@ public class EventDetailedLoadingHelper extends AsyncTask<Void, Void, Void> {
         if (context == null)
             return null;
         final String apiKey = SharedPreferencesHelper.getInstance(context).getAPIKey();
-        Calendar calendar = Calendar.getInstance();
-        final String endDate = calendar.get(Calendar.YEAR) + "-"
-                + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
-        final String startDate = (calendar.get(Calendar.YEAR) - 1) + "-"
-                + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
+        final String endDate = SharedPreferencesHelper.getInstance(context).getEndDate();
+        final String startDate = SharedPreferencesHelper.getInstance(context).getStartDate();
         loadEventDetail(apiKey, startDate, endDate);
         if (mCallback != null && mCallback.get() != null)
             mCallback.get().notifyDataChanged();
@@ -58,7 +51,7 @@ public class EventDetailedLoadingHelper extends AsyncTask<Void, Void, Void> {
     }
 
     private void loadEventDetail(final String apiKey, final String startDate, final String endDate) {
-        final EventDetailed detailed = SharedData.getInstance().getEventDetailedData(mEventName);
+        final EventDetailed detailed = SharedData.getEventDetailedData(mEventName);
         if (detailed != null) {
             if (DEBUG)
                 Log.v(TAG, "data has loaded, ignore");
@@ -70,7 +63,7 @@ public class EventDetailedLoadingHelper extends AsyncTask<Void, Void, Void> {
         if (DEBUG) {
             Log.d(TAG, "rawData: " + rawData);
         }
-        SharedData.getInstance().addEventDetailedData(mEventName,
-                Utils.retrieveEventDetailedDataFromRaw(rawData));
+        SharedData
+                .addEventDetailedData(mEventName, Utils.retrieveEventDetailedDataFromRaw(rawData));
     }
 }

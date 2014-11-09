@@ -40,7 +40,7 @@ public class EventNameListAdapter extends BaseAdapter {
 
     private void initData() {
         mData.clear();
-        ArrayList<EventMetrics> data = SharedData.getInstance().getEventMetricsData(mProjectKey);
+        ArrayList<EventMetrics> data = SharedData.getEventMetricsData(mProjectKey);
         if (data != null) {
             mData.addAll(data);
         }

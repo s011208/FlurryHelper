@@ -14,6 +14,7 @@ import org.achartengine.renderer.XYSeriesRenderer;
 import com.bj4.dev.flurryhelper.MainActivity;
 import com.bj4.dev.flurryhelper.R;
 import com.bj4.dev.flurryhelper.SharedData;
+import com.bj4.dev.flurryhelper.fragments.BaseFragment;
 import com.bj4.dev.flurryhelper.utils.AppMetricsData;
 
 import android.app.Activity;
@@ -39,7 +40,7 @@ import android.widget.Spinner;
  * 
  * @author Yen-Hsun_Huang
  */
-public class AppMetricsFragment extends Fragment implements AppMetricsLoadingHelper.Callback {
+public class AppMetricsFragment extends BaseFragment implements AppMetricsLoadingHelper.Callback {
     public static final String TAG = "AppMetricsFragment";
 
     public static final String PROJECT_KEY = "project_key";
@@ -92,7 +93,7 @@ public class AppMetricsFragment extends Fragment implements AppMetricsLoadingHel
             // simple check
             return;
         }
-        final HashMap<String, ArrayList<AppMetricsData>> mapData = SharedData.getInstance()
+        final HashMap<String, ArrayList<AppMetricsData>> mapData = SharedData
                 .getAppMetricsData(mProjectKey);
         if (mapData == null) {
             // npe check
@@ -131,10 +132,6 @@ public class AppMetricsFragment extends Fragment implements AppMetricsLoadingHel
         for (int i = 0; i < metricsData.size(); i++) {
             metricsDataSeries.add(i, metricsData.get(i).getValue());
         }
-        double maxX = metricsDataSeries.getMaxX();
-        double minX = 0;
-        double maxY = metricsDataSeries.getMinY();
-        double minY = metricsDataSeries.getMaxY();
         final Resources res = context.getResources();
         XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
         dataset.addSeries(metricsDataSeries);
@@ -172,15 +169,14 @@ public class AppMetricsFragment extends Fragment implements AppMetricsLoadingHel
         multiRenderer.setShowGridX(true);
         multiRenderer.setShowGridY(false);
         multiRenderer.setShowLegend(true);
-        multiRenderer.setLegendTextSize(res
-                .getDimension(R.dimen.app_metrics_chart_value_textsize));
+        multiRenderer.setLegendTextSize(res.getDimension(R.dimen.app_metrics_chart_value_textsize));
         multiRenderer.setPanEnabled(true, true);
         multiRenderer.setClickEnabled(false);
         multiRenderer.setXLabelsColor(Color.BLACK);
         multiRenderer.setXLabels(0);
         multiRenderer.setXLabelsAngle(30);
-        multiRenderer.setLabelsTextSize(res
-                .getDimension(R.dimen.app_metrics_chart_value_textsize) * 0.5f);
+        multiRenderer
+                .setLabelsTextSize(res.getDimension(R.dimen.app_metrics_chart_value_textsize) * 0.5f);
         multiRenderer.setYLabels(15);
         multiRenderer.setYLabelsColor(0, Color.BLACK);
         multiRenderer.setYLabelsVerticalPadding(res
@@ -196,19 +192,6 @@ public class AppMetricsFragment extends Fragment implements AppMetricsLoadingHel
     @Override
     public void onStart() {
         super.onStart();
-    }
-
-    private void checkLoadingView(boolean show, boolean animated) {
-        Activity activity = getActivity();
-        if (activity == null)
-            return;
-        if (activity instanceof MainActivity == false)
-            return;
-        if (show) {
-            ((MainActivity)activity).showLoadingView(true);
-        } else {
-            ((MainActivity)activity).hideLoadingView(true);
-        }
     }
 
     private void loadData() {

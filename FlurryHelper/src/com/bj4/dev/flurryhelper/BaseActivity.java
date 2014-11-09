@@ -113,10 +113,10 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
             }
         });
         mTitle = (TextView)findViewById(R.id.menu_title);
-        if (SharedData.getInstance().getCompanyName() == null)
+        if (SharedData.getCompanyName() == null)
             mTitle.setText(sActionBarTitle);
         else {
-            mTitle.setText(SharedData.getInstance().getCompanyName().getCompanyName());
+            mTitle.setText(SharedData.getCompanyName().getCompanyName());
         }
         mExpandCollapse = (ViewSwitcher)findViewById(R.id.expand_collapse);
         mExpandCollapse.setDisplayedChild(mPreviousExpandState);

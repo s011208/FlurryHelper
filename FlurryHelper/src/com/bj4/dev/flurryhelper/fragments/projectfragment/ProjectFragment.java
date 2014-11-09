@@ -13,6 +13,7 @@ import com.bj4.dev.flurryhelper.SharedData;
 import com.bj4.dev.flurryhelper.SharedPreferencesHelper;
 import com.bj4.dev.flurryhelper.dialogs.MenuDialog;
 import com.bj4.dev.flurryhelper.dialogs.ProjectDataChooserDialog;
+import com.bj4.dev.flurryhelper.fragments.BaseFragment;
 import com.bj4.dev.flurryhelper.utils.CompanyName;
 import com.bj4.dev.flurryhelper.utils.Utils;
 
@@ -40,7 +41,7 @@ import android.widget.Toast;
  * 
  * @author yenhsunhuang
  */
-public class ProjectFragment extends Fragment {
+public class ProjectFragment extends BaseFragment {
     public static final String TAG = "ProjectFragment";
 
     private View mContent;
@@ -49,11 +50,11 @@ public class ProjectFragment extends Fragment {
 
     private ProjectInfoAdapter mProjectInfoAdapter;
 
+    @Override
     public void notifyDataChanged() {
         final MainActivity activity = (MainActivity)getActivity();
         activity.hideLoadingView(true);
-        final SharedData sd = SharedData.getInstance();
-        final CompanyName currentCompany = sd.getCompanyName();
+        final CompanyName currentCompany = SharedData.getCompanyName();
         if (currentCompany != null) {
             activity.setActionBarTitle(currentCompany.getCompanyName());
             mProjectInfoAdapter.notifyDataSetChanged();
@@ -88,9 +89,9 @@ public class ProjectFragment extends Fragment {
                 dialog.show(getFragmentManager(), ProjectDataChooserDialog.TAG);
             }
         });
-        final SharedData sd = SharedData.getInstance();
-        final CompanyName currentCompany = sd.getCompanyName();
+        final CompanyName currentCompany = SharedData.getCompanyName();
         if (currentCompany == null) {
+            checkLoadingView(true, true);
             new RetrieveApplicationInfoTask(this, getActivity()).execute();
         } else {
             notifyDataChanged();

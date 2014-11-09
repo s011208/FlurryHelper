@@ -33,10 +33,9 @@ public class RetrieveApplicationInfoTask extends AsyncTask<Void, Void, Void> {
                         + apiKey);
         if (rawData != null) {
             final CompanyName cn = Utils.retrieveCompanyName(rawData);
-            final SharedData sd = SharedData.getInstance();
             if (cn != null) {
-                sd.setCompanyName(cn);
-                sd.addProjectInfos(Utils.retrieveProjectInfos(rawData));
+                SharedData.setCompanyName(cn);
+                SharedData.addProjectInfos(Utils.retrieveProjectInfos(rawData));
             }
         }
         return null;

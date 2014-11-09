@@ -50,9 +50,16 @@ public class SharedData {
 
     private static final Object sLock = new Object();
 
-    private static SharedData sInstance;
-
     private static CompanyName sCompanyName;
+
+    private static SharedPreferencesHelper sSharedPreferencesHelper;
+
+    public static void setPrefHelper(SharedPreferencesHelper helper) {
+        sSharedPreferencesHelper = helper;
+    }
+
+    private SharedData() {
+    }
 
     private static final ArrayList<ProjectInfo> sProjectInfos = new ArrayList<ProjectInfo>();
 
@@ -62,17 +69,7 @@ public class SharedData {
 
     private static final HashMap<String, EventDetailed> sEventDetailed = new HashMap<String, EventDetailed>();
 
-    public static synchronized SharedData getInstance() {
-        if (sInstance == null) {
-            sInstance = new SharedData();
-        }
-        return sInstance;
-    }
-
-    private SharedData() {
-    }
-
-    public void addEventDetailedData(final String eventName, EventDetailed detailed) {
+    public static void addEventDetailedData(final String eventName, EventDetailed detailed) {
         if (eventName == null || detailed == null)
             return;
         synchronized (sLock) {
@@ -80,7 +77,7 @@ public class SharedData {
         }
     }
 
-    public EventDetailed getEventDetailedData(final String eventName) {
+    public static EventDetailed getEventDetailedData(final String eventName) {
         if (eventName == null)
             return null;
         synchronized (sLock) {
@@ -88,7 +85,8 @@ public class SharedData {
         }
     }
 
-    public void addEventMetricsData(final String projectKey, ArrayList<EventMetrics> eventMatrics) {
+    public static void addEventMetricsData(final String projectKey,
+            ArrayList<EventMetrics> eventMatrics) {
         if (eventMatrics == null || projectKey == null)
             return;
         synchronized (sLock) {
@@ -105,13 +103,21 @@ public class SharedData {
         }
     }
 
-    public ArrayList<EventMetrics> getEventMetricsData(final String projectKey) {
+    public static void onDateOrVersionChanged() {
+        synchronized (sLock) {
+            sAppMetricsData.clear();
+            sEventMetrics.clear();
+            sEventDetailed.clear();
+        }
+    }
+
+    public static ArrayList<EventMetrics> getEventMetricsData(final String projectKey) {
         synchronized (sLock) {
             return sEventMetrics.get(projectKey);
         }
     }
 
-    public void addAppMetricsData(final String projectKey, final String key,
+    public static void addAppMetricsData(final String projectKey, final String key,
             final ArrayList<AppMetricsData> values) {
         if (values == null || key == null || projectKey == null)
             return;
@@ -125,7 +131,8 @@ public class SharedData {
         }
     }
 
-    public HashMap<String, ArrayList<AppMetricsData>> getAppMetricsData(final String projectKey) {
+    public static HashMap<String, ArrayList<AppMetricsData>> getAppMetricsData(
+            final String projectKey) {
         if (projectKey == null)
             return null;
         synchronized (sLock) {
@@ -133,7 +140,7 @@ public class SharedData {
         }
     }
 
-    public void clearAllData() {
+    public static void clearAllData() {
         synchronized (sLock) {
             sCompanyName = null;
             sProjectInfos.clear();
@@ -143,13 +150,13 @@ public class SharedData {
         }
     }
 
-    public CompanyName getCompanyName() {
+    public static CompanyName getCompanyName() {
         synchronized (sLock) {
             return sCompanyName;
         }
     }
 
-    public void setCompanyName(final CompanyName cn) {
+    public static void setCompanyName(final CompanyName cn) {
         synchronized (sLock) {
             sCompanyName = cn;
             sProjectInfos.clear();
@@ -158,21 +165,21 @@ public class SharedData {
         }
     }
 
-    public void addProjectInfo(final ProjectInfo info) {
+    public static void addProjectInfo(final ProjectInfo info) {
         synchronized (sLock) {
             sProjectInfos.add(info);
             sortProjectInfos();
         }
     }
 
-    public void addProjectInfos(final ArrayList<ProjectInfo> infos) {
+    public static void addProjectInfos(final ArrayList<ProjectInfo> infos) {
         synchronized (sLock) {
             sProjectInfos.addAll(infos);
             sortProjectInfos();
         }
     }
 
-    private void sortProjectInfos() {
+    private static void sortProjectInfos() {
         Collections.sort(sProjectInfos, new Comparator<ProjectInfo>() {
             @Override
             public int compare(ProjectInfo lhs, ProjectInfo rhs) {
@@ -181,7 +188,7 @@ public class SharedData {
         });
     }
 
-    public ArrayList<ProjectInfo> getProjectInfos() {
+    public static ArrayList<ProjectInfo> getProjectInfos() {
         synchronized (sLock) {
             return sProjectInfos;
         }

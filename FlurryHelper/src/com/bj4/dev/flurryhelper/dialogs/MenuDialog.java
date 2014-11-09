@@ -49,6 +49,7 @@ public class MenuDialog extends DialogFragment {
 
         ArrayList<String> data = new ArrayList<String>();
         data.add(mContext.getString(R.string.menu_set_api_key));
+        data.add(mContext.getString(R.string.menu_set_time_period));
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
                 android.R.layout.simple_list_item_1, data);
         AlertDialog dialog = new AlertDialog.Builder(mContext)
@@ -63,10 +64,32 @@ public class MenuDialog extends DialogFragment {
                             case 0:
                                 cb.clickSetAPIKey();
                                 break;
+                            case 1:
+                                showDisplayPeriodDialog();
+                                break;
                         }
                     }
                 }).setCancelable(true).setTitle(null).create();
         return dialog;
+    }
+
+    private void showDisplayPeriodDialog() {
+        new AlertDialog.Builder(mContext).setSingleChoiceItems(
+                new CharSequence[] {
+                        mContext.getString(R.string.diaply_period_last_day),
+                        mContext.getString(R.string.diaply_period_last_week),
+                        mContext.getString(R.string.diaply_period_last_month),
+                        mContext.getString(R.string.diaply_period_three_months),
+                        mContext.getString(R.string.diaply_period_half_year),
+                        mContext.getString(R.string.diaply_period_year),
+                }, SharedPreferencesHelper.getInstance(mContext).getDisplayPeriod(),
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        SharedPreferencesHelper.getInstance(mContext).setDisplayPeriod(arg1);
+                    }
+                }).show();
     }
 
     @Override

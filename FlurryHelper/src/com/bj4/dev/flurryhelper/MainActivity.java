@@ -9,6 +9,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.bj4.dev.flurryhelper.dialogs.SetApiDialog;
+import com.bj4.dev.flurryhelper.fragments.BaseFragment;
 import com.bj4.dev.flurryhelper.fragments.appmetricsfragment.AppMetricsFragment;
 import com.bj4.dev.flurryhelper.fragments.eventdetailedfragment.EventDetailedFragment;
 import com.bj4.dev.flurryhelper.fragments.eventmetricsfragment.EventMetricsFragment;
@@ -39,7 +40,8 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.os.Build;
 
-public class MainActivity extends BaseActivity implements IntroductionViewCallback {
+public class MainActivity extends BaseActivity implements IntroductionViewCallback,
+        SharedPreferencesHelper.Callback {
 
     private IntroductionView mIntroductionView;
 
@@ -61,10 +63,16 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedData.getInstance();// init singleton
+        SharedPreferencesHelper.getInstance(getApplicationContext()).setCallback(this);
+        SharedData.setPrefHelper(SharedPreferencesHelper.getInstance(getApplicationContext()));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initComponent();
+    }
+
+    public void onDestroy() {
+        SharedPreferencesHelper.getInstance(getApplicationContext()).removeCallback();
+        super.onDestroy();
     }
 
     public void initComponent() {
@@ -109,7 +117,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
             showActionBar();
         }
         if (clearOldData) {
-            SharedData.getInstance().clearAllData();
+            SharedData.clearAllData();
         }
         Fragment previousDiaog = getFragmentManager().findFragmentByTag(AppMetricsFragment.TAG);
         if (previousDiaog != null) {
@@ -166,7 +174,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction
                 .setCustomAnimations(R.anim.fragment_alpha_in, R.anim.fragment_alpha_out);
-        ProjectFragment fragment = new ProjectFragment();
+        BaseFragment fragment = new ProjectFragment();
         fragmentTransaction.replace(R.id.fragment_main, fragment, ProjectFragment.TAG);
         fragmentTransaction.commit();
         mNavigationFragment = FRAGMENT_TYPE_PROJECT;
@@ -179,7 +187,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction
                 .setCustomAnimations(R.anim.fragment_alpha_in, R.anim.fragment_alpha_out);
-        AppMetricsFragment fragment = new AppMetricsFragment();
+        BaseFragment fragment = new AppMetricsFragment();
         Bundle args = new Bundle();
         args.putString(AppMetricsFragment.PROJECT_KEY, projectKey);
         fragment.setArguments(args);
@@ -195,7 +203,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction
                 .setCustomAnimations(R.anim.fragment_alpha_in, R.anim.fragment_alpha_out);
-        EventMetricsFragment fragment = new EventMetricsFragment();
+        BaseFragment fragment = new EventMetricsFragment();
         Bundle args = new Bundle();
         args.putString(EventMetricsFragment.PROJECT_KEY, projectKey);
         fragment.setArguments(args);
@@ -211,7 +219,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction
                 .setCustomAnimations(R.anim.fragment_alpha_in, R.anim.fragment_alpha_out);
-        EventDetailedFragment fragment = new EventDetailedFragment();
+        BaseFragment fragment = new EventDetailedFragment();
         Bundle args = new Bundle();
         args.putString(EventDetailedFragment.PROJECT_KEY, projectKey);
         args.putString(EventDetailedFragment.EVENT_NAME_KEY, eventName);
@@ -329,5 +337,36 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         if (currentFragment != null) {
             ((EventMetricsFragment)currentFragment).onExpandStatusChanged();
         }
+    }
+
+    @Override
+    public void onVersionChanged() {
+        notifyFragmentDataChanged();
+    }
+
+    private void notifyFragmentDataChanged() {
+        SharedData.onDateOrVersionChanged();
+        Fragment fragment = null;
+        switch (mNavigationFragment) {
+            case FRAGMENT_TYPE_APPMETRICS:
+                fragment = getFragmentManager().findFragmentByTag(AppMetricsFragment.TAG);
+                break;
+            case FRAGMENT_TYPE_EVENTMETRICS:
+                fragment = getFragmentManager().findFragmentByTag(EventMetricsFragment.TAG);
+                break;
+            case FRAGMENT_TYPE_EVENT_DETAILED:
+                fragment = getFragmentManager().findFragmentByTag(EventDetailedFragment.TAG);
+                break;
+        }
+        if (fragment == null)
+            return;
+        if (fragment instanceof BaseFragment == false)
+            return;
+        ((BaseFragment)fragment).notifyDataChanged();
+    }
+
+    @Override
+    public void onDatePeriodChanged() {
+        notifyFragmentDataChanged();
     }
 }
