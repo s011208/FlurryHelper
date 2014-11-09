@@ -63,4 +63,10 @@ public class EventDetailed {
         return mParameters.get(key);
     }
 
+    public ArrayList<String> getAllActions() {
+        ArrayList<String> rtn = new ArrayList<String>();
+        rtn.addAll(mParameters.keySet());
+        return rtn;
+    }
+
 }
