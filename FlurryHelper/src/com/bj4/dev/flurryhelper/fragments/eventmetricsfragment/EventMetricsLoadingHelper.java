@@ -3,8 +3,10 @@ package com.bj4.dev.flurryhelper.fragments.eventmetricsfragment;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+
 import com.bj4.dev.flurryhelper.SharedData;
 import com.bj4.dev.flurryhelper.SharedPreferencesHelper;
+import com.bj4.dev.flurryhelper.utils.AppVersionInfo;
 import com.bj4.dev.flurryhelper.utils.EventMetrics;
 import com.bj4.dev.flurryhelper.utils.Utils;
 
@@ -59,9 +61,13 @@ public class EventMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
                 Log.v(TAG, "data has loaded, ignore");
             return;
         }
+        String versionName = SharedData.getVersionInfo(mProjectKey).getSelectedVersion();
+        if (!AppVersionInfo.VERSION_NOT_SET.equals(versionName)) {
+            versionName = "&versionName=" + versionName;
+        }
         final String rawData = Utils.parseOnInternet("http://api.flurry.com/eventMetrics/Summary"
                 + "?apiAccessCode=" + apiKey + "&apiKey=" + mProjectKey + "&startDate=" + startDate
-                + "&endDate=" + endDate);
+                + "&endDate=" + endDate + versionName);
         if (DEBUG)
             Log.d(TAG, "rawData: " + rawData);
         SharedData.addEventMetricsData(mProjectKey, Utils.retrieveEventMetricsDataFromRaw(rawData),

@@ -59,8 +59,6 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
 
     private int mNavigationFragment = FRAGMENT_TYPE_PROJECT;
 
-    private String mProjectKey;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferencesHelper.getInstance(getApplicationContext()).setCallback(this);
@@ -156,13 +154,9 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         }
     }
 
-    public void setProjectKey(String key) {
-        mProjectKey = key;
-    }
-
     private void navigateFragment() {
         if (mNavigationFragment == FRAGMENT_TYPE_EVENT_DETAILED) {
-            enterEventMetricsFragment(mProjectKey);
+            enterEventMetricsFragment(getProjectKey());
         } else if (mNavigationFragment == FRAGMENT_TYPE_APPMETRICS
                 || mNavigationFragment == FRAGMENT_TYPE_EVENTMETRICS) {
             enterCompanyFragment();
@@ -170,6 +164,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
     }
 
     public void enterCompanyFragment() {
+        setProjectKey(null);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction
@@ -183,6 +178,8 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
     }
 
     public void enterAppMetricsFragment(final String projectKey) {
+        setProjectKey(projectKey);
+        parseVersionInfoIfNeeded(projectKey);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction
@@ -199,6 +196,8 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
     }
 
     public void enterEventMetricsFragment(final String projectKey) {
+        setProjectKey(projectKey);
+        parseVersionInfoIfNeeded(projectKey);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction
@@ -215,6 +214,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
     }
 
     public void enterEventDetailedFragment(final String projectKey, final String eventName) {
+        setProjectKey(projectKey);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction
@@ -229,6 +229,10 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         mNavigationFragment = FRAGMENT_TYPE_EVENT_DETAILED;
         showNavigator();
         showExpandCollapse(false);
+    }
+
+    private void parseVersionInfoIfNeeded(final String projectKey) {
+        new RetrieveVersionInfoTask(this, projectKey).execute();
     }
 
     public boolean isLoadingViewShowing() {

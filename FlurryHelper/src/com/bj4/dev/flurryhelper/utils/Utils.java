@@ -89,6 +89,28 @@ public class Utils {
         return rtn;
     }
 
+    public static AppVersionInfo retrieveVersionInfoFromRaw(final String rawData) {
+        AppVersionInfo rtn = null;
+        final ArrayList<String> versions = new ArrayList<String>();
+        try {
+            JSONObject parent = new JSONObject(rawData);
+            try {
+                JSONArray data = parent.getJSONArray("version");
+                for (int i = 0; i < data.length(); i++) {
+                    JSONObject rawJsonData = data.getJSONObject(i);
+                    versions.add(rawJsonData.getString("@name"));
+                }
+            } catch (Exception e) {
+                JSONObject rawJsonData = parent.getJSONObject("version");
+                versions.add(rawJsonData.getString("@name"));
+            }
+            rtn = new AppVersionInfo(versions);
+        } catch (JSONException e) {
+            Log.w(TAG, "failed", e);
+        }
+        return rtn;
+    }
+
     public static ArrayList<AppMetricsData> retrieveAppMetricsDataFromRaw(final String rawData) {
         final ArrayList<AppMetricsData> rtn = new ArrayList<AppMetricsData>();
         try {

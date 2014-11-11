@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import android.util.Log;
+
 import com.bj4.dev.flurryhelper.utils.AppMetricsData;
 import com.bj4.dev.flurryhelper.utils.AppVersionInfo;
 import com.bj4.dev.flurryhelper.utils.CompanyName;
@@ -67,7 +69,9 @@ public class SharedData {
         synchronized (sLock) {
             AppVersionInfo info = sAppVersionInfo.get(projectKey);
             if (info != null) {
-                info.setSelectedVersion(info.getVersions().get(index));
+                String version = index == 0 ? AppVersionInfo.VERSION_NOT_SET : info.getVersions()
+                        .get(index - 1);
+                info.setSelectedVersion(version);
             }
         }
     }
@@ -231,5 +235,4 @@ public class SharedData {
             return sProjectInfos;
         }
     }
-
 }

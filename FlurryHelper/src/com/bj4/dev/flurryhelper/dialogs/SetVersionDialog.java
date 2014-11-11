@@ -47,10 +47,10 @@ public class SetVersionDialog extends DialogFragment {
                 selection = info.getSelectedVersionIndex();
             }
         }
-        CharSequence[] data = new CharSequence[adapter.size() + 1];
+        final CharSequence[] data = new CharSequence[adapter.size() + 1];
         data[0] = getActivity().getString(R.string.version_dialog_all_version);
-        for (int i = 1; i < adapter.size(); i++) {
-            data[i] = adapter.get(i);
+        for (int i = 0; i < adapter.size(); i++) {
+            data[i + 1] = adapter.get(i);
         }
 
         AlertDialog dialog = new AlertDialog.Builder(getActivity()).setSingleChoiceItems(data,
@@ -58,7 +58,7 @@ public class SetVersionDialog extends DialogFragment {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedData.setSelectedVersion(projectKey, which - 1);
+                        SharedData.setSelectedVersion(projectKey, which);
                         ((MainActivity)getActivity()).onVersionChanged();
                     }
                 }).create();

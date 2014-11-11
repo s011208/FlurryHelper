@@ -14,7 +14,7 @@ public class AppVersionInfo {
             return 0;
         for (int i = 0; i < mVersions.size(); i++) {
             if (mSelectedVersion.equals(mVersions.get(i))) {
-                return i;
+                return i + 1;
             }
         }
         return 0;

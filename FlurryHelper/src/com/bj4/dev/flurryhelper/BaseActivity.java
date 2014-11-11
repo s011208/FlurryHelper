@@ -42,6 +42,16 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
 
     private static String sActionBarTitle = "";
 
+    private String mProjectKey;
+
+    public void setProjectKey(String key) {
+        mProjectKey = key;
+    }
+
+    public String getProjectKey() {
+        return mProjectKey;
+    }
+
     private void setMainLayout() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -110,7 +120,7 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
                 MenuDialog dialog = new MenuDialog();
                 dialog.setCallback(BaseActivity.this);
                 Bundle args = new Bundle();
-                args.putString(MenuDialog.PROJECT_KEY, null);
+                args.putString(MenuDialog.PROJECT_KEY, getProjectKey());
                 dialog.setArguments(args);
                 dialog.show(getFragmentManager(), MenuDialog.TAG);
             }

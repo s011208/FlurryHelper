@@ -8,6 +8,7 @@ import java.util.HashMap;
 import com.bj4.dev.flurryhelper.SharedData;
 import com.bj4.dev.flurryhelper.SharedPreferencesHelper;
 import com.bj4.dev.flurryhelper.utils.AppMetricsData;
+import com.bj4.dev.flurryhelper.utils.AppVersionInfo;
 import com.bj4.dev.flurryhelper.utils.Utils;
 
 import android.content.Context;
@@ -95,9 +96,14 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
         }
+        String versionName = SharedData.getVersionInfo(mProjectKey).getSelectedVersion();
+        if (!AppVersionInfo.VERSION_NOT_SET.equals(versionName)) {
+            versionName = "&versionName=" + versionName;
+        }
+
         final String rawData = Utils.parseOnInternet("http://api.flurry.com/appMetrics/" + metric
                 + "?apiAccessCode=" + apiKey + "&apiKey=" + mProjectKey + "&startDate=" + startDate
-                + "&endDate=" + endDate);
+                + "&endDate=" + endDate + versionName);
         SharedData.addAppMetricsData(mProjectKey, metric,
                 Utils.retrieveAppMetricsDataFromRaw(rawData), mCurrentTimePeriod, mCurrentVersion);
     }

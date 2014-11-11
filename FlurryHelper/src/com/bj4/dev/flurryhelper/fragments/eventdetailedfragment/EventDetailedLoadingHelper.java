@@ -2,8 +2,10 @@
 package com.bj4.dev.flurryhelper.fragments.eventdetailedfragment;
 
 import java.lang.ref.WeakReference;
+
 import com.bj4.dev.flurryhelper.SharedData;
 import com.bj4.dev.flurryhelper.SharedPreferencesHelper;
+import com.bj4.dev.flurryhelper.utils.AppVersionInfo;
 import com.bj4.dev.flurryhelper.utils.EventDetailed;
 import com.bj4.dev.flurryhelper.utils.Utils;
 
@@ -14,7 +16,7 @@ import android.util.Log;
 public class EventDetailedLoadingHelper extends AsyncTask<Void, Void, Void> {
     private static final String TAG = "EventDetailedLoadingHelper";
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     public interface Callback {
         public void notifyDataChanged();
@@ -62,9 +64,13 @@ public class EventDetailedLoadingHelper extends AsyncTask<Void, Void, Void> {
                 Log.v(TAG, "data has loaded, ignore");
             return;
         }
+        String versionName = SharedData.getVersionInfo(mProjectKey).getSelectedVersion();
+        if (!AppVersionInfo.VERSION_NOT_SET.equals(versionName)) {
+            versionName = "&versionName=" + versionName;
+        }
         final String rawData = Utils.parseOnInternet("http://api.flurry.com/eventMetrics/Event"
                 + "?apiAccessCode=" + apiKey + "&apiKey=" + mProjectKey + "&startDate=" + startDate
-                + "&endDate=" + endDate + "&eventName=" + mEventName);
+                + "&endDate=" + endDate + "&eventName=" + mEventName + versionName);
         if (DEBUG) {
             Log.d(TAG, "rawData: " + rawData);
         }
