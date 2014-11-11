@@ -19,10 +19,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 public class SetApiDialog extends DialogFragment {
-    /*
-     * SetApiDialog dialog = new SetApiDialog(); dialog.setCallback(this);
-     * dialog.show(getFragmentManager(), SetApiDialog.TAG);
-     */
+
     public static final String TAG = "SetApiDialog";
 
     public interface SetApiSuccess {

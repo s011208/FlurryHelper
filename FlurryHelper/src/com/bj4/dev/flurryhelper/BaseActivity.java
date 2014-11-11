@@ -109,6 +109,9 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
             public void onClick(View arg0) {
                 MenuDialog dialog = new MenuDialog();
                 dialog.setCallback(BaseActivity.this);
+                Bundle args = new Bundle();
+                args.putString(MenuDialog.PROJECT_KEY, null);
+                dialog.setArguments(args);
                 dialog.show(getFragmentManager(), MenuDialog.TAG);
             }
         });

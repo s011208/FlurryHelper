@@ -12,6 +12,7 @@
     <!-- menu -->
     <string name="menu_set_api_key">Set API key</string>
     <string name="menu_set_time_period">Set time period</string>
+    <string name="menu_set_version">Set version</string>
     <string name="diaply_period_last_day">Last day</string>
     <string name="diaply_period_last_week">Last week</string>
     <string name="diaply_period_last_month">Last month</string>
@@ -27,5 +28,7 @@
     <string name="event_metrics_avg_users_last_week">Avg users last week</string>
     <string name="event_metrics_total_counts">Total counts</string>
     <string name="event_metrics_total_sessions">Total sessions</string>
+    <!-- version dialog -->
+    <string name="version_dialog_all_version">All version</string>
 
 </resources>

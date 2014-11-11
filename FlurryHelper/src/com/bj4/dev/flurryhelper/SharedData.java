@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 import com.bj4.dev.flurryhelper.utils.AppMetricsData;
+import com.bj4.dev.flurryhelper.utils.AppVersionInfo;
 import com.bj4.dev.flurryhelper.utils.CompanyName;
 import com.bj4.dev.flurryhelper.utils.EventDetailed;
 import com.bj4.dev.flurryhelper.utils.EventMetrics;
@@ -49,6 +50,35 @@ public class SharedData {
     }
 
     private static final Object sLock = new Object();
+
+    public static final HashMap<String, AppVersionInfo> sAppVersionInfo = new HashMap<String, AppVersionInfo>();
+
+    public static AppVersionInfo getVersionInfo(final String projectKey) {
+        if (projectKey == null)
+            return null;
+        synchronized (sLock) {
+            return sAppVersionInfo.get(projectKey);
+        }
+    }
+
+    public static void setSelectedVersion(final String projectKey, final int index) {
+        if (projectKey == null)
+            return;
+        synchronized (sLock) {
+            AppVersionInfo info = sAppVersionInfo.get(projectKey);
+            if (info != null) {
+                info.setSelectedVersion(info.getVersions().get(index));
+            }
+        }
+    }
+
+    public static void addVersionInfo(final String projectKey, AppVersionInfo info) {
+        if (projectKey == null || info == null)
+            return;
+        synchronized (sLock) {
+            sAppVersionInfo.put(projectKey, info);
+        }
+    }
 
     private static CompanyName sCompanyName;
 
@@ -154,6 +184,7 @@ public class SharedData {
             sAppMetricsData.clear();
             sEventMetrics.clear();
             sEventDetailed.clear();
+            sAppVersionInfo.clear();
         }
     }
 

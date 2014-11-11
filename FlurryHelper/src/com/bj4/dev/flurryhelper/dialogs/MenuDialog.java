@@ -27,6 +27,8 @@ public class MenuDialog extends DialogFragment {
         public void clickSetAPIKey();
     }
 
+    public static final String PROJECT_KEY = "project_key";
+
     public static final String TAG = "MenuDialog";
 
     private Context mContext;
@@ -46,10 +48,19 @@ public class MenuDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         mContext = new ContextThemeWrapper(getActivity(),
                 android.R.style.Theme_DeviceDefault_Light_Dialog);
-
+        Bundle args = getArguments();
+        final String projectKey;
+        if (args != null) {
+            projectKey = args.getString(PROJECT_KEY);
+        } else {
+            projectKey = null;
+        }
         ArrayList<String> data = new ArrayList<String>();
         data.add(mContext.getString(R.string.menu_set_api_key));
         data.add(mContext.getString(R.string.menu_set_time_period));
+        if (projectKey != null) {
+            data.add(mContext.getString(R.string.menu_set_version));
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
                 android.R.layout.simple_list_item_1, data);
         AlertDialog dialog = new AlertDialog.Builder(mContext)
@@ -67,10 +78,21 @@ public class MenuDialog extends DialogFragment {
                             case 1:
                                 showDisplayPeriodDialog();
                                 break;
+                            case 2:
+                                showSetVersionDialog(projectKey);
+                                break;
                         }
                     }
                 }).setCancelable(true).setTitle(null).create();
         return dialog;
+    }
+
+    private void showSetVersionDialog(final String projectKey) {
+        SetVersionDialog dialog = new SetVersionDialog();
+        Bundle b = new Bundle();
+        b.putString(SetVersionDialog.PROJECT_KEY, projectKey);
+        dialog.setArguments(b);
+        dialog.show(getFragmentManager(), SetVersionDialog.TAG);
     }
 
     private void showDisplayPeriodDialog() {

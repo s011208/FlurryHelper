@@ -93,7 +93,6 @@ public class SharedPreferencesHelper {
     public String getStartDate() {
         Calendar calendar = Calendar.getInstance();
         final int period = getDisplayPeriod();
-        final int day = 1000 * 60 * 60 * 24;
         switch (period) {
             case DISPLAY_PERIOD_ONE_DAY:
                 calendar.add(Calendar.DATE, -1);
