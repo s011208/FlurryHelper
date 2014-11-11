@@ -9,6 +9,8 @@ import android.app.Fragment;
 public abstract class BaseFragment extends Fragment {
     public abstract void notifyDataChanged();
 
+    public abstract void askToReload();
+
     public void checkLoadingView(boolean show, boolean animated) {
         Activity activity = getActivity();
         if (activity == null)

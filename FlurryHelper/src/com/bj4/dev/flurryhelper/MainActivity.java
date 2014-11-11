@@ -363,6 +363,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
         if (fragment instanceof BaseFragment == false)
             return;
         ((BaseFragment)fragment).notifyDataChanged();
+        ((BaseFragment)fragment).askToReload();
     }
 
     @Override

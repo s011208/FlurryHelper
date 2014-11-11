@@ -29,10 +29,15 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
 
     private final WeakReference<Callback> mCallback;
 
+    private final int mCurrentTimePeriod;
+
+    private final int mCurrentVersion = 0;
+
     public AppMetricsLoadingHelper(Context context, String projectKey, Callback cb) {
         mProjectKey = projectKey;
         mContext = new WeakReference<Context>(context);
         mCallback = new WeakReference<Callback>(cb);
+        mCurrentTimePeriod = SharedPreferencesHelper.getInstance(context).getDisplayPeriod();
     }
 
     @Override
@@ -94,7 +99,7 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
                 + "?apiAccessCode=" + apiKey + "&apiKey=" + mProjectKey + "&startDate=" + startDate
                 + "&endDate=" + endDate);
         SharedData.addAppMetricsData(mProjectKey, metric,
-                Utils.retrieveAppMetricsDataFromRaw(rawData));
+                Utils.retrieveAppMetricsDataFromRaw(rawData), mCurrentTimePeriod, mCurrentVersion);
     }
 
 }

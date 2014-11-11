@@ -2,6 +2,7 @@
 package com.bj4.dev.flurryhelper;
 
 import java.lang.ref.WeakReference;
+import java.sql.Date;
 import java.util.Calendar;
 
 import android.content.Context;
@@ -95,22 +96,22 @@ public class SharedPreferencesHelper {
         final int day = 1000 * 60 * 60 * 24;
         switch (period) {
             case DISPLAY_PERIOD_ONE_DAY:
-                calendar.setTimeInMillis(calendar.getTimeInMillis() - day);
+                calendar.add(Calendar.DATE, -1);
                 break;
             case DISPLAY_PERIOD_ONE_WEEK:
-                calendar.setTimeInMillis(calendar.getTimeInMillis() - day * 7);
+                calendar.add(Calendar.DATE, -7);
                 break;
             case DISPLAY_PERIOD_ONE_MONTH:
-                calendar.setTimeInMillis(calendar.getTimeInMillis() - day * 30);
+                calendar.add(Calendar.DATE, -30);
                 break;
             case DISPLAY_PERIOD_THREE_MONTHS:
-                calendar.setTimeInMillis(calendar.getTimeInMillis() - day * 90);
+                calendar.add(Calendar.DATE, -91);
                 break;
             case DISPLAY_PERIOD_HALF_YEAR:
-                calendar.setTimeInMillis(calendar.getTimeInMillis() - day * 183);
+                calendar.add(Calendar.DATE, -183);
                 break;
             case DISPLAY_PERIOD_YEAR:
-                calendar.setTimeInMillis(calendar.getTimeInMillis() - day * 365);
+                calendar.add(Calendar.DATE, -365);
                 break;
         }
         return calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-"

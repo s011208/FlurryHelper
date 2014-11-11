@@ -27,10 +27,15 @@ public class EventMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
 
     private final WeakReference<Callback> mCallback;
 
+    private final int mCurrentTimePeriod;
+
+    private final int mCurrentVersion = 0;
+
     public EventMetricsLoadingHelper(Context context, String projectKey, Callback cb) {
         mProjectKey = projectKey;
         mContext = new WeakReference<Context>(context);
         mCallback = new WeakReference<Callback>(cb);
+        mCurrentTimePeriod = SharedPreferencesHelper.getInstance(context).getDisplayPeriod();
     }
 
     @Override
@@ -39,7 +44,7 @@ public class EventMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
         if (context == null)
             return null;
         final String apiKey = SharedPreferencesHelper.getInstance(context).getAPIKey();
-            final String endDate = SharedPreferencesHelper.getInstance(context).getEndDate();
+        final String endDate = SharedPreferencesHelper.getInstance(context).getEndDate();
         final String startDate = SharedPreferencesHelper.getInstance(context).getStartDate();
         loadAppMetric(apiKey, startDate, endDate);
         if (mCallback != null && mCallback.get() != null)
@@ -48,8 +53,7 @@ public class EventMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
     }
 
     private void loadAppMetric(final String apiKey, final String startDate, final String endDate) {
-        final ArrayList<EventMetrics> data = SharedData.getEventMetricsData(
-                mProjectKey);
+        final ArrayList<EventMetrics> data = SharedData.getEventMetricsData(mProjectKey);
         if (data != null && data.isEmpty() == false) {
             if (DEBUG)
                 Log.v(TAG, "data has loaded, ignore");
@@ -60,7 +64,7 @@ public class EventMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
                 + "&endDate=" + endDate);
         if (DEBUG)
             Log.d(TAG, "rawData: " + rawData);
-        SharedData.addEventMetricsData(mProjectKey,
-                Utils.retrieveEventMetricsDataFromRaw(rawData));
+        SharedData.addEventMetricsData(mProjectKey, Utils.retrieveEventMetricsDataFromRaw(rawData),
+                mCurrentTimePeriod, mCurrentVersion);
     }
 }

@@ -93,9 +93,16 @@ public class Utils {
         final ArrayList<AppMetricsData> rtn = new ArrayList<AppMetricsData>();
         try {
             JSONObject parent = new JSONObject(rawData);
-            JSONArray data = parent.getJSONArray("day");
-            for (int i = 0; i < data.length(); i++) {
-                JSONObject rawJsonData = data.getJSONObject(i);
+            try {
+                JSONArray data = parent.getJSONArray("day");
+                for (int i = 0; i < data.length(); i++) {
+                    JSONObject rawJsonData = data.getJSONObject(i);
+                    AppMetricsData au = new AppMetricsData(rawJsonData.getString("@date"),
+                            Long.valueOf(rawJsonData.getString("@value")));
+                    rtn.add(au);
+                }
+            } catch (Exception e) {
+                JSONObject rawJsonData = parent.getJSONObject("day");
                 AppMetricsData au = new AppMetricsData(rawJsonData.getString("@date"),
                         Long.valueOf(rawJsonData.getString("@value")));
                 rtn.add(au);
@@ -110,9 +117,24 @@ public class Utils {
         final ArrayList<EventMetrics> rtn = new ArrayList<EventMetrics>();
         try {
             JSONObject parent = new JSONObject(rawData);
-            JSONArray data = parent.getJSONArray("event");
-            for (int i = 0; i < data.length(); i++) {
-                JSONObject rawJsonData = data.getJSONObject(i);
+            try {
+                JSONArray data = parent.getJSONArray("event");
+                for (int i = 0; i < data.length(); i++) {
+                    JSONObject rawJsonData = data.getJSONObject(i);
+                    EventMetrics metrics = new EventMetrics(
+                            rawJsonData.getLong("@avgUsersLastDay"),
+                            rawJsonData.getLong("@avgUsersLastMonth"),
+                            rawJsonData.getLong("@avgUsersLastWeek"),
+                            rawJsonData.getLong("@totalCount"),
+                            rawJsonData.getLong("@totalSessions"),
+                            rawJsonData.getLong("@usersLastDay"),
+                            rawJsonData.getLong("@usersLastMonth"),
+                            rawJsonData.getLong("@usersLastWeek"),
+                            rawJsonData.getString("@eventName"));
+                    rtn.add(metrics);
+                }
+            } catch (Exception e) {
+                JSONObject rawJsonData = parent.getJSONObject("event");
                 EventMetrics metrics = new EventMetrics(rawJsonData.getLong("@avgUsersLastDay"),
                         rawJsonData.getLong("@avgUsersLastMonth"),
                         rawJsonData.getLong("@avgUsersLastWeek"),
@@ -233,6 +255,7 @@ public class Utils {
         }
         return result;
     }
+
     public static <K, V extends Comparable<? super V>> Map<K, V> sortByValueDESC(Map<K, V> map) {
         List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(map.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<K, V>>() {

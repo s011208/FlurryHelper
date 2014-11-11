@@ -77,7 +77,8 @@ public class EventDetailedFragment extends BaseFragment implements
     private void setSpinnerAdapter() {
         final EventDetailed detailed = SharedData.getEventDetailedData(mEventName);
         mActionSpinnerAdapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.event_detail_spinner_text, detailed.getAllActions());
+                R.layout.event_detail_spinner_text, detailed != null ? detailed.getAllActions()
+                        : new ArrayList<String>());
         mActionsSpinner.setAdapter(mActionSpinnerAdapter);
         mActionsSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -128,17 +129,20 @@ public class EventDetailedFragment extends BaseFragment implements
 
         private long mTotalCount;
 
+        public void clearData() {
+            mName.clear();
+            mValue.clear();
+            mTotalCount = 0;
+            notifyDataSetChanged();
+        }
+
         public void setListContent(final String action) {
-            final EventDetailed detailed = SharedData
-                    .getEventDetailedData(mEventName);
+            final EventDetailed detailed = SharedData.getEventDetailedData(mEventName);
             if (detailed == null)
                 return;
             final Map<String, Long> parameters = detailed.getParameters(action);
             if (parameters == null)
                 return;
-            mName.clear();
-            mValue.clear();
-            mTotalCount = 0;
             Iterator<String> iter = parameters.keySet().iterator();
             while (iter.hasNext()) {
                 final String key = iter.next();
@@ -202,5 +206,13 @@ public class EventDetailedFragment extends BaseFragment implements
 
             TextView mValue;
         }
+    }
+
+    @Override
+    public void askToReload() {
+        setSpinnerAdapter();
+        mEventDetailListAdapter.clearData();
+        checkLoadingView(true, true);
+        new EventDetailedLoadingHelper(getActivity(), mProjectKey, mEventName, this).execute();
     }
 }

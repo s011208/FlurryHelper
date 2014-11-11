@@ -96,7 +96,7 @@ public class MenuDialog extends DialogFragment {
     public void onStart() {
         super.onStart();
         final Window window = getDialog().getWindow();
-        window.setWindowAnimations(android.R.style.Animation_Toast);
+        window.setWindowAnimations(android.R.style.Animation_Translucent);
         WindowManager.LayoutParams params = window.getAttributes();
         params.gravity = Gravity.RIGHT | Gravity.TOP;
         params.y = (int)getActivity().getResources().getDimension(R.dimen.action_bar_height);

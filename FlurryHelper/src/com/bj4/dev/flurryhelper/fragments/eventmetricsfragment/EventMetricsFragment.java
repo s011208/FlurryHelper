@@ -67,8 +67,7 @@ public class EventMetricsFragment extends BaseFragment implements
                 ((MainActivity)activity).enterEventDetailedFragment(mProjectKey, em.getEventName());
             }
         });
-        final ArrayList<EventMetrics> data = SharedData.getEventMetricsData(
-                mProjectKey);
+        final ArrayList<EventMetrics> data = SharedData.getEventMetricsData(mProjectKey);
         if (data != null && data.isEmpty() == false) {
             // data exist
         } else {
@@ -117,5 +116,12 @@ public class EventMetricsFragment extends BaseFragment implements
         } else {
             collapseAllView();
         }
+    }
+
+    @Override
+    public void askToReload() {
+        mEventNameListAdapter.notifyDataSetChanged();
+        checkLoadingView(true, true);
+        new EventMetricsLoadingHelper(getActivity(), mProjectKey, this).execute();
     }
 }

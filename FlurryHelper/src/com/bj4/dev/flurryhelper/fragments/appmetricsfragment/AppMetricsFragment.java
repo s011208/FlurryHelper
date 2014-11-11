@@ -213,4 +213,12 @@ public class AppMetricsFragment extends BaseFragment implements AppMetricsLoadin
         });
     }
 
+    @Override
+    public void askToReload() {
+        checkLoadingView(true, true);
+        mCurrentAppMetrics = null;
+        mChartContainer.removeAllViews();
+        loadData();
+    }
+
 }

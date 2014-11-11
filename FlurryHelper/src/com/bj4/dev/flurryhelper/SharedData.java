@@ -69,10 +69,13 @@ public class SharedData {
 
     private static final HashMap<String, EventDetailed> sEventDetailed = new HashMap<String, EventDetailed>();
 
-    public static void addEventDetailedData(final String eventName, EventDetailed detailed) {
+    public static void addEventDetailedData(final String eventName, EventDetailed detailed,
+            int timePeriod, int version) {
         if (eventName == null || detailed == null)
             return;
         synchronized (sLock) {
+            if (timePeriod != sSharedPreferencesHelper.getDisplayPeriod())
+                return;
             sEventDetailed.put(eventName, detailed);
         }
     }
@@ -86,10 +89,12 @@ public class SharedData {
     }
 
     public static void addEventMetricsData(final String projectKey,
-            ArrayList<EventMetrics> eventMatrics) {
+            ArrayList<EventMetrics> eventMatrics, int timePeriod, int version) {
         if (eventMatrics == null || projectKey == null)
             return;
         synchronized (sLock) {
+            if (timePeriod != sSharedPreferencesHelper.getDisplayPeriod())
+                return;
             Collections.sort(eventMatrics, new Comparator<EventMetrics>() {
 
                 @Override
@@ -118,7 +123,7 @@ public class SharedData {
     }
 
     public static void addAppMetricsData(final String projectKey, final String key,
-            final ArrayList<AppMetricsData> values) {
+            final ArrayList<AppMetricsData> values, int timePeriod, int version) {
         if (values == null || key == null || projectKey == null)
             return;
         synchronized (sLock) {
@@ -126,6 +131,8 @@ public class SharedData {
             if (data == null) {
                 data = new HashMap<String, ArrayList<AppMetricsData>>();
             }
+            if (timePeriod != sSharedPreferencesHelper.getDisplayPeriod())
+                return;
             data.put(key, values);
             sAppMetricsData.put(projectKey, data);
         }

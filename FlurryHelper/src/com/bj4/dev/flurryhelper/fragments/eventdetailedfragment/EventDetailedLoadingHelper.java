@@ -28,12 +28,17 @@ public class EventDetailedLoadingHelper extends AsyncTask<Void, Void, Void> {
 
     private final WeakReference<Callback> mCallback;
 
+    private final int mCurrentTimePeriod;
+
+    private final int mCurrentVersion = 0;
+
     public EventDetailedLoadingHelper(Context context, String projectKey, String eventName,
             Callback cb) {
         mProjectKey = projectKey;
         mEventName = eventName;
         mContext = new WeakReference<Context>(context);
         mCallback = new WeakReference<Callback>(cb);
+        mCurrentTimePeriod = SharedPreferencesHelper.getInstance(context).getDisplayPeriod();
     }
 
     @Override
@@ -63,7 +68,8 @@ public class EventDetailedLoadingHelper extends AsyncTask<Void, Void, Void> {
         if (DEBUG) {
             Log.d(TAG, "rawData: " + rawData);
         }
-        SharedData
-                .addEventDetailedData(mEventName, Utils.retrieveEventDetailedDataFromRaw(rawData));
+        SharedData.addEventDetailedData(mEventName,
+                Utils.retrieveEventDetailedDataFromRaw(rawData), mCurrentTimePeriod,
+                mCurrentVersion);
     }
 }
