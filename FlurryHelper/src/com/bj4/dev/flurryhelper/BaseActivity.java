@@ -4,6 +4,7 @@ package com.bj4.dev.flurryhelper;
 import com.bj4.dev.flurryhelper.dialogs.MenuDialog;
 import com.bj4.dev.flurryhelper.dialogs.SetApiDialog;
 import com.bj4.dev.flurryhelper.fragments.projectfragment.ProjectFragment;
+import com.flurry.android.FlurryAgent;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -189,5 +190,17 @@ public abstract class BaseActivity extends Activity implements SetApiDialog.SetA
                 return;
             }
         }
+    }
+
+    public void onStart() {
+        super.onStart();
+        FlurryAgent.setLogEnabled(false);
+        FlurryAgent.setUseHttps(true);
+        FlurryAgent.onStartSession(getApplicationContext(), "FM6NSX2MS5YCFJDH6KQZ");
+    }
+
+    public void onStop() {
+        super.onStop();
+        FlurryAgent.onEndSession(getApplicationContext());
     }
 }
