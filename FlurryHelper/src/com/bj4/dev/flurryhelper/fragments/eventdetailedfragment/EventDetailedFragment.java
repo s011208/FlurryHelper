@@ -144,6 +144,8 @@ public class EventDetailedFragment extends BaseFragment implements
             if (parameters == null)
                 return;
             Iterator<String> iter = parameters.keySet().iterator();
+            mName.clear();
+            mValue.clear();
             while (iter.hasNext()) {
                 final String key = iter.next();
                 final Long value = parameters.get(key);
