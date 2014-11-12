@@ -60,6 +60,7 @@ public class SetVersionDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         SharedData.setSelectedVersion(projectKey, which);
                         ((MainActivity)getActivity()).onVersionChanged();
+                        dismiss();
                     }
                 }).create();
         return dialog;

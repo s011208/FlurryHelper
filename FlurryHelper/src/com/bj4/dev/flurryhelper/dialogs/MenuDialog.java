@@ -96,7 +96,7 @@ public class MenuDialog extends DialogFragment {
     }
 
     private void showDisplayPeriodDialog() {
-        new AlertDialog.Builder(mContext).setSingleChoiceItems(
+        final AlertDialog dialog = new AlertDialog.Builder(mContext).setSingleChoiceItems(
                 new CharSequence[] {
                         mContext.getString(R.string.diaply_period_last_day),
                         mContext.getString(R.string.diaply_period_last_week),
@@ -111,7 +111,7 @@ public class MenuDialog extends DialogFragment {
                     public void onClick(DialogInterface arg0, int arg1) {
                         SharedPreferencesHelper.getInstance(mContext).setDisplayPeriod(arg1);
                     }
-                }).show();
+                }).create();
     }
 
     @Override
