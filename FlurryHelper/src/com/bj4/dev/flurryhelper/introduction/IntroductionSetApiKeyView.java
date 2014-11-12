@@ -7,6 +7,8 @@ import com.bj4.dev.flurryhelper.R;
 import com.bj4.dev.flurryhelper.SharedPreferencesHelper;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,11 +16,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class IntroductionSetApiKeyView extends RelativeLayout {
     private EditText mSetApiText;
 
     private Button mConfirm;
+
+    private TextView mFlurryLink;
 
     private WeakReference<IntroductionView> mParent;
 
@@ -46,7 +51,7 @@ public class IntroductionSetApiKeyView extends RelativeLayout {
         super.onFinishInflate();
         mSetApiText = (EditText)findViewById(R.id.set_api_txt);
         // XXX remove later
-        mSetApiText.setText("H27G8H743385X8CFS3VQ");
+        // mSetApiText.setText("H27G8H743385X8CFS3VQ");
         mConfirm = (Button)findViewById(R.id.set_api_txt_confirm);
         mConfirm.setOnClickListener(new OnClickListener() {
 
@@ -66,6 +71,20 @@ public class IntroductionSetApiKeyView extends RelativeLayout {
                     }
                 }
                 // TODO insert failed
+            }
+        });
+        mFlurryLink = (TextView)findViewById(R.id.flurry_manual_link);
+        mFlurryLink.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                final Context context = mContext.get();
+                if (context == null)
+                    return;
+                String url = "http://support.flurry.com/index.php?title=API/GettingStarted";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                context.startActivity(i);
             }
         });
     }

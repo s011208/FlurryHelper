@@ -9,6 +9,8 @@
     <string name="api_key_hint">Enter API access key</string>
     <string name="project_data_chooser_appmetrics">App metrics</string>
     <string name="project_data_chooser_eventmetrics">Event metrics</string>
+    <!-- introduce -->
+    <string name="flurry_link_text">Link to Flurry</string>
     <!-- menu -->
     <string name="menu_set_api_key">Set API key</string>
     <string name="menu_set_time_period">Set time period</string>

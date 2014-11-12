@@ -8,9 +8,9 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:maxLines="1"
-        android:hint="@string/api_key_hint"
         android:gravity="center"
+        android:hint="@string/api_key_hint"
+        android:maxLines="1"
         android:singleLine="true" />
 
     <Button
@@ -22,5 +22,15 @@
         android:layout_marginTop="15dp"
         android:text="@string/confirm"
         android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/flurry_manual_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/set_api_txt_confirm"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/flurry_link_text"
+        android:textColor="#0033ff" />
 
 </com.bj4.dev.flurryhelper.introduction.IntroductionSetApiKeyView>
