@@ -25,6 +25,7 @@ import android.widget.EditText;
 public class MenuDialog extends DialogFragment {
     public interface MenuDialogCallback {
         public void clickSetAPIKey();
+
         public void clickRefresh();
     }
 
@@ -101,22 +102,25 @@ public class MenuDialog extends DialogFragment {
     }
 
     private void showDisplayPeriodDialog() {
-        final AlertDialog dialog = new AlertDialog.Builder(mContext).setSingleChoiceItems(
-                new CharSequence[] {
-                        mContext.getString(R.string.diaply_period_last_day),
-                        mContext.getString(R.string.diaply_period_last_week),
-                        mContext.getString(R.string.diaply_period_last_month),
-                        mContext.getString(R.string.diaply_period_three_months),
-                        mContext.getString(R.string.diaply_period_half_year),
-                        mContext.getString(R.string.diaply_period_year),
-                }, SharedPreferencesHelper.getInstance(mContext).getDisplayPeriod(),
-                new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(mContext)
+                .setSingleChoiceItems(
+                        new CharSequence[] {
+                                mContext.getString(R.string.diaply_period_last_day),
+                                mContext.getString(R.string.diaply_period_last_week),
+                                mContext.getString(R.string.diaply_period_last_month),
+                                mContext.getString(R.string.diaply_period_three_months),
+                                mContext.getString(R.string.diaply_period_half_year),
+                                mContext.getString(R.string.diaply_period_year),
+                        }, SharedPreferencesHelper.getInstance(mContext).getDisplayPeriod(),
+                        new DialogInterface.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        SharedPreferencesHelper.getInstance(mContext).setDisplayPeriod(arg1);
-                    }
-                }).create();
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                SharedPreferencesHelper.getInstance(mContext)
+                                        .setDisplayPeriod(arg1);
+                                arg0.dismiss();
+                            }
+                        }).create().show();
     }
 
     @Override

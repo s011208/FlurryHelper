@@ -33,5 +33,8 @@
     <string name="event_metrics_total_sessions">Total sessions</string>
     <!-- version dialog -->
     <string name="version_dialog_all_version">All version</string>
+    <!-- app metrics -->
+    <string name="chart_type_chart">Chart</string>
+    <string name="chart_type_table">Table</string>
 
 </resources>

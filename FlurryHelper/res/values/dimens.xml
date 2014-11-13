@@ -36,6 +36,7 @@
 	<dimen name="app_metrics_chart_value_distance">50dp</dimen>
 	<dimen name="app_metrics_chart_value_line_width">2dp</dimen>
 	<dimen name="app_metrics_chart_value_textsize">14sp</dimen>
+	<dimen name="app_metrics_chart_type_navigator_textsize">24sp</dimen>
 	<!-- event metrics info -->
 	<dimen name="event_metrics_info_event_name_textsize">24sp</dimen>
 	<dimen name="event_metrics_info_padding_h">4dp</dimen>

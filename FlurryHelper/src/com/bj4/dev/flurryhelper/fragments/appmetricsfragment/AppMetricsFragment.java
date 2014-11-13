@@ -27,13 +27,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 /**
  * http://support.flurry.com/index.php?title=API/GettingStarted
@@ -54,6 +58,12 @@ public class AppMetricsFragment extends BaseFragment implements AppMetricsLoadin
     private FrameLayout mChartContainer;
 
     private String mCurrentAppMetrics;
+
+    private TextView mNavChart, mNavTable;
+
+    private ViewSwitcher mChartSwitcher;
+
+    private ListView mChartTable;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,10 +90,91 @@ public class AppMetricsFragment extends BaseFragment implements AppMetricsLoadin
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+        mChartTable = (ListView)mContent.findViewById(R.id.app_metric_chart_table);
+        mChartSwitcher = (ViewSwitcher)mContent.findViewById(R.id.chart_type_container);
+        mNavChart = (TextView)mContent.findViewById(R.id.chart_type_chart);
+        mNavTable = (TextView)mContent.findViewById(R.id.chart_type_table);
+        mNavChart.setBackgroundResource(R.drawable.navigator_bg);
+        mNavChart.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mNavTable.setBackground(null);
+                mNavChart.setBackgroundResource(R.drawable.navigator_bg);
+                mChartSwitcher.setDisplayedChild(0);
+            }
+        });
+        mNavTable.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mNavChart.setBackground(null);
+                mNavTable.setBackgroundResource(R.drawable.navigator_bg);
+                mChartSwitcher.setDisplayedChild(1);
+            }
+        });
+
         mChartContainer = (FrameLayout)mContent.findViewById(R.id.app_metrics_chart_container);
         loadData();
         fillUpContainer();
         return mContent;
+    }
+
+    private void drawTable(ArrayList<AppMetricsData> metricsData) {
+        TableAdapter adapter = new TableAdapter(metricsData, getActivity());
+        mChartTable.setAdapter(adapter);
+        mChartTable.setClickable(false);
+        mChartTable.smoothScrollToPosition(0);
+    }
+
+    private static class TableAdapter extends BaseAdapter {
+        private final ArrayList<AppMetricsData> mMetricsData = new ArrayList<AppMetricsData>();
+
+        private LayoutInflater mInflater;
+
+        public TableAdapter(ArrayList<AppMetricsData> metricsData, Context context) {
+            mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            if (metricsData != null) {
+                mMetricsData.addAll(metricsData);
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return mMetricsData.size();
+        }
+
+        @Override
+        public AppMetricsData getItem(int arg0) {
+            return mMetricsData.get(arg0);
+        }
+
+        @Override
+        public long getItemId(int arg0) {
+            return arg0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup arg2) {
+            ViewHolder holder = null;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = mInflater.inflate(R.layout.app_metrics_chart_table_row, null);
+                holder.mName = (TextView)convertView.findViewById(R.id.name);
+                holder.mValue = (TextView)convertView.findViewById(R.id.value);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder)convertView.getTag();
+            }
+            AppMetricsData item = getItem(position);
+            holder.mName.setText(item.getDate());
+            holder.mValue.setText(String.valueOf(item.getValue()));
+            return convertView;
+        }
+
+        private static class ViewHolder {
+            TextView mName, mValue;
+        }
     }
 
     private void fillUpContainer() {
@@ -115,6 +206,7 @@ public class AppMetricsFragment extends BaseFragment implements AppMetricsLoadin
             checkLoadingView(false, true);
         }
         drawChart(data);
+        drawTable(data);
     }
 
     private void drawChart(ArrayList<AppMetricsData> metricsData) {
