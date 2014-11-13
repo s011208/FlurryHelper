@@ -12,6 +12,7 @@
     <!-- introduce -->
     <string name="flurry_link_text">Link to Flurry</string>
     <!-- menu -->
+    <string name="menu_refresh_data">Refresh</string>
     <string name="menu_set_api_key">Set API key</string>
     <string name="menu_set_time_period">Set time period</string>
     <string name="menu_set_version">Set version</string>

@@ -1,14 +1,6 @@
 
 package com.bj4.dev.flurryhelper;
 
-import java.io.IOException;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import com.bj4.dev.flurryhelper.dialogs.SetApiDialog;
 import com.bj4.dev.flurryhelper.fragments.BaseFragment;
 import com.bj4.dev.flurryhelper.fragments.appmetricsfragment.AppMetricsFragment;
 import com.bj4.dev.flurryhelper.fragments.eventdetailedfragment.EventDetailedFragment;
@@ -21,25 +13,15 @@ import com.bj4.dev.flurryhelper.utils.LoadingView;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
+
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
-import android.os.Build;
 
 public class MainActivity extends BaseActivity implements IntroductionViewCallback,
         SharedPreferencesHelper.Callback {
@@ -373,6 +355,12 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
 
     @Override
     public void onDatePeriodChanged() {
+        notifyFragmentDataChanged();
+    }
+
+    @Override
+    public void clickRefresh() {
+        SharedData.onDateOrVersionChanged();
         notifyFragmentDataChanged();
     }
 }

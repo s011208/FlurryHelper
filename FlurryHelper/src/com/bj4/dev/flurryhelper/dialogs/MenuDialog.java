@@ -25,6 +25,7 @@ import android.widget.EditText;
 public class MenuDialog extends DialogFragment {
     public interface MenuDialogCallback {
         public void clickSetAPIKey();
+        public void clickRefresh();
     }
 
     public static final String PROJECT_KEY = "project_key";
@@ -56,6 +57,7 @@ public class MenuDialog extends DialogFragment {
             projectKey = null;
         }
         ArrayList<String> data = new ArrayList<String>();
+        data.add(mContext.getString(R.string.menu_refresh_data));
         data.add(mContext.getString(R.string.menu_set_api_key));
         data.add(mContext.getString(R.string.menu_set_time_period));
         if (projectKey != null) {
@@ -73,12 +75,15 @@ public class MenuDialog extends DialogFragment {
                             return;
                         switch (which) {
                             case 0:
-                                cb.clickSetAPIKey();
+                                cb.clickRefresh();
                                 break;
                             case 1:
-                                showDisplayPeriodDialog();
+                                cb.clickSetAPIKey();
                                 break;
                             case 2:
+                                showDisplayPeriodDialog();
+                                break;
+                            case 3:
                                 showSetVersionDialog(projectKey);
                                 break;
                         }
