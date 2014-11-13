@@ -224,6 +224,8 @@ public class AppMetricsFragment extends BaseFragment implements AppMetricsLoadin
         for (int i = 0; i < metricsData.size(); i++) {
             metricsDataSeries.add(i, metricsData.get(i).getValue());
         }
+        if (context == null)
+            return null;
         final Resources res = context.getResources();
         XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
         dataset.addSeries(metricsDataSeries);

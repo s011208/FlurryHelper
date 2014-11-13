@@ -96,7 +96,11 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
         }
-        String versionName = SharedData.getVersionInfo(mProjectKey).getSelectedVersion();
+        AppVersionInfo info = SharedData.getVersionInfo(mProjectKey);
+        if (info == null) {
+            return false;
+        }
+        String versionName = info.getSelectedVersion();
         if (versionName == null)
             return false;
         if (!AppVersionInfo.VERSION_NOT_SET.equals(versionName)) {
