@@ -48,20 +48,22 @@ public class EventMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
         final String apiKey = SharedPreferencesHelper.getInstance(context).getAPIKey();
         final String endDate = SharedPreferencesHelper.getInstance(context).getEndDate();
         final String startDate = SharedPreferencesHelper.getInstance(context).getStartDate();
-        loadAppMetric(apiKey, startDate, endDate);
-        if (mCallback != null && mCallback.get() != null)
+        final boolean loadSuccess = loadAppMetric(apiKey, startDate, endDate);
+        if (loadSuccess && mCallback != null && mCallback.get() != null)
             mCallback.get().notifyDataChanged();
         return null;
     }
 
-    private void loadAppMetric(final String apiKey, final String startDate, final String endDate) {
+    private boolean loadAppMetric(final String apiKey, final String startDate, final String endDate) {
         final ArrayList<EventMetrics> data = SharedData.getEventMetricsData(mProjectKey);
         if (data != null && data.isEmpty() == false) {
             if (DEBUG)
                 Log.v(TAG, "data has loaded, ignore");
-            return;
+            return false;
         }
         String versionName = SharedData.getVersionInfo(mProjectKey).getSelectedVersion();
+        if (versionName == null)
+            return false;
         if (!AppVersionInfo.VERSION_NOT_SET.equals(versionName)) {
             versionName = "&versionName=" + versionName;
         }
@@ -72,5 +74,6 @@ public class EventMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
             Log.d(TAG, "rawData: " + rawData);
         SharedData.addEventMetricsData(mProjectKey, Utils.retrieveEventMetricsDataFromRaw(rawData),
                 mCurrentTimePeriod, mCurrentVersion);
+        return true;
     }
 }

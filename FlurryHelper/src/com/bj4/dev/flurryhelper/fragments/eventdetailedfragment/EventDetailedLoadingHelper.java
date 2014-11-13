@@ -65,6 +65,8 @@ public class EventDetailedLoadingHelper extends AsyncTask<Void, Void, Void> {
             return;
         }
         String versionName = SharedData.getVersionInfo(mProjectKey).getSelectedVersion();
+        if (versionName == null)
+            return;
         if (!AppVersionInfo.VERSION_NOT_SET.equals(versionName)) {
             versionName = "&versionName=" + versionName;
         }

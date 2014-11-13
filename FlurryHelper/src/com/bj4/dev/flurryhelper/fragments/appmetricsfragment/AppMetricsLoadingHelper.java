@@ -83,20 +83,22 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    private void loadAppMetric(final String apiKey, final String startDate, final String endDate,
-            final String metric) {
+    private boolean loadAppMetric(final String apiKey, final String startDate,
+            final String endDate, final String metric) {
         HashMap<String, ArrayList<AppMetricsData>> projectData = SharedData
                 .getAppMetricsData(mProjectKey);
         if (projectData != null && projectData.get(metric) != null) {
             if (DEBUG)
                 Log.d(TAG, metric + " has loaded, drop task");
-            return;
+            return false;
         }
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
         }
         String versionName = SharedData.getVersionInfo(mProjectKey).getSelectedVersion();
+        if (versionName == null)
+            return false;
         if (!AppVersionInfo.VERSION_NOT_SET.equals(versionName)) {
             versionName = "&versionName=" + versionName;
         }
@@ -106,6 +108,7 @@ public class AppMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
                 + "&endDate=" + endDate + versionName);
         SharedData.addAppMetricsData(mProjectKey, metric,
                 Utils.retrieveAppMetricsDataFromRaw(rawData), mCurrentTimePeriod, mCurrentVersion);
+        return true;
     }
 
 }
