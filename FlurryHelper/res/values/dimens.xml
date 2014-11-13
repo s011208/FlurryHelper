@@ -48,4 +48,7 @@
 	<!-- event detail -->
 	<dimen name="event_detail_item_text_size">16sp</dimen>
 	<dimen name="event_detail_item_padding_v">3dp</dimen>
+	<dimen name="event_detail_chart_margin">10dp</dimen>
+	<dimen name="event_detail_chart_label_textsize">12sp</dimen>
+	<dimen name="event_detail_chart_legend_textsize">10sp</dimen>
 </resources>
