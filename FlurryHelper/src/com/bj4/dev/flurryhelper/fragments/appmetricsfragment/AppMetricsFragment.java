@@ -211,16 +211,18 @@ public class AppMetricsFragment extends BaseFragment implements AppMetricsLoadin
 
     private void drawChart(ArrayList<AppMetricsData> metricsData) {
         mChartContainer.removeAllViews();
-        View chart = getLineChart(getActivity(), metricsData);
+        View chart = getLineChart(mAppMetricsSpinner.getSelectedItem().toString(), getActivity(),
+                metricsData);
         if (chart != null) {
             mChartContainer.addView(chart);
         }
     }
 
-    public static View getLineChart(Context context, ArrayList<AppMetricsData> metricsData) {
+    public static View getLineChart(final String legend, Context context,
+            ArrayList<AppMetricsData> metricsData) {
         if (metricsData == null)
             return null;
-        XYSeries metricsDataSeries = new XYSeries("ActiveUsers");
+        XYSeries metricsDataSeries = new XYSeries(legend);
         for (int i = 0; i < metricsData.size(); i++) {
             metricsDataSeries.add(i, metricsData.get(i).getValue());
         }
