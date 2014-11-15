@@ -42,7 +42,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/app_metrics_spinner"
-        android:layout_margin="@dimen/app_metrics_chart_container_margin" >
+        android:layout_margin="@dimen/app_metrics_chart_container_margin"
+        android:inAnimation="@android:anim/slide_in_left"
+        android:outAnimation="@android:anim/slide_out_right" >
 
         <FrameLayout
             android:id="@+id/app_metrics_chart_container"
