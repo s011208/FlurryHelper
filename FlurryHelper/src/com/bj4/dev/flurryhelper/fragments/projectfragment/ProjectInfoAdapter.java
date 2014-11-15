@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.bj4.dev.flurryhelper.R;
 import com.bj4.dev.flurryhelper.SharedData;
+import com.bj4.dev.flurryhelper.SharedPreferencesHelper;
 import com.bj4.dev.flurryhelper.utils.LoadingView;
 import com.bj4.dev.flurryhelper.utils.ProjectInfo;
 
@@ -83,36 +84,39 @@ public class ProjectInfoAdapter extends BaseAdapter {
         holder.mCreatedDate.setText(info.getCreatedDate());
         holder.mName.setText(info.getName());
         holder.mPlatform.setText(info.getPlatform());
-        holder.mLoadingView.setRadius(mLoadingViewRadius);
-        holder.mLoadingView.setVisibility(View.VISIBLE);
-        holder.mChartContainer.setTag(position);
-        if (holder.mChartContainer.getChildCount() > 1) {
-            for (int i = 0; i < holder.mChartContainer.getChildCount(); i++) {
-                if (holder.mChartContainer.getChildAt(i) instanceof LoadingView == false) {
-                    holder.mChartContainer.removeViewAt(i);
+        if (SharedPreferencesHelper.getInstance(mContext).isShowChartInProjectFragment()) {
+            holder.mChartContainer.setVisibility(View.VISIBLE);
+            holder.mLoadingView.setRadius(mLoadingViewRadius);
+            holder.mLoadingView.setVisibility(View.VISIBLE);
+            holder.mChartContainer.setTag(position);
+            if (holder.mChartContainer.getChildCount() > 1) {
+                for (int i = 0; i < holder.mChartContainer.getChildCount(); i++) {
+                    if (holder.mChartContainer.getChildAt(i) instanceof LoadingView == false) {
+                        holder.mChartContainer.removeViewAt(i);
+                    }
                 }
             }
-        }
-        final LoadingView loadingView = holder.mLoadingView;
-        loadingView.setBackgroundColor(Color.argb(15, 0, 0, 0));
-        ViewTreeObserver observer = loadingView.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+            final LoadingView loadingView = holder.mLoadingView;
+            loadingView.setBackgroundColor(Color.argb(15, 0, 0, 0));
+            ViewTreeObserver observer = loadingView.getViewTreeObserver();
+            observer.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
-            @Override
-            public void onGlobalLayout() {
-                ViewTreeObserver observer = loadingView.getViewTreeObserver();
-                if (observer.isAlive())
-                    observer.removeOnGlobalLayoutListener(this);
-                loadingView.setRadius(mLoadingViewRadius);
-            }
-        });
-        // final String projectKey = info.getApiKey();
-        // new BarChartTask(holder.mChartContainer, holder.mLoadingView,
-        // mContext, position,
-        // projectKey)
-        // .executeOnExecutor(BarChartTask.hasData(projectKey) ?
-        // AsyncTask.THREAD_POOL_EXECUTOR
-        // : AsyncTask.SERIAL_EXECUTOR);
+                @Override
+                public void onGlobalLayout() {
+                    ViewTreeObserver observer = loadingView.getViewTreeObserver();
+                    if (observer.isAlive())
+                        observer.removeOnGlobalLayoutListener(this);
+                    loadingView.setRadius(mLoadingViewRadius);
+                }
+            });
+            final String projectKey = info.getApiKey();
+            new BarChartTask(holder.mChartContainer, holder.mLoadingView, mContext, position,
+                    projectKey)
+                    .executeOnExecutor(BarChartTask.hasData(projectKey) ? AsyncTask.THREAD_POOL_EXECUTOR
+                            : AsyncTask.SERIAL_EXECUTOR);
+        } else {
+            holder.mChartContainer.setVisibility(View.GONE);
+        }
         return convertView;
     }
 

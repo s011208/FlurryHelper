@@ -4,6 +4,7 @@ package com.bj4.dev.flurryhelper.dialogs;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
+import com.bj4.dev.flurryhelper.MainActivity;
 import com.bj4.dev.flurryhelper.R;
 import com.bj4.dev.flurryhelper.SharedPreferencesHelper;
 
@@ -58,13 +59,23 @@ public class MenuDialog extends DialogFragment {
             projectKey = null;
         }
         ArrayList<String> data = new ArrayList<String>();
-        data.add(mContext.getString(R.string.menu_refresh_data));
-        data.add(mContext.getString(R.string.menu_set_api_key));
-        data.add(mContext.getString(R.string.menu_set_time_period));
+        final String refresh = mContext.getString(R.string.menu_refresh_data);
+        data.add(refresh);
+        final String apiKey = mContext.getString(R.string.menu_set_api_key);
+        data.add(apiKey);
+        final String timePeriod = mContext.getString(R.string.menu_set_time_period);
+        data.add(timePeriod);
+        final String version = mContext.getString(R.string.menu_set_version);
         if (projectKey != null) {
-            data.add(mContext.getString(R.string.menu_set_version));
+            data.add(version);
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
+        final String showChart = mContext.getString(R.string.menu_show_chart_on_project_fragment);
+        final String hideChart = mContext.getString(R.string.menu_hide_chart_on_project_fragment);
+        if (((MainActivity)getActivity()).getNavigatorType() == MainActivity.FRAGMENT_TYPE_PROJECT) {
+            data.add(SharedPreferencesHelper.getInstance(getActivity())
+                    .isShowChartInProjectFragment() ? hideChart : showChart);
+        }
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
                 android.R.layout.simple_list_item_1, data);
         AlertDialog dialog = new AlertDialog.Builder(mContext)
                 .setAdapter(adapter, new DialogInterface.OnClickListener() {
@@ -72,21 +83,23 @@ public class MenuDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         final MenuDialogCallback cb = mCallback.get();
+                        final String selectedItem = adapter.getItem(which);
                         if (cb == null)
                             return;
-                        switch (which) {
-                            case 0:
-                                cb.clickRefresh();
-                                break;
-                            case 1:
-                                cb.clickSetAPIKey();
-                                break;
-                            case 2:
-                                showDisplayPeriodDialog();
-                                break;
-                            case 3:
-                                showSetVersionDialog(projectKey);
-                                break;
+                        if (refresh.equals(selectedItem)) {
+                            cb.clickRefresh();
+                        } else if (apiKey.equals(selectedItem)) {
+                            cb.clickSetAPIKey();
+                        } else if (timePeriod.equals(selectedItem)) {
+                            showDisplayPeriodDialog();
+                        } else if (version.equals(selectedItem)) {
+                            showSetVersionDialog(projectKey);
+                        } else if (showChart.equals(selectedItem)) {
+                            SharedPreferencesHelper.getInstance(getActivity())
+                                    .setShowChartInProjectFragment(true);
+                        } else if (hideChart.equals(selectedItem)) {
+                            SharedPreferencesHelper.getInstance(getActivity())
+                                    .setShowChartInProjectFragment(false);
                         }
                     }
                 }).setCancelable(true).setTitle(null).create();

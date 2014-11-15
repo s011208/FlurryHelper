@@ -13,6 +13,8 @@ public class SharedPreferencesHelper {
         public void onVersionChanged();
 
         public void onDatePeriodChanged();
+
+        public void onShowChartOnProjectFragmentChanged();
     }
 
     private WeakReference<Callback> mCallback;
@@ -49,6 +51,8 @@ public class SharedPreferencesHelper {
     public static final int DISPLAY_PERIOD_HALF_YEAR = 4;
 
     public static final int DISPLAY_PERIOD_YEAR = 5;
+
+    public static final String KEY_SHOW_CHART_IN_PROJECT_FRAGMENT = "key_show_chart_in_project_fragment";
 
     private static final String TAG = "SharedPreferencesHelper";
 
@@ -121,6 +125,16 @@ public class SharedPreferencesHelper {
         Calendar calendar = Calendar.getInstance();
         return calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-"
                 + calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public boolean isShowChartInProjectFragment() {
+        return mPref.getBoolean(KEY_SHOW_CHART_IN_PROJECT_FRAGMENT, true);
+    }
+
+    public void setShowChartInProjectFragment(boolean show) {
+        mPref.edit().putBoolean(KEY_SHOW_CHART_IN_PROJECT_FRAGMENT, show).commit();
+        if (mCallback != null && mCallback.get() != null)
+            mCallback.get().onShowChartOnProjectFragmentChanged();
     }
 
 }

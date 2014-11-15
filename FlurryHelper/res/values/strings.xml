@@ -16,6 +16,8 @@
     <string name="menu_set_api_key">Set API key</string>
     <string name="menu_set_time_period">Set time period</string>
     <string name="menu_set_version">Set version</string>
+    <string name="menu_show_chart_on_project_fragment">Show chart</string>
+    <string name="menu_hide_chart_on_project_fragment">Hide chart</string>
     <string name="diaply_period_last_day">Last day</string>
     <string name="diaply_period_last_week">Last week</string>
     <string name="diaply_period_last_month">Last month</string>

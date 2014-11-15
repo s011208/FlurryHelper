@@ -61,6 +61,8 @@ public class EventMetricsLoadingHelper extends AsyncTask<Void, Void, Void> {
                 Log.v(TAG, "data has loaded, ignore");
             return false;
         }
+        if (SharedData.getVersionInfo(mProjectKey) == null)
+            return false;
         String versionName = SharedData.getVersionInfo(mProjectKey).getSelectedVersion();
         if (versionName == null)
             return false;

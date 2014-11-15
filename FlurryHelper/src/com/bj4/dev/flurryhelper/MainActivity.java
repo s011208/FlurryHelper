@@ -33,13 +33,13 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
 
     private LoadingView mLoadingView;
 
-    private static final int FRAGMENT_TYPE_PROJECT = 0;
+    public static final int FRAGMENT_TYPE_PROJECT = 0;
 
-    private static final int FRAGMENT_TYPE_APPMETRICS = 1;
+    public static final int FRAGMENT_TYPE_APPMETRICS = 1;
 
-    private static final int FRAGMENT_TYPE_EVENTMETRICS = 2;
+    public static final int FRAGMENT_TYPE_EVENTMETRICS = 2;
 
-    private static final int FRAGMENT_TYPE_EVENT_DETAILED = 3;
+    public static final int FRAGMENT_TYPE_EVENT_DETAILED = 3;
 
     private int mNavigationFragment = FRAGMENT_TYPE_PROJECT;
 
@@ -84,6 +84,10 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
 
     public void onPause() {
         super.onPause();
+    }
+
+    public int getNavigatorType() {
+        return mNavigationFragment;
     }
 
     @Override
@@ -329,13 +333,16 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
 
     @Override
     public void onVersionChanged() {
+        SharedData.onDateOrVersionChanged();
         notifyFragmentDataChanged();
     }
 
     private void notifyFragmentDataChanged() {
-        SharedData.onDateOrVersionChanged();
         Fragment fragment = null;
         switch (mNavigationFragment) {
+            case FRAGMENT_TYPE_PROJECT:
+                fragment = getFragmentManager().findFragmentByTag(ProjectFragment.TAG);
+                break;
             case FRAGMENT_TYPE_APPMETRICS:
                 fragment = getFragmentManager().findFragmentByTag(AppMetricsFragment.TAG);
                 break;
@@ -356,12 +363,18 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
 
     @Override
     public void onDatePeriodChanged() {
+        SharedData.onDateOrVersionChanged();
         notifyFragmentDataChanged();
     }
 
     @Override
     public void clickRefresh() {
         SharedData.onDateOrVersionChanged();
+        notifyFragmentDataChanged();
+    }
+
+    @Override
+    public void onShowChartOnProjectFragmentChanged() {
         notifyFragmentDataChanged();
     }
 }
