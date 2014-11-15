@@ -9,6 +9,7 @@ import com.bj4.dev.flurryhelper.fragments.projectfragment.ProjectFragment;
 import com.bj4.dev.flurryhelper.introduction.IntroductionView;
 import com.bj4.dev.flurryhelper.introduction.IntroductionView.IntroductionViewCallback;
 import com.bj4.dev.flurryhelper.utils.LoadingView;
+import com.bj4.dev.flurryhelper.utils.ToastHelper;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
@@ -92,10 +93,10 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
 
     public synchronized void setApiSuccess(boolean clearOldData) {
         // start to load
+        showActionBar();
         if (mIntroductionView != null) {
             mMainActivity.removeView(mIntroductionView);
             mIntroductionView = null;
-            showActionBar();
         }
         if (clearOldData) {
             SharedData.clearAllData();

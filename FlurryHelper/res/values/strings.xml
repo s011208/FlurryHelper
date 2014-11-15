@@ -38,5 +38,6 @@
     <string name="chart_type_table">Table</string>
     <!-- event detail -->
     <string name="chart_skipped_data">Skipped</string>
-
+    <!-- toast text -->
+	<string name="start_loading">Start loading</string>
 </resources>

@@ -15,6 +15,7 @@ import com.bj4.dev.flurryhelper.dialogs.MenuDialog;
 import com.bj4.dev.flurryhelper.dialogs.ProjectDataChooserDialog;
 import com.bj4.dev.flurryhelper.fragments.BaseFragment;
 import com.bj4.dev.flurryhelper.utils.CompanyName;
+import com.bj4.dev.flurryhelper.utils.ToastHelper;
 import com.bj4.dev.flurryhelper.utils.Utils;
 
 import android.app.Activity;
@@ -94,6 +95,8 @@ public class ProjectFragment extends BaseFragment {
         if (currentCompany == null) {
             checkLoadingView(true, true);
             new RetrieveApplicationInfoTask(this, getActivity()).execute();
+            ToastHelper.showToast(getActivity(),
+                    R.string.start_loading, R.drawable.ic_start_to_loading);
         } else {
             notifyDataChanged();
         }
