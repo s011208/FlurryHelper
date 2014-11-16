@@ -333,6 +333,7 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
 
     @Override
     public void onVersionChanged() {
+        FlurryDataWorker.clearAllTasks();
         SharedData.onDateOrVersionChanged();
         notifyFragmentDataChanged();
     }
@@ -363,12 +364,14 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
 
     @Override
     public void onDatePeriodChanged() {
+        FlurryDataWorker.clearAllTasks();
         SharedData.onDateOrVersionChanged();
         notifyFragmentDataChanged();
     }
 
     @Override
     public void clickRefresh() {
+        FlurryDataWorker.clearAllTasks();
         SharedData.onDateOrVersionChanged();
         notifyFragmentDataChanged();
     }
