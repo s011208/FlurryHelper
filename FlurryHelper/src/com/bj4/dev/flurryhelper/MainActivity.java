@@ -17,8 +17,8 @@ import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -26,6 +26,9 @@ import android.widget.RelativeLayout;
 
 public class MainActivity extends BaseActivity implements IntroductionViewCallback,
         SharedPreferencesHelper.Callback {
+    private static final String TAG = "QQQQ";
+
+    private static final boolean DEBUG = true;
 
     private IntroductionView mIntroductionView;
 
@@ -228,6 +231,8 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
     }
 
     public synchronized void showLoadingView(boolean animate) {
+        if (DEBUG)
+            Log.d(TAG, "showLoadingView");
         if (mLoadingView == null) {
             mLoadingView = new LoadingView(this);
             mLoadingView.setVisibility(View.GONE);
@@ -280,6 +285,8 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
     }
 
     public void hideLoadingView(boolean animate) {
+        if (DEBUG)
+            Log.d(TAG, "hideLoadingView");
         if (mLoadingView == null) {
             return;
         }

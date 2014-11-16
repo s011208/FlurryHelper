@@ -47,6 +47,8 @@ import android.widget.ViewSwitcher;
 public class AppMetricsFragment extends BaseFragment implements AppMetricsLoadingHelper.Callback {
     public static final String TAG = "AppMetricsFragment";
 
+    public static final boolean DEBUG = true;
+
     public static final String PROJECT_KEY = "project_key";
 
     private String mProjectKey;
@@ -200,9 +202,11 @@ public class AppMetricsFragment extends BaseFragment implements AppMetricsLoadin
         }
         data.addAll(metricData);
         if (data.isEmpty()) {
+            Log.w("QQQQ", "data is empty");
             checkLoadingView(true, true);
             mCurrentAppMetrics = null;
         } else {
+            Log.e("QQQQ", "data is not empty");
             checkLoadingView(false, true);
         }
         drawChart(data);
@@ -304,6 +308,8 @@ public class AppMetricsFragment extends BaseFragment implements AppMetricsLoadin
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if (DEBUG)
+                    Log.i(TAG, "notifyDataChanged");
                 fillUpContainer();
             }
         });
@@ -311,6 +317,8 @@ public class AppMetricsFragment extends BaseFragment implements AppMetricsLoadin
 
     @Override
     public void askToReload() {
+        if (DEBUG)
+            Log.i(TAG, "askToReload");
         checkLoadingView(true, true);
         mCurrentAppMetrics = null;
         mChartContainer.removeAllViews();
