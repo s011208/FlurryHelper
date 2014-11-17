@@ -244,6 +244,8 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
             ((ViewGroup)mLoadingView.getParent()).removeView(mLoadingView);
         }
         if (animate) {
+            mLoadingView.setAlpha(0);
+            mLoadingView.setVisibility(View.VISIBLE);
             ObjectAnimator oa = ObjectAnimator.ofFloat(mLoadingView, View.ALPHA,
                     mLoadingView.getAlpha(), 1);
             oa.setDuration(200);
@@ -251,8 +253,6 @@ public class MainActivity extends BaseActivity implements IntroductionViewCallba
 
                 @Override
                 public void onAnimationStart(Animator animation) {
-                    mLoadingView.setAlpha(0);
-                    mLoadingView.setVisibility(View.VISIBLE);
                     mMainActivity.addView(mLoadingView);
                     mMainActivity.bringChildToFront(mLoadingView);
                 }

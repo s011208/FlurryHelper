@@ -202,11 +202,13 @@ public class AppMetricsFragment extends BaseFragment implements AppMetricsLoadin
         }
         data.addAll(metricData);
         if (data.isEmpty()) {
-            Log.w("QQQQ", "data is empty");
+            if (DEBUG)
+                Log.d(TAG, "data is empty");
             checkLoadingView(true, true);
             mCurrentAppMetrics = null;
         } else {
-            Log.e("QQQQ", "data is not empty");
+            if (DEBUG)
+                Log.d(TAG, "data is not empty");
             checkLoadingView(false, true);
         }
         drawChart(data);
